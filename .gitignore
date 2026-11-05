@@ -1,0 +1,94 @@
+# =============================================================
+#  insights-forge — .gitignore
+# =============================================================
+
+# ---------- Secrets & credentials (NEVER commit) ----------
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+*.pem
+*.key
+credentials*.json
+service-account*.json
+gcp-key*.json
+.aws/
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.eggs/
+build/
+dist/
+wheels/
+pip-wheel-metadata/
+*.manifest
+*.spec
+
+# ---------- Virtual environments (uv / venv) ----------
+.venv/
+venv/
+env/
+ENV/
+.python-version.local
+
+# ---------- Testing, coverage & tooling caches ----------
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.ruff_cache/
+.mypy_cache/
+.pyright/
+.dmypy.json
+
+# ---------- Jupyter ----------
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+.virtual_documents/
+
+# ---------- Data ----------
+# Raw / user data stays local. Only small curated samples are versioned.
+data/*
+!data/sample/
+!data/sample/**
+!data/README.md
+*.duckdb
+*.duckdb.wal
+*.sqlite
+*.sqlite3
+*.db
+*.parquet
+!data/sample/**/*.parquet
+
+# ---------- Generated output ----------
+reports/
+output/
+exports/
+*.log
+logs/
+
+# ---------- Docker ----------
+docker-compose.override.yml
+
+# ---------- IDEs & editors ----------
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
+desktop.ini
