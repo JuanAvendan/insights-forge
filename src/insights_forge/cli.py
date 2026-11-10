@@ -14,6 +14,7 @@ from typing import TextIO
 
 from insights_forge import __version__
 from insights_forge.connectors import ConnectorError
+from insights_forge.insights import Aggregation
 from insights_forge.pipeline import Analysis, analyze_file
 
 
@@ -22,6 +23,11 @@ def _add_source_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--sheet", help="Excel sheet name (default: first sheet)")
     parser.add_argument("--measure", help="numeric column to analyze (default: auto-detect)")
     parser.add_argument("--date-column", help="date column for trends (default: auto-detect)")
+    parser.add_argument(
+        "--aggregation",
+        choices=["sum", "avg"],
+        help="how to aggregate the measure per period/group (default: by column meaning)",
+    )
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -73,7 +79,11 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     try:
         analysis = analyze_file(
-            args.path, sheet=args.sheet, measure=args.measure, date=args.date_column
+            args.path,
+            sheet=args.sheet,
+            measure=args.measure,
+            date=args.date_column,
+            aggregation=Aggregation(args.aggregation) if args.aggregation else None,
         )
     except ConnectorError as exc:
         print(f"error: {exc}", file=sys.stderr)

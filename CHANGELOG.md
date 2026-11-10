@@ -4,6 +4,28 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the
 project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+Fixes found by running the tool on a real 26k-row movies dataset (1896-2027).
+
+### Added
+- Aggregation override (`Auto` / `Sum` / `Average`) in the app and `--aggregation`
+  in the CLI.
+- Yearly granularity for histories longer than ten years.
+- Trend insights warn when the measure is mostly missing (totals then track data
+  coverage, not the quantity itself).
+
+### Fixed
+- Measure auto-detection works on the words of a column name: `aspect_ratio_value`
+  is no longer picked as a summed amount, `box_office_usd` / `budget_usd` rank
+  first, and calendar columns such as `release_year` are never measures.
+- Identical insights from equivalent columns (e.g. `color` and `color_type`) are
+  shown once.
+- Trend chart tooltips use compact numbers (`7.1M`, not `7.1e+6`) and the fitted
+  line no longer dips below zero for non-negative measures.
+- Very large changes read as multipliers (`1,437x`) instead of `+143564%`.
+- Titles keep the column name's casing.
+
 ## [0.3.0] - 2026-11-10
 
 ### Added

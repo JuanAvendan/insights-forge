@@ -94,7 +94,7 @@
   {% endif %}
 
   {% if trend_chart %}
-  <h2>{{ insights.roles.measure_label | capitalize }} by {{ insights.trend.granularity }}</h2>
+  <h2>{{ insights.roles.measure_label | sentence }} by {{ insights.trend.granularity }}</h2>
   <div class="card chart">{{ trend_chart }}</div>
   <p class="note">Dotted line: least-squares linear trend.</p>
   {% endif %}

@@ -13,7 +13,7 @@ import duckdb
 import polars as pl
 
 from insights_forge.connectors import Connector, FileConnector
-from insights_forge.insights import InsightReport, generate_insights
+from insights_forge.insights import Aggregation, InsightReport, generate_insights
 from insights_forge.profiling import DatasetProfile, profile_table
 
 TABLE = "dataset"
@@ -33,12 +33,15 @@ def analyze(
     *,
     measure: str | None = None,
     date: str | None = None,
+    aggregation: Aggregation | None = None,
 ) -> Analysis:
     con = duckdb.connect()
     try:
         relation = connector.load(con, TABLE)
         profile = profile_table(con, TABLE)
-        insights = generate_insights(con, profile, measure=measure, date=date)
+        insights = generate_insights(
+            con, profile, measure=measure, date=date, aggregation=aggregation
+        )
         df: pl.DataFrame = relation.pl()  # duckdb types .pl() as Any
     finally:
         con.close()
@@ -51,8 +54,15 @@ def analyze_file(
     sheet: str | None = None,
     measure: str | None = None,
     date: str | None = None,
+    aggregation: Aggregation | None = None,
 ) -> Analysis:
-    return analyze(FileConnector(path, sheet=sheet), path.name, measure=measure, date=date)
+    return analyze(
+        FileConnector(path, sheet=sheet),
+        path.name,
+        measure=measure,
+        date=date,
+        aggregation=aggregation,
+    )
 
 
 def regenerate_insights(
@@ -60,6 +70,7 @@ def regenerate_insights(
     *,
     measure: str | None = None,
     date: str | None = None,
+    aggregation: Aggregation | None = None,
 ) -> InsightReport:
     """Re-run the insight engine with different roles, reusing the loaded data."""
     con = duckdb.connect()
@@ -67,6 +78,8 @@ def regenerate_insights(
         con.register("_source", analysis.df)
         con.execute(f'CREATE TABLE "{TABLE}" AS FROM _source')
         con.unregister("_source")
-        return generate_insights(con, analysis.profile, measure=measure, date=date)
+        return generate_insights(
+            con, analysis.profile, measure=measure, date=date, aggregation=aggregation
+        )
     finally:
         con.close()

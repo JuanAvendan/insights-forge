@@ -14,6 +14,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import polars as pl
 
+from insights_forge.formatting import fmt_compact
 from insights_forge.insights import TrendSeries
 from insights_forge.profiling import ColumnProfile, DatasetProfile
 
@@ -152,8 +153,10 @@ def trend(series: TrendSeries, label: str, mode: Mode = "light") -> go.Figure:
             mode="lines+markers",
             line={"color": palette.series, "width": 2},
             marker={"size": 8, "color": palette.series},
-            customdata=list(series.labels),
-            hovertemplate=f"%{{customdata}}<br>{label}: %{{y:,.4~g}}<extra></extra>",
+            customdata=[
+                [p, fmt_compact(v)] for p, v in zip(series.labels, series.values, strict=True)
+            ],
+            hovertemplate=f"%{{customdata[0]}}<br>{label}: %{{customdata[1]}}<extra></extra>",
         )
     )
     if series.slope_pct is not None and len(x) >= 2:
@@ -161,6 +164,8 @@ def trend(series: TrendSeries, label: str, mode: Mode = "light") -> go.Figure:
         mean = sum(series.values) / n
         slope = series.slope_pct / 100 * mean
         fitted = [mean + slope * (i - (n - 1) / 2) for i in range(n)]
+        if min(series.values) >= 0:  # non-negative measure: never draw the trend below zero
+            fitted = [max(0.0, y) for y in fitted]
         fig.add_trace(
             go.Scatter(
                 x=x,

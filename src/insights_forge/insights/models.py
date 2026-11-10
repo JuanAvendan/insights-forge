@@ -28,6 +28,7 @@ class Granularity(StrEnum):
     WEEK = "week"
     MONTH = "month"
     QUARTER = "quarter"
+    YEAR = "year"
 
     def label(self, period: dt.date) -> str:
         match self:
@@ -37,6 +38,8 @@ class Granularity(StrEnum):
                 return period.strftime("%b %Y")
             case Granularity.QUARTER:
                 return f"Q{(period.month - 1) // 3 + 1} {period.year}"
+            case Granularity.YEAR:
+                return str(period.year)
 
 
 @dataclass(frozen=True, slots=True)

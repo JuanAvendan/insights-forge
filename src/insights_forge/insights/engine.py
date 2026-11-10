@@ -15,7 +15,7 @@ from typing import Any
 
 import duckdb
 
-from insights_forge.formatting import fmt_number
+from insights_forge.formatting import fmt_number, sentence_case
 from insights_forge.insights.models import (
     Aggregation,
     Granularity,
@@ -33,6 +33,13 @@ MIN_TREND_PERIODS = 3
 MIN_SEGMENT_ROWS = 10
 MAX_PER_KIND = 3
 SINGLE_ROW_DOMINANCE = 0.25
+MISSING_CAVEAT_PCT = 20.0
+
+
+def change_text(first: float, last: float) -> str:
+    """'+6%' for normal changes, '1,437x' when the value grew more than tenfold."""
+    ratio = last / first
+    return f"{ratio:,.0f}x" if ratio >= 10 else f"{ratio - 1:+.0%}"
 
 
 def total_of(measure: str) -> str:
@@ -67,7 +74,9 @@ def granularity_for(span_days: int) -> Granularity:
         return Granularity.WEEK
     if span_days <= 3 * 366:
         return Granularity.MONTH
-    return Granularity.QUARTER
+    if span_days <= 10 * 366:
+        return Granularity.QUARTER
+    return Granularity.YEAR  # keeps long histories at a readable ~10-150 points
 
 
 def period_end(start: dt.date, g: Granularity) -> dt.date:
@@ -76,6 +85,8 @@ def period_end(start: dt.date, g: Granularity) -> dt.date:
             return start
         case Granularity.WEEK:
             return start + dt.timedelta(days=6)
+        case Granularity.YEAR:
+            return dt.date(start.year, 12, 31)
         case Granularity.MONTH | Granularity.QUARTER:
             months = 1 if g is Granularity.MONTH else 3
             year, month = divmod(start.month - 1 + months, 12)
@@ -134,16 +145,17 @@ def trend_insights(ctx: _Context, trend: TrendSeries | None) -> Iterable[Insight
     label, g = ctx.roles.measure_label, trend.granularity
     first, last = trend.values[0], trend.values[-1]
     labels = trend.labels
-    change = f" ({(last / first - 1):+.0%})" if first > 0 else ""
+    change = f" ({change_text(first, last)})" if first > 0 else ""
     span = f"From {labels[0]} ({fmt_number(first)}) to {labels[-1]} ({fmt_number(last)}){change}."
     cols = tuple(c for c in (ctx.roles.measure, ctx.roles.date) if c)
+    caveat = _missing_caveat(ctx)
 
     if trend.r2 >= 0.5 and abs(trend.slope_pct) >= 1:
         direction = "growing" if trend.slope_pct > 0 else "declining"
         yield Insight(
             InsightKind.TREND,
-            f"{label.capitalize()} is {direction} about {abs(trend.slope_pct):.1f}% per {g}",
-            f"{span} A linear trend explains {trend.r2:.0%} of the variation.",
+            f"{sentence_case(label)} is {direction} about {abs(trend.slope_pct):.1f}% per {g}",
+            f"{span} A linear trend explains {trend.r2:.0%} of the variation.{caveat}",
             score=0.55 + 0.4 * trend.r2,
             columns=cols,
         )
@@ -152,7 +164,7 @@ def trend_insights(ctx: _Context, trend: TrendSeries | None) -> Iterable[Insight
             InsightKind.TREND,
             f"No clear trend in {label} over time",
             f"{span} Values fluctuate without a consistent direction "
-            f"(linear fit R² = {trend.r2:.2f}).",
+            f"(linear fit R² = {trend.r2:.2f}).{caveat}",
             score=0.3,
             columns=cols,
         )
@@ -160,9 +172,9 @@ def trend_insights(ctx: _Context, trend: TrendSeries | None) -> Iterable[Insight
         direction = "upward" if trend.slope_pct > 0 else "downward"
         yield Insight(
             InsightKind.TREND,
-            f"{label.capitalize()} shows a weak {direction} trend",
+            f"{sentence_case(label)} shows a weak {direction} trend",
             f"{span} About {trend.slope_pct:+.1f}% per {g}, but the fit is loose "
-            f"(R² = {trend.r2:.2f}).",
+            f"(R² = {trend.r2:.2f}).{caveat}",
             score=0.4,
             columns=cols,
         )
@@ -191,6 +203,20 @@ def trend_insights(ctx: _Context, trend: TrendSeries | None) -> Iterable[Insight
         score=min(0.8, 0.35 + spread / 4),
         columns=cols,
     )
+
+
+def _missing_caveat(ctx: _Context) -> str:
+    """Warn when a summed measure is mostly missing: totals then track data coverage."""
+    measure = ctx.roles.measure
+    if measure is None:
+        return ""
+    pct = ctx.profile.column(measure).null_pct
+    if pct < MISSING_CAVEAT_PCT:
+        return ""
+    note = f" Note: {measure} is missing in {pct:.0f}% of rows"
+    if ctx.roles.aggregation is Aggregation.SUM:
+        return note + ", so totals also reflect how many rows have a value; consider the average."
+    return note + "."
 
 
 def _largest_row_share(ctx: _Context, period: dt.date, g: Granularity) -> float | None:
@@ -354,13 +380,14 @@ def generate_insights(
     *,
     measure: str | None = None,
     date: str | None = None,
+    aggregation: Aggregation | None = None,
     max_insights: int = 12,
 ) -> InsightReport:
     """Generate ranked insights for ``profile.table``.
 
-    ``measure`` and ``date`` override automatic role detection.
+    ``measure``, ``date`` and ``aggregation`` override automatic role detection.
     """
-    roles = detect_roles(profile, measure=measure, date=date)
+    roles = detect_roles(profile, measure=measure, date=date, aggregation=aggregation)
     ctx = _Context(con=con, table=quote_ident(profile.table), profile=profile, roles=roles)
 
     trend = build_trend(ctx)
@@ -369,5 +396,7 @@ def generate_insights(
         best = sorted(generator(ctx), key=lambda i: i.score, reverse=True)
         found.extend(best[:MAX_PER_KIND])
 
-    ranked = sorted(found, key=lambda i: i.score, reverse=True)[:max_insights]
+    # Equivalent columns (e.g. `color` and `color_type`) can yield identical findings.
+    unique = {i.title: i for i in sorted(found, key=lambda i: i.score)}.values()
+    ranked = sorted(unique, key=lambda i: i.score, reverse=True)[:max_insights]
     return InsightReport(roles=roles, insights=tuple(ranked), trend=trend)

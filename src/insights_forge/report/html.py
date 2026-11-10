@@ -11,7 +11,7 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 from markupsafe import Markup
 
 from insights_forge import __version__, charts
-from insights_forge.formatting import fmt_number
+from insights_forge.formatting import fmt_number, sentence_case
 from insights_forge.pipeline import Analysis
 from insights_forge.profiling import ColumnProfile, Severity
 
@@ -24,6 +24,7 @@ _env = Environment(
     lstrip_blocks=True,
 )
 _env.filters["thousands"] = lambda n: f"{n:,}"
+_env.filters["sentence"] = sentence_case
 
 
 def column_summary(col: ColumnProfile) -> str:
