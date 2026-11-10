@@ -1,0 +1,126 @@
+<div align="center">
+
+# 🔨 insights-forge
+
+**Conecta cualquier fuente de datos y obtén reportes automáticos de calidad, perfilado e insights.**
+
+[![CI](https://github.com/JuanAvendan/insights-forge/actions/workflows/ci.yml/badge.svg)](https://github.com/JuanAvendan/insights-forge/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/python-3.12%20%7C%203.13-blue)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Checked with mypy](https://img.shields.io/badge/mypy-strict-2a6db2)](https://mypy-lang.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
+[🇺🇸 English](README.md) · 🇪🇸 Español
+
+</div>
+
+---
+
+> 🚧 **En desarrollo.** La carga de archivos (CSV, Excel, Parquet, JSON) está lista; el perfilado automático y los insights son lo siguiente. Mira la [hoja de ruta](#hoja-de-ruta).
+
+## Por qué
+
+Todo análisis empieza igual: cargar los datos, revisar qué está mal y entender su forma.
+**insights-forge** automatiza esa primera hora. Apúntalo a un archivo, una base de datos SQL,
+una colección NoSQL o un almacenamiento en la nube, y te dice qué hay y qué está mal.
+
+## Funcionalidades
+
+- **Muchas fuentes, un solo motor.** Cada fuente se carga en una tabla de [DuckDB](https://duckdb.org/) en memoria, así el código de análisis se escribe una vez y funciona con todas.
+- **Carga inteligente de archivos.** CSV/TSV con detección automática de delimitador, encabezado y tipos, además de Excel (cualquier hoja), Parquet y JSON.
+- **Reporte de calidad de datos** *(próximamente)*. Valores faltantes, duplicados, outliers, valores inválidos y problemas de tipos.
+- **Insights automáticos** *(próximamente)*. Distribuciones, correlaciones, tendencias en el tiempo y hallazgos en lenguaje natural.
+- **App web interactiva.** Hecha con Streamlit y Plotly.
+
+## Arquitectura
+
+```mermaid
+flowchart LR
+    subgraph Fuentes
+        F[Archivos<br/>CSV · Excel · Parquet · JSON]
+        S[SQL<br/>PostgreSQL · MySQL · SQLite]
+        N[NoSQL<br/>MongoDB]
+        C[Nube<br/>S3 · GCS · Google Sheets]
+    end
+    F & S & N & C --> K[Conectores]
+    K --> D[(DuckDB<br/>en memoria)]
+    D --> P[Perfilado y<br/>calidad de datos]
+    P --> I[Insights]
+    I --> UI[App Streamlit]
+    I --> R[Reporte HTML]
+```
+
+Cada conector implementa un único método, `read(con) -> DuckDBPyRelation`. La clase base
+materializa el resultado en una tabla de DuckDB, de modo que los datos siguen disponibles aunque
+se borre un archivo temporal o se cierre la conexión a una base de datos.
+
+## Inicio rápido
+
+Requiere [uv](https://docs.astral.sh/uv/getting-started/installation/).
+
+```bash
+git clone https://github.com/JuanAvendan/insights-forge.git
+cd insights-forge
+uv sync
+uv run streamlit run src/insights_forge/app/streamlit_app.py
+```
+
+Luego sube un archivo, o haz clic en **Try with sample data** en la barra lateral.
+
+### Como librería
+
+```python
+from pathlib import Path
+
+import duckdb
+from insights_forge.connectors import FileConnector
+
+con = duckdb.connect()
+ventas = FileConnector(Path("data/sample/sales.csv")).load(con, table_name="sales")
+print(ventas.shape)
+print(con.sql("SELECT region, SUM(total) FROM sales GROUP BY ALL").fetchall())
+```
+
+## Hoja de ruta
+
+- [x] **v0.1: Fundamentos.** Configuración del proyecto, CI, arquitectura de conectores, conector de archivos, UI básica
+- [ ] **v0.2: Perfilado.** Estadísticas por columna, chequeos de calidad, distribuciones y correlaciones
+- [ ] **v0.3: Insights.** Hallazgos por reglas en lenguaje natural, tendencias temporales, exportar reporte HTML, demo en vivo
+- [ ] **v0.4: Fuentes SQL.** PostgreSQL, MySQL, SQLite (Docker Compose para bases de prueba locales)
+- [ ] **v0.5: NoSQL y nube.** MongoDB, S3 / GCS, Google Sheets
+- [ ] **v0.6: Insights con IA.** Resúmenes opcionales del perfil generados por un LLM
+
+## Stack tecnológico
+
+| Área | Herramientas |
+|---|---|
+| Motor de datos | DuckDB, Polars, PyArrow, fastexcel |
+| App y gráficos | Streamlit, Plotly |
+| Herramientas | uv, Ruff, mypy (estricto), pytest + coverage, pre-commit |
+| CI | GitHub Actions (Linux + Windows, Python 3.12 / 3.13) |
+
+## Desarrollo
+
+```bash
+uv sync                          # instala todo, incluidas las herramientas de desarrollo
+uv run pre-commit install        # lint, formato y tipos en cada commit
+uv run pytest                    # tests + cobertura
+uv run ruff check . && uv run mypy
+```
+
+### Estructura del proyecto
+
+```
+insights-forge/
+├── src/insights_forge/
+│   ├── connectors/       # un módulo por tipo de fuente
+│   └── app/              # interfaz Streamlit
+├── tests/
+├── scripts/              # utilidades (p. ej. generador de datos de ejemplo)
+└── data/sample/          # datasets sintéticos pequeños (los datos reales se ignoran en git)
+```
+
+## Licencia
+
+[MIT](LICENSE) © Juan Avendaño

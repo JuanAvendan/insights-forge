@@ -1,0 +1,1013 @@
+order_id,order_date,region,channel,product,category,unit_price,quantity,discount,total,customer_email
+ORD-00488,2025-04-16,North,Store,Monitor,Electronics,205.52,1,0,205.52,customer60@example.com
+ORD-00518,2025-07-11,West,Store,Notebook,Stationery,4.56,3,0,13.68,customer351@example.com
+ORD-00259,2025-10-31,East,Phone,Office Chair,Furniture,195.9,1,0.15,166.51,customer369@example.com
+ORD-00696,2025-03-21,South,Store,Headphones,Electronics,81.66,1,0,81.66,customer147@example.com
+ORD-00724,2025-02-04,East,Online,Laptop,Electronics,863.32,8,0,6906.56,customer104@example.com
+ORD-00569,2025-04-08,South,Online,Monitor,Electronics,229.54,1,0.05,218.06,customer325@example.com
+ORD-00645,2025-01-04,North,Store,Office Chair,Furniture,175.5,1,0,175.5,customer186@example.com
+ORD-00193,2025-08-24,West,Store,Pen Pack,Stationery,6.4,8,0,51.2,customer55@example.com
+ORD-00436,2025-12-02,North,Phone,Pen Pack,Stationery,5.9,2,0.05,11.21,customer164@example.com
+ORD-00888,2025-10-31,North,Phone,Monitor,Electronics,208.49,2,0.1,375.28,customer158@example.com
+ORD-00555,2025-02-27,West,Store,Desk,Furniture,334.03,2,0,668.06,customer336@example.com
+ORD-00257,2025-06-15,North,Store,Headphones,Electronics,92.39,1,0.1,83.15,customer41@example.com
+ORD-00346,2025-09-01,South,Online,Desk,Furniture,282.48,1,0,282.48,
+ORD-00466,2025-06-12,North,Online,Monitor,Electronics,233.47,4,0.1,840.49,customer361@example.com
+ORD-00170,2025-08-16,East,Online,Laptop,Electronics,868.96,1,0.1,782.06,customer34@example.com
+ORD-00952,2025-10-15,West,Phone,Headphones,Electronics,77.99,5,0.05,370.45,customer213@example.com
+ORD-00105,2025-09-02,North,Online,Laptop,Electronics,876.68,1,0.05,832.85,customer296@example.com
+ORD-00896,2025-12-17,North,Online,Headphones,Electronics,86.29,1,0,86.29,customer304@example.com
+ORD-00001,2025-05-21,North,Phone,Notebook,Stationery,4.27,1,0,4.27,customer380@example.com
+ORD-00778,2025-06-10,South,Phone,Pen Pack,Stationery,5.87,9,0.1,47.55,customer275@example.com
+ORD-00659,2025-07-26,South,Phone,Monitor,Electronics,223.3,1,0.05,212.13,customer55@example.com
+ORD-00985,2025-08-08,South,Phone,Office Chair,Furniture,168.8,1,0.05,160.36,customer189@example.com
+ORD-00592,2025-08-01,East,Online,Pen Pack,Stationery,6.05,2,0,12.1,customer110@example.com
+ORD-00239,2025-02-12,East,Online,Pen Pack,Stationery,6.27,1,0.1,5.64,customer280@example.com
+ORD-00959,2025-08-30,West,Store,Notebook,Stationery,4.16,4,0,16.64,customer92@example.com
+ORD-00389,2025-10-03,East,Phone,Monitor,Electronics,228.51,4,0,914.04,customer86@example.com
+ORD-00142,2025-10-26,East,Store,Monitor,Electronics,204.3,2,0,408.6,customer131@example.com
+ORD-00264,2025-03-15,South,Store,Monitor,Electronics,211.75,4,0.15,719.95,customer205@example.com
+ORD-00326,2025-08-02,East,Store,Laptop,Electronics,960.88,1,0,960.88,customer105@example.com
+ORD-00426,2025-02-12,North,Online,Office Chair,Furniture,173.16,2,0,346.32,customer275@example.com
+ORD-00353,2025-06-24,West,Store,Monitor,Electronics,224.63,3,0.1,606.5,customer397@example.com
+ORD-00368,2025-04-13,West,Phone,Laptop,Electronics,967.52,2,0.15,1644.78,customer14@example.com
+ORD-00897,2025-03-03,South,Phone,Monitor,Electronics,210.05,4,0,840.2,customer190@example.com
+ORD-00190,2025-09-14,East,Online,Office Chair,Furniture,182.11,4,0,728.44,customer204@example.com
+ORD-00930,2025-09-27,East,Phone,Desk,Furniture,330.43,2,0.1,594.77,customer273@example.com
+ORD-00610,2025-05-10,North,Online,Monitor,Electronics,206.55,1,0.1,185.9,customer385@example.com
+ORD-00485,2025-07-29,West,Phone,Monitor,Electronics,228.68,4,0.15,777.51,customer136@example.com
+ORD-00016,2025-12-15,North,Phone,Notebook,Stationery,4.43,1,0.05,4.21,customer240@example.com
+ORD-00191,2025-08-12,East,Phone,Pen Pack,Stationery,5.42,8,0,43.36,customer220@example.com
+ORD-00090,2025-07-09,South,Store,Office Chair,Furniture,164.48,3,0,493.44,customer251@example.com
+ORD-00082,2025-07-14,East,Store,Headphones,Electronics,81.23,10,0.05,771.69,customer42@example.com
+ORD-00667,2025-05-04,North,Online,Monitor,Electronics,236.4,1,0,236.4,customer317@example.com
+ORD-00816,2025-06-17,East,Phone,Pen Pack,Stationery,5.57,7,0.1,35.09,customer68@example.com
+ORD-00064,2025-10-24,South,Store,Monitor,Electronics,224.69,2,0.05,426.91,customer346@example.com
+ORD-00226,2025-02-26,East,Online,Office Chair,Furniture,189.94,1,0,189.94,customer123@example.com
+ORD-00863,2025-11-23,South,Online,Notebook,Stationery,4.2,3,0,12.6,customer329@example.com
+ORD-00297,2025-11-25,South,Phone,Headphones,Electronics,85.74,3,0,257.22,customer240@example.com
+ORD-00089,2025-12-17,West,Online,Notebook,Stationery,4.59,1,0.1,4.13,customer178@example.com
+ORD-00364,2025-11-14,South,Store,Desk,Furniture,302.55,8,0.05,2299.38,customer221@example.com
+ORD-00415,2025-03-10,North,Phone,Headphones,Electronics,87.41,3,0,262.23,customer289@example.com
+ORD-00514,2025-11-30,North,Online,Notebook,Stationery,4.42,1,0.15,3.76,customer243@example.com
+ORD-00510,2025-07-08,North,Online,Notebook,Stationery,4.79,2,0.15,8.14,customer349@example.com
+ORD-00651,2025-01-27,East,Online,Notebook,Stationery,4.19,10,0,41.9,customer75@example.com
+ORD-00710,2025-03-23,West,Phone,Headphones,Electronics,87.2,1,0.1,78.48,customer63@example.com
+ORD-00989,2025-09-13,South,Phone,Pen Pack,Stationery,5.73,4,0.1,20.63,customer140@example.com
+ORD-00973,2025-06-07,East,Store,Monitor,Electronics,203.52,1,0,203.52,customer354@example.com
+ORD-00449,2025-08-27,North,Online,Laptop,Electronics,914.67,1,0,914.67,customer232@example.com
+ORD-00397,2025-04-18,West,Phone,Pen Pack,Stationery,6.37,3,0,19.11,customer313@example.com
+ORD-00354,2025-05-20,North,Store,Headphones,Electronics,89.82,2,0,179.64,
+ORD-00558,2025-06-27,North,Phone,Notebook,Stationery,4.65,3,0,13.95,customer314@example.com
+ORD-00637,2025-12-18,South,Online,Office Chair,Furniture,174.34,2,0.1,313.81,customer118@example.com
+ORD-00760,2025-11-29,South,Phone,Laptop,Electronics,928.44,16,0.1,13369.54,
+ORD-00360,2025-02-13,South,Phone,Headphones,Electronics,88.82,3,0,266.46,
+ORD-00686,2025-12-01,South,Store,Monitor,Electronics,210.82,1,0.15,179.2,customer139@example.com
+ORD-00302,2025-05-17,South,Phone,Monitor,Electronics,239.98,1,0.15,203.98,customer6@example.com
+ORD-00785,2025-12-21,North,Phone,Laptop,Electronics,978.23,5,0,4891.15,customer376@example.com
+ORD-00072,2025-09-01,West,Store,Desk,Furniture,306.9,5,0.15,1304.33,customer393@example.com
+ORD-00525,2025-10-14,South,Store,Notebook,Stationery,4.74,1,0.15,4.03,customer336@example.com
+ORD-00135,2025-03-15,North,Online,Desk,Furniture,304.42,3,0,913.26,customer241@example.com
+ORD-00697,2025-12-19,East,Store,Desk,Furniture,336.17,12,0.05,3832.34,customer5@example.com
+ORD-00457,2025-10-21,North,Online,Desk,Furniture,305.86,5,0.05,1452.84,customer196@example.com
+ORD-00468,2025-01-20,North,Online,Headphones,Electronics,78.03,1,0,78.03,customer270@example.com
+ORD-00106,2025-03-19,East,Online,Notebook,Stationery,4.18,3,0,12.54,customer128@example.com
+ORD-00551,2025-06-25,South,Store,Laptop,Electronics,889.75,2,0.05,1690.52,customer198@example.com
+ORD-00493,2025-09-25,South,Phone,Pen Pack,Stationery,5.9,3,0.05,16.82,customer121@example.com
+ORD-00658,2025-10-14,South,Online,Office Chair,Furniture,194.94,2,0,389.88,customer311@example.com
+ORD-00567,2025-05-30,West,Online,Headphones,Electronics,85.81,1,0,85.81,customer85@example.com
+ORD-00312,2025-08-05,North,Online,Office Chair,Furniture,174.4,1,0,174.4,customer242@example.com
+ORD-00988,2025-04-12,South,Online,Laptop,Electronics,919.34,3,0.05,2620.12,customer120@example.com
+ORD-00071,2025-08-15,South,Store,Office Chair,Furniture,184.06,4,0.1,662.62,customer281@example.com
+ORD-00606,2025-07-20,North,Phone,Office Chair,Furniture,190.68,6,0,1144.08,customer74@example.com
+ORD-00602,2025-08-19,South,Store,Headphones,Electronics,87.21,2,0,174.42,customer345@example.com
+ORD-00890,2025-07-27,East,Phone,Pen Pack,Stationery,5.54,5,0.15,23.54,
+ORD-00278,2025-08-02,East,Phone,Headphones,Electronics,86.42,5,0.15,367.29,customer323@example.com
+ORD-00179,2025-06-29,West,Phone,Monitor,Electronics,235.2,1,0,235.2,customer116@example.com
+ORD-00081,2025-04-04,West,Store,Monitor,Electronics,200.21,1,0,200.21,customer168@example.com
+ORD-00147,2025-05-27,East,Online,Office Chair,Furniture,189.93,1,0,189.93,customer326@example.com
+ORD-00357,2025-02-24,South,Store,Desk,Furniture,284.67,9,0.05,2433.93,customer390@example.com
+ORD-00936,2025-06-25,South,Phone,Headphones,Electronics,87.65,5,0.05,416.34,customer341@example.com
+ORD-00611,2025-10-09,South,Online,Office Chair,Furniture,164.63,4,0,658.52,customer102@example.com
+ORD-00961,2025-10-25,East,Phone,Office Chair,Furniture,179.3,2,0,358.6,customer352@example.com
+ORD-00200,2025-10-30,West,Store,Headphones,Electronics,77.45,3,0,232.35,customer232@example.com
+ORD-00978,2025-09-14,South,Phone,Headphones,Electronics,89.77,3,0.1,242.38,customer35@example.com
+ORD-00690,2025-09-26,West,Phone,Laptop,Electronics,1000.35,1,0,1000.35,customer80@example.com
+ORD-00390,2025-04-06,South,Store,Desk,Furniture,298.5,2,0,597.0,
+ORD-00350,2025-12-31,North,Online,Office Chair,Furniture,191.55,11,0,2107.05,
+ORD-00882,2025-10-22,West,Store,Headphones,Electronics,76.56,5,0.05,363.66,customer224@example.com
+ORD-00401,2025-01-31,South,Phone,Pen Pack,Stationery,6.59,6,0,39.54,customer68@example.com
+ORD-00783,2025-09-14,North,Phone,Desk,Furniture,286.02,5,0.15,1215.58,customer70@example.com
+ORD-00652,2025-08-11,West,Online,Desk,Furniture,284.46,1,0,284.46,customer312@example.com
+ORD-00852,2025-12-20,East,Store,Office Chair,Furniture,164.88,5,0.1,741.96,customer239@example.com
+ORD-00112,2025-05-16,North,Online,Notebook,Stationery,4.76,3,0.15,12.14,customer218@example.com
+ORD-00902,2025-09-13,East,Store,Laptop,Electronics,971.29,1,0,971.29,customer215@example.com
+ORD-00729,2025-02-06,North,Phone,Office Chair,Furniture,192.04,1,0,192.04,customer50@example.com
+ORD-00795,2025-01-26,West,Phone,Headphones,Electronics,78.35,15,0,1175.25,customer146@example.com
+ORD-00822,2025-06-13,South,Phone,Office Chair,Furniture,171.76,9,0,1545.84,customer126@example.com
+ORD-00461,2025-01-10,East,Store,Pen Pack,Stationery,6.59,5,0,32.95,customer279@example.com
+ORD-00728,2025-08-01,South,Phone,Laptop,Electronics,1011.19,5,0,5055.95,customer137@example.com
+ORD-00684,2025-05-27,South,Phone,Laptop,Electronics,943.11,10,0,9431.1,customer173@example.com
+ORD-00631,2025-03-02,South,Phone,Monitor,Electronics,227.09,2,0,454.18,customer59@example.com
+ORD-00102,2025-06-01,West,Phone,Laptop,Electronics,898.22,1,0,898.22,customer274@example.com
+ORD-00878,2025-04-13,East,Online,Laptop,Electronics,970.96,1,0.05,922.41,customer74@example.com
+ORD-00825,2025-10-31,East,Phone,Notebook,Stationery,4.62,5,0.05,21.95,customer183@example.com
+ORD-00781,2025-04-08,West,Store,Notebook,Stationery,4.31,2,0,8.62,customer237@example.com
+ORD-00738,2025-12-20,West,Phone,Pen Pack,Stationery,6.39,10,0.1,57.51,customer293@example.com
+ORD-00904,2025-10-04,East,Phone,Pen Pack,Stationery,6.01,2,0.15,10.22,customer107@example.com
+ORD-00211,2025-08-05,East,Online,Laptop,Electronics,951.61,285,0,271208.85,customer110@example.com
+ORD-00596,2025-05-25,South,Phone,Desk,Furniture,280.53,2,0,561.06,customer261@example.com
+ORD-00666,2025-05-18,West,Store,Monitor,Electronics,206.04,4,0,824.16,customer378@example.com
+ORD-00018,2025-11-25,East,Store,Office Chair,Furniture,174.25,1,0,174.25,customer2@example.com
+ORD-00563,2025-10-13,South,Phone,Desk,Furniture,313.04,7,0.1,1972.15,customer327@example.com
+ORD-00101,2025-05-22,,Phone,Monitor,Electronics,229.88,12,0.1,2482.7,customer145@example.com
+ORD-00329,2025-09-03,East,Online,Notebook,Stationery,4.24,8,0,33.92,
+ORD-00977,2025-06-29,North,Store,Monitor,Electronics,199.29,1,0.15,169.4,customer297@example.com
+ORD-00210,2025-03-07,West,Phone,Notebook,Stationery,4.65,5,0.15,19.76,customer270@example.com
+ORD-00545,2025-06-01,East,Phone,Headphones,Electronics,79.23,3,0,237.69,customer247@example.com
+ORD-00963,2025-06-13,North,Online,Office Chair,Furniture,178.6,4,0,714.4,customer28@example.com
+ORD-00139,2025-11-21,West,Phone,Desk,Furniture,322.64,1,0,322.64,customer154@example.com
+ORD-00508,2025-03-11,East,Online,Notebook,Stationery,4.75,2,0.1,8.55,customer89@example.com
+ORD-00141,2025-04-03,East,Phone,Desk,Furniture,289.54,1,0.05,275.06,customer350@example.com
+ORD-00355,2025-12-15,South,Store,Desk,Furniture,315.32,2,0.1,567.58,customer127@example.com
+ORD-00279,2025-05-16,East,Phone,Laptop,Electronics,1038.74,5,0.1,4674.33,customer117@example.com
+ORD-00692,2025-03-29,North,Store,Monitor,Electronics,199.26,373,0,74323.98,customer240@example.com
+ORD-00875,2025-05-31,North,Store,Notebook,Stationery,4.47,9,0.15,34.2,customer142@example.com
+ORD-00942,2025-06-12,North,Phone,Notebook,Stationery,4.93,1,0.05,4.68,customer84@example.com
+ORD-00074,2025-10-04,South,Phone,Headphones,Electronics,77.87,1,0.05,73.98,customer79@example.com
+ORD-00998,2025-06-09,South,Phone,Desk,Furniture,323.37,2,0,646.74,customer346@example.com
+ORD-00689,2025-07-23,North,Phone,Laptop,Electronics,874.57,1,0.05,830.84,customer28@example.com
+ORD-00063,2025-11-12,West,Store,Notebook,Stationery,4.56,2,0,9.12,
+ORD-00002,2025-08-05,North,Phone,Office Chair,Furniture,163.14,1,0,163.14,customer309@example.com
+ORD-00550,2025-06-18,East,Store,Notebook,Stationery,4.37,2,0.1,7.87,customer376@example.com
+ORD-00299,2025-06-22,North,Online,Monitor,Electronics,232.79,3,0,698.37,customer313@example.com
+ORD-00286,2025-06-02,South,Store,Monitor,Electronics,207.89,12,0,2494.68,customer361@example.com
+ORD-00950,2025-11-06,South,Store,Desk,Furniture,310.72,1,0.15,264.11,customer204@example.com
+ORD-00847,2025-12-03,West,Online,Notebook,Stationery,4.44,19,0,84.36,customer329@example.com
+ORD-00303,2025-12-21,East,Store,Headphones,Electronics,80.52,4,0.05,305.98,customer82@example.com
+ORD-00670,2025-10-22,West,Store,Desk,Furniture,332.86,3,0.1,898.72,customer204@example.com
+ORD-00789,2025-01-27,East,Store,Monitor,Electronics,216.46,1,0.05,205.64,customer321@example.com
+ORD-00543,2025-08-03,East,Phone,Office Chair,Furniture,191.9,1,0.15,163.12,customer61@example.com
+ORD-00635,2025-05-26,East,Store,Notebook,Stationery,4.9,1,0.1,4.41,customer247@example.com
+ORD-00422,2025-01-07,East,Store,Laptop,Electronics,1042.51,8,0,8340.08,
+ORD-00720,2025-06-01,North,Online,Office Chair,Furniture,191.5,2,0.05,363.85,customer398@example.com
+ORD-00331,2025-05-03,,Store,Notebook,Stationery,4.55,5,0.05,21.61,customer274@example.com
+ORD-00195,2025-03-28,South,Phone,Monitor,Electronics,201.36,3,0.1,543.67,customer100@example.com
+ORD-00478,2025-06-21,East,Phone,Notebook,Stationery,4.45,1,0,4.45,customer35@example.com
+ORD-00582,2025-11-12,,Phone,Pen Pack,Stationery,6.44,5,0,32.2,customer332@example.com
+ORD-00494,2025-07-22,South,Phone,Desk,Furniture,334.97,4,0.1,1205.89,customer265@example.com
+ORD-00367,2025-10-22,East,Store,Notebook,Stationery,4.75,2,0,9.5,customer187@example.com
+ORD-00163,2025-04-16,West,Phone,Monitor,Electronics,201.02,5,0,1005.1,customer111@example.com
+ORD-00532,2025-02-15,East,Store,Monitor,Electronics,203.69,2,0.05,387.01,customer220@example.com
+ORD-00819,2025-06-09,East,Online,Pen Pack,Stationery,5.43,5,0.15,23.08,customer165@example.com
+ORD-00560,2025-05-04,East,Online,Pen Pack,Stationery,5.8,1,0.1,5.22,customer282@example.com
+ORD-00225,2025-02-10,North,Phone,Office Chair,Furniture,162.68,1,0,162.68,customer373@example.com
+ORD-00749,2025-04-12,East,Phone,Monitor,Electronics,219.47,3,0,658.41,customer316@example.com
+ORD-00157,2025-01-20,North,Online,Laptop,Electronics,912.83,2,0,1825.66,customer276@example.com
+ORD-00028,2025-09-06,South,Phone,Monitor,Electronics,207.43,1,0.1,186.69,
+ORD-00709,2025-02-18,South,Store,Monitor,Electronics,220.93,12,0.05,2518.6,customer349@example.com
+ORD-00118,2025-03-31,East,Online,Laptop,Electronics,944.4,3,0,2833.2,
+ORD-00638,2025-02-25,South,Phone,Desk,Furniture,280.03,2,0.1,504.05,customer215@example.com
+ORD-00293,2025-03-22,West,Store,Office Chair,Furniture,176.65,8,0.05,1342.54,customer334@example.com
+ORD-00542,2025-06-04,East,Store,Notebook,Stationery,4.43,1,0.1,3.99,customer319@example.com
+ORD-00172,2025-11-06,South,Phone,Headphones,Electronics,83.81,6,0,502.86,customer334@example.com
+ORD-00944,2025-10-07,North,Store,Monitor,Electronics,240.93,2,0.15,409.58,customer243@example.com
+ORD-00132,2025-04-30,East,Phone,Monitor,Electronics,235.66,2,0,471.32,
+ORD-00039,2025-11-01,North,Phone,Office Chair,Furniture,163.43,1,0.15,138.92,
+ORD-00995,2025-09-16,East,Phone,Notebook,Stationery,4.29,1,0.1,3.86,customer10@example.com
+ORD-00524,2025-12-03,West,Store,Headphones,Electronics,91.4,1,0,91.4,customer66@example.com
+ORD-00768,2025-03-12,North,Online,Pen Pack,Stationery,5.77,4,0.1,20.77,customer221@example.com
+ORD-00091,2025-07-05,South,Online,Laptop,Electronics,975.76,6,0.15,4976.38,customer223@example.com
+ORD-00340,2025-11-13,South,Phone,Desk,Furniture,318.54,11,0.05,3328.74,customer250@example.com
+ORD-00198,2025-10-24,East,Phone,Pen Pack,Stationery,5.94,10,0.1,53.46,customer326@example.com
+ORD-00296,2025-05-29,East,Phone,Pen Pack,Stationery,6.45,1,0.1,5.81,customer55@example.com
+ORD-00723,2025-03-20,East,Store,Desk,Furniture,317.01,1,0.15,269.46,customer57@example.com
+ORD-00857,2025-05-14,West,Phone,Notebook,Stationery,4.11,2,0,8.22,customer27@example.com
+ORD-00031,2025-02-25,South,Online,Notebook,Stationery,4.27,1,0.05,4.06,customer217@example.com
+ORD-00935,2025-04-07,North,Phone,Notebook,Stationery,4.11,6,0,24.66,customer331@example.com
+ORD-00456,2025-03-07,South,Online,Notebook,Stationery,4.13,6,0,24.78,customer22@example.com
+ORD-00520,2025-11-30,West,Online,Notebook,Stationery,4.32,1,0,4.32,customer308@example.com
+ORD-00111,2025-01-17,East,Store,Office Chair,Furniture,170.33,4,0.15,579.12,customer37@example.com
+ORD-00248,2025-09-09,South,Store,Office Chair,Furniture,169.21,1,0,169.21,customer89@example.com
+ORD-00017,2025-10-11,North,Online,Office Chair,Furniture,192.99,1,0.15,164.04,customer350@example.com
+ORD-00575,2025-09-20,East,Phone,Office Chair,Furniture,172.76,4,0,691.04,customer378@example.com
+ORD-00129,2025-08-01,West,Online,Pen Pack,Stationery,5.81,5,0,29.05,customer145@example.com
+ORD-00277,2025-09-30,West,Online,Office Chair,Furniture,179.63,3,0.05,511.95,customer189@example.com
+ORD-00695,2025-06-27,East,Store,Notebook,Stationery,4.48,1,0,4.48,customer158@example.com
+ORD-00835,2025-03-30,East,Phone,Office Chair,Furniture,185.85,1,0.15,157.97,customer250@example.com
+ORD-00443,2025-06-07,East,Store,Pen Pack,Stationery,5.52,2,0,11.04,customer252@example.com
+ORD-00499,2025-08-03,East,Phone,Office Chair,Furniture,166.05,1,0.1,149.45,customer299@example.com
+ORD-00371,2025-08-18,South,Phone,Pen Pack,Stationery,6.59,2,0.05,12.52,customer260@example.com
+ORD-00954,2025-11-03,West,Phone,Monitor,Electronics,201.79,1,0.05,191.7,customer172@example.com
+ORD-00013,2025-07-22,East,Store,Monitor,Electronics,236.93,3,0,710.79,customer72@example.com
+ORD-00143,2025-08-27,North,Online,Notebook,Stationery,4.86,4,0,19.44,customer227@example.com
+ORD-00287,2025-09-08,East,Store,Monitor,Electronics,211.95,1,0.15,180.16,customer148@example.com
+ORD-00620,2025-10-04,West,Store,Office Chair,Furniture,179.0,6,0,1074.0,customer115@example.com
+ORD-00078,2025-11-05,East,Store,Notebook,Stationery,4.86,3,0,14.58,customer249@example.com
+ORD-00948,2025-04-24,East,Online,Monitor,Electronics,232.38,5,0,1161.9,customer43@example.com
+ORD-00234,2025-03-11,North,Online,Notebook,Stationery,4.11,5,0.05,19.52,customer151@example.com
+ORD-00362,2025-08-04,South,Store,Monitor,Electronics,211.19,5,0,1055.95,customer127@example.com
+ORD-00026,2025-06-23,North,Online,Monitor,Electronics,198.93,3,0.1,537.11,customer4@example.com
+ORD-00840,2025-06-12,North,Store,Monitor,Electronics,211.19,5,0.15,897.56,customer223@example.com
+ORD-00333,2025-06-13,East,Online,Desk,Furniture,335.69,1,0.05,318.91,customer289@example.com
+ORD-00732,2025-12-26,East,Online,Headphones,Electronics,87.81,9,0,790.29,customer282@example.com
+ORD-00052,2025-05-02,North,Store,Notebook,Stationery,4.83,12,0,57.96,customer13@example.com
+ORD-00311,2025-06-07,East,Phone,Office Chair,Furniture,188.04,2,0,376.08,customer112@example.com
+ORD-00502,2025-03-15,South,Online,Monitor,Electronics,225.2,4,0.05,855.76,customer203@example.com
+ORD-00432,2025-08-08,,Phone,Laptop,Electronics,906.68,1,0.15,770.68,customer322@example.com
+ORD-00579,2025-10-01,East,Phone,Notebook,Stationery,4.31,7,0,30.17,customer55@example.com
+ORD-00023,2025-03-07,,Store,Office Chair,Furniture,185.75,9,0,1671.75,customer271@example.com
+ORD-00958,2025-08-26,East,Store,Desk,Furniture,292.92,5,0,1464.6,customer154@example.com
+ORD-00967,2025-02-19,East,Online,Notebook,Stationery,4.53,1,0,4.53,customer71@example.com
+ORD-00073,2025-11-17,East,Store,Pen Pack,Stationery,5.69,2,0.15,9.67,customer121@example.com
+ORD-00619,2025-10-24,West,Phone,Laptop,Electronics,931.98,4,0,3727.92,customer134@example.com
+ORD-00160,2025-04-22,East,Online,Laptop,Electronics,939.24,9,0,8453.16,customer352@example.com
+ORD-00458,2025-07-01,South,Store,Notebook,Stationery,4.24,1,0,4.24,customer77@example.com
+ORD-00272,2025-09-16,North,Phone,Headphones,Electronics,84.16,3,0.1,227.23,customer313@example.com
+ORD-00846,2025-12-10,West,Online,Headphones,Electronics,78.63,1,0.15,66.84,customer74@example.com
+ORD-00669,2025-10-05,East,Phone,Laptop,Electronics,1037.02,7,0,7259.14,customer162@example.com
+ORD-00683,2025-05-26,North,Phone,Office Chair,Furniture,174.78,4,0.05,664.16,customer229@example.com
+ORD-00770,2025-03-16,North,Store,Laptop,Electronics,993.15,4,0.05,3773.97,customer156@example.com
+ORD-00751,2025-07-31,North,Store,Laptop,Electronics,935.47,1,0,935.47,customer305@example.com
+ORD-00810,2025-10-12,East,Store,Notebook,Stationery,4.53,1,0.15,3.85,customer182@example.com
+ORD-00540,2025-12-05,West,Phone,Office Chair,Furniture,165.89,7,0,1161.23,customer60@example.com
+ORD-00399,2025-11-02,East,Store,Headphones,Electronics,85.66,2,0.15,145.62,customer149@example.com
+ORD-00473,2025-12-22,West,Online,Notebook,Stationery,4.85,4,0,19.4,customer341@example.com
+ORD-00100,2025-04-09,North,Online,Monitor,Electronics,211.88,4,0.15,720.39,
+ORD-00183,2025-11-21,North,Online,Desk,Furniture,339.25,1,0.1,305.32,customer193@example.com
+ORD-00186,2025-08-01,East,Store,Desk,Furniture,295.94,5,0,1479.7,customer221@example.com
+ORD-00439,2025-02-14,South,Store,Pen Pack,Stationery,6.06,1,0,6.06,
+ORD-00227,2025-11-15,East,Phone,Desk,Furniture,307.34,1,0.05,291.97,customer275@example.com
+ORD-00034,2025-07-25,East,Store,Desk,Furniture,334.95,1,0,334.95,customer136@example.com
+ORD-00587,2025-05-31,,Online,Notebook,Stationery,4.45,13,0,57.85,customer89@example.com
+ORD-00818,2025-11-01,East,Online,Laptop,Electronics,1020.66,2,0,2041.32,customer267@example.com
+ORD-00452,2025-05-14,East,Store,Laptop,Electronics,1010.82,1,0.05,960.28,customer285@example.com
+ORD-00831,2025-03-29,South,Online,Desk,Furniture,296.5,1,0.1,266.85,customer261@example.com
+ORD-00775,2025-04-26,North,Store,Monitor,Electronics,199.42,5,0,997.1,customer212@example.com
+ORD-00402,2025-06-14,North,Store,Monitor,Electronics,234.45,5,0.15,996.41,customer251@example.com
+ORD-00813,2025-07-31,North,Store,Notebook,Stationery,4.13,7,0,28.91,customer155@example.com
+ORD-00807,2025-01-15,East,Phone,Notebook,Stationery,4.8,1,0,4.8,customer246@example.com
+ORD-00176,2025-03-08,South,Phone,Notebook,Stationery,4.55,3,0.1,12.28,customer169@example.com
+ORD-00365,2025-11-30,West,Phone,Pen Pack,Stationery,6.57,1,0,6.57,customer356@example.com
+ORD-00913,2025-01-31,East,Store,Laptop,Electronics,908.31,1,0.05,862.89,
+ORD-00870,2025-06-22,North,Phone,Pen Pack,Stationery,6.21,16,0,99.36,customer6@example.com
+ORD-00489,2025-08-30,West,Phone,Headphones,Electronics,84.81,4,0,339.24,customer279@example.com
+ORD-00266,2025-02-19,North,Store,Desk,Furniture,282.14,9,0.1,2285.33,customer128@example.com
+ORD-00113,2025-11-28,East,Online,Laptop,Electronics,883.31,1,0,883.31,customer31@example.com
+ORD-00177,2025-07-01,North,Phone,Notebook,Stationery,4.84,9,0.05,41.38,customer27@example.com
+ORD-00858,2025-11-16,West,Phone,Notebook,Stationery,4.07,3,0,12.21,
+ORD-00099,2025-10-09,South,Store,Headphones,Electronics,82.12,5,0,410.6,customer129@example.com
+ORD-00832,2025-02-24,South,Phone,Laptop,Electronics,916.92,3,0,2750.76,customer237@example.com
+ORD-00793,2025-11-18,South,Online,Office Chair,Furniture,182.07,7,0,1274.49,customer76@example.com
+ORD-00962,2025-03-03,West,Store,Desk,Furniture,302.14,4,0,1208.56,customer84@example.com
+ORD-00314,2025-07-15,West,Store,Headphones,Electronics,84.13,8,0.05,639.39,customer42@example.com
+ORD-00912,2025-04-10,North,Store,Headphones,Electronics,87.24,12,0,1046.88,customer66@example.com
+ORD-00706,2025-02-11,North,Store,Pen Pack,Stationery,6.41,9,0,57.69,customer398@example.com
+ORD-00805,2025-01-06,East,Online,Pen Pack,Stationery,6.17,4,0,24.68,customer158@example.com
+ORD-00304,2025-12-27,East,Store,Desk,Furniture,326.73,5,0.15,1388.6,customer189@example.com
+ORD-00307,2025-02-11,East,Online,Pen Pack,Stationery,6.03,2,0,12.06,customer289@example.com
+ORD-00418,2025-07-16,East,Online,Laptop,Electronics,921.79,2,0,1843.58,customer142@example.com
+ORD-00941,2025-10-22,West,Online,Laptop,Electronics,879.03,1,0,879.03,customer288@example.com
+ORD-00033,2025-01-08,West,Online,Notebook,Stationery,4.92,8,0,39.36,customer209@example.com
+ORD-00719,2025-05-21,East,Online,Headphones,Electronics,91.25,3,0.1,246.38,customer36@example.com
+ORD-00866,2025-08-11,East,Store,Monitor,Electronics,198.52,9,0.05,1697.35,customer348@example.com
+ORD-00349,2025-10-16,West,Online,Headphones,Electronics,87.69,1,0,87.69,customer107@example.com
+ORD-00577,2025-11-29,West,Phone,Monitor,Electronics,240.91,1,0.1,216.82,customer327@example.com
+ORD-00032,2025-05-08,South,Online,Monitor,Electronics,236.48,1,0.1,212.83,customer26@example.com
+ORD-00556,2025-12-14,North,Phone,Headphones,Electronics,85.42,5,0.15,363.04,customer115@example.com
+ORD-00914,2025-04-23,East,Phone,Monitor,Electronics,237.0,3,0.15,604.35,customer88@example.com
+ORD-00714,2025-05-08,West,Store,Headphones,Electronics,79.18,1,0.1,71.26,customer389@example.com
+ORD-00378,2025-06-25,South,Store,Monitor,Electronics,218.03,1,0.05,207.13,customer244@example.com
+ORD-00477,2025-06-27,North,Phone,Notebook,Stationery,4.93,1,0,4.93,customer344@example.com
+ORD-00334,2025-03-16,North,Phone,Pen Pack,Stationery,5.42,2,0.1,9.76,
+ORD-00019,2025-05-15,West,Online,Notebook,Stationery,4.92,5,0.1,22.14,customer321@example.com
+ORD-00410,2025-05-21,West,Store,Monitor,Electronics,202.11,1,0,202.11,customer341@example.com
+ORD-00284,2025-03-30,South,Store,Desk,Furniture,307.5,2,0.1,553.5,customer347@example.com
+ORD-00626,2025-01-21,West,Phone,Desk,Furniture,339.8,1,0.15,288.83,customer325@example.com
+ORD-00213,2025-09-17,West,Online,Pen Pack,Stationery,6.33,6,0.1,34.18,customer339@example.com
+ORD-00459,2025-11-12,East,Phone,Laptop,Electronics,901.7,1,0.05,856.62,customer246@example.com
+ORD-00053,2025-06-20,East,Phone,Monitor,Electronics,232.43,2,0.15,395.13,customer128@example.com
+ORD-00536,2025-08-22,West,Store,Headphones,Electronics,88.87,3,0,266.61,customer352@example.com
+ORD-00171,2025-11-21,South,Phone,Monitor,Electronics,223.76,5,0.05,1062.86,customer272@example.com
+ORD-00970,2025-02-28,East,Online,Notebook,Stationery,4.43,8,0,35.44,customer9@example.com
+ORD-00201,2025-05-27,North,Phone,Laptop,Electronics,869.58,6,0,5217.48,customer305@example.com
+ORD-00382,2025-12-03,North,Online,Monitor,Electronics,217.01,1,0.1,195.31,customer231@example.com
+ORD-00151,2025-05-20,East,Store,Headphones,Electronics,90.62,1,0.05,86.09,customer383@example.com
+ORD-00104,2025-01-07,North,Store,Desk,Furniture,314.59,2,0.05,597.72,customer95@example.com
+ORD-00526,2025-04-25,North,Store,Laptop,Electronics,996.4,1,0,996.4,customer134@example.com
+ORD-00359,2025-07-01,North,Store,Laptop,Electronics,960.3,3,0,2880.9,customer7@example.com
+ORD-00475,2025-10-21,West,Online,Laptop,Electronics,929.4,20,0.1,16729.2,customer94@example.com
+ORD-00641,2025-08-09,East,Phone,Pen Pack,Stationery,6.03,2,0,12.06,
+ORD-00249,2025-02-14,South,Phone,Notebook,Stationery,4.78,10,0,47.8,customer178@example.com
+ORD-00228,2025-10-22,East,Online,Laptop,Electronics,900.97,1,0.05,855.92,customer315@example.com
+ORD-00464,2025-03-23,West,Phone,Office Chair,Furniture,165.6,3,0,496.8,customer378@example.com
+ORD-00869,2025-08-25,East,Phone,Notebook,Stationery,4.75,5,0.15,20.19,customer302@example.com
+ORD-00342,2025-12-24,North,Online,Headphones,Electronics,87.96,7,0,615.72,customer50@example.com
+ORD-00012,2025-06-11,North,Phone,Pen Pack,Stationery,5.88,1,0.1,5.29,customer162@example.com
+ORD-00435,2025-01-07,North,Online,Office Chair,Furniture,170.8,2,0.05,324.52,customer92@example.com
+ORD-00777,2025-08-23,South,Phone,Notebook,Stationery,4.85,2,0,9.7,customer377@example.com
+ORD-00076,2025-10-27,South,Store,Pen Pack,Stationery,6.54,1,0.1,5.89,customer245@example.com
+ORD-00385,2025-09-28,West,Phone,Notebook,Stationery,4.92,1,0.05,4.67,customer201@example.com
+ORD-00711,2025-06-02,East,Online,Headphones,Electronics,79.88,7,0.15,475.29,customer58@example.com
+ORD-00923,2025-11-18,North,Phone,Notebook,Stationery,4.11,9,0,36.99,customer17@example.com
+ORD-00414,2025-07-16,North,Store,Desk,Furniture,284.54,5,0,1422.7,customer189@example.com
+ORD-00515,2025-11-04,East,Store,Monitor,Electronics,233.24,1,0.1,209.92,customer365@example.com
+ORD-00629,2025-06-26,West,Online,Headphones,Electronics,84.78,2,0.1,152.6,customer257@example.com
+ORD-00921,2025-10-20,East,Store,Monitor,Electronics,230.88,1,0.05,219.34,customer396@example.com
+ORD-00623,2025-08-17,East,Phone,Pen Pack,Stationery,5.59,3,0.1,15.09,customer75@example.com
+ORD-00932,2025-04-02,North,Online,Laptop,Electronics,909.79,10,0,9097.9,customer142@example.com
+ORD-00108,2025-06-02,West,Phone,Desk,Furniture,332.33,15,0,4984.95,customer318@example.com
+ORD-00014,2025-10-03,East,Store,Monitor,Electronics,209.56,3,0.1,565.81,customer186@example.com
+ORD-00576,2025-04-13,East,Store,Office Chair,Furniture,169.55,4,0.15,576.47,customer345@example.com
+ORD-00549,2025-06-10,West,Online,Headphones,Electronics,83.74,1,0,83.74,customer71@example.com
+ORD-00899,2025-01-09,West,Online,Desk,Furniture,333.54,1,0,333.54,customer46@example.com
+ORD-00622,2025-05-03,North,Phone,Office Chair,Furniture,192.53,5,0.1,866.38,customer85@example.com
+ORD-00008,2025-02-10,South,Store,Pen Pack,Stationery,6.43,6,0.05,36.65,customer233@example.com
+ORD-00070,2025-03-04,East,Phone,Laptop,Electronics,941.73,5,0.15,4002.35,customer287@example.com
+ORD-00065,2025-03-28,East,Phone,Monitor,Electronics,226.99,1,0.15,192.94,customer318@example.com
+ORD-00583,2025-09-19,South,Phone,Office Chair,Furniture,190.24,5,0,951.2,customer341@example.com
+ORD-00570,2025-03-05,East,Phone,Pen Pack,Stationery,6.33,2,0.15,10.76,customer259@example.com
+ORD-00343,2025-04-09,North,Store,Office Chair,Furniture,184.31,1,0,184.31,customer204@example.com
+ORD-00850,2025-09-13,North,Store,Office Chair,Furniture,192.48,1,0.1,173.23,customer211@example.com
+ORD-00798,2025-10-09,South,Phone,Pen Pack,Stationery,5.48,3,0,16.44,customer141@example.com
+ORD-00928,2025-10-25,East,Online,Laptop,Electronics,1020.51,5,0.15,4337.17,customer165@example.com
+ORD-00156,2025-11-22,East,Phone,Monitor,Electronics,234.25,10,0,2342.5,customer210@example.com
+ORD-00250,2025-10-05,North,Phone,Notebook,Stationery,4.31,1,0,4.31,customer364@example.com
+ORD-00776,2025-04-14,East,Phone,Monitor,Electronics,231.34,1,0.05,219.77,customer251@example.com
+ORD-00208,2025-02-11,North,Store,Pen Pack,Stationery,6.1,1,0,6.1,customer336@example.com
+ORD-00879,2025-04-22,East,Phone,Office Chair,Furniture,184.1,1,0.05,174.89,customer133@example.com
+ORD-00406,2025-10-01,North,Store,Pen Pack,Stationery,5.88,14,0,82.32,customer138@example.com
+ORD-00531,2025-08-20,North,Phone,Notebook,Stationery,4.3,5,0,21.5,customer392@example.com
+ORD-00634,2025-04-03,North,Phone,Laptop,Electronics,953.16,2,0.1,1715.69,customer10@example.com
+ORD-00007,2025-07-05,West,Phone,Office Chair,Furniture,182.78,4,0,731.12,customer117@example.com
+ORD-00060,2025-12-10,East,Store,Pen Pack,Stationery,5.64,2,0.15,9.59,customer320@example.com
+ORD-00203,2025-11-06,North,Store,Notebook,Stationery,4.48,1,0,4.48,customer53@example.com
+ORD-00003,2025-11-29,East,Phone,Laptop,Electronics,988.25,2,0.05,1877.67,customer143@example.com
+ORD-00010,2025-11-22,North,Store,Notebook,Stationery,4.2,5,0,21.0,customer195@example.com
+ORD-00915,2025-04-28,West,Online,Office Chair,Furniture,165.11,6,0.05,941.13,customer303@example.com
+ORD-00430,2025-01-06,North,Phone,Notebook,Stationery,4.2,9,0.1,34.02,customer370@example.com
+ORD-00568,2025-07-29,North,Online,Desk,Furniture,285.63,3,0,856.89,customer202@example.com
+ORD-00997,2025-01-17,South,Phone,Desk,Furniture,289.97,3,0,869.91,customer85@example.com
+ORD-00133,2025-07-15,West,Online,Notebook,Stationery,4.4,4,0.15,14.96,customer254@example.com
+ORD-00705,2025-06-09,South,Store,Monitor,Electronics,232.57,2,0,465.14,
+ORD-00859,2025-05-10,West,Online,Pen Pack,Stationery,5.56,1,0,5.56,customer380@example.com
+ORD-00868,2025-11-30,South,Online,Pen Pack,Stationery,6.43,2,0,12.86,customer131@example.com
+ORD-00876,2025-12-08,South,Online,Pen Pack,Stationery,6.32,2,0,12.64,customer142@example.com
+ORD-00743,2025-06-21,North,Online,Pen Pack,Stationery,5.82,5,0.05,27.64,customer395@example.com
+ORD-00424,2025-04-21,North,Phone,Laptop,Electronics,862.57,1,0.05,819.44,customer147@example.com
+ORD-00594,2025-11-29,West,Online,Office Chair,Furniture,162.32,4,0.05,616.82,customer329@example.com
+ORD-00320,2025-08-13,North,Online,Notebook,Stationery,4.26,1,0,4.26,
+ORD-00231,2025-05-10,West,Store,Desk,Furniture,325.33,1,0,325.33,customer124@example.com
+ORD-00344,2025-07-27,South,Online,Laptop,Electronics,942.21,1,0.15,800.88,customer154@example.com
+ORD-00233,2025-11-26,East,Phone,Headphones,Electronics,79.48,6,0.05,453.04,customer246@example.com
+ORD-00301,2025-03-13,North,Store,Laptop,Electronics,945.72,8,0,7565.76,customer197@example.com
+ORD-00161,2025-11-27,East,Online,Headphones,Electronics,82.6,2,0,165.2,customer233@example.com
+ORD-00639,2025-02-19,North,Online,Pen Pack,Stationery,5.61,7,0.1,35.34,customer273@example.com
+ORD-00744,2025-11-05,East,Store,Monitor,Electronics,238.86,4,0.15,812.12,customer28@example.com
+ORD-00214,2025-11-13,West,Online,Headphones,Electronics,78.73,2,0,157.46,customer355@example.com
+ORD-00460,2025-07-16,North,Online,Laptop,Electronics,881.07,1,0.1,792.96,customer323@example.com
+ORD-00656,2025-12-02,South,Store,Laptop,Electronics,855.05,1,0,855.05,customer181@example.com
+ORD-00202,2025-10-25,South,Store,Office Chair,Furniture,181.96,6,0,1091.76,customer293@example.com
+ORD-00094,2025-10-19,East,Store,Monitor,Electronics,224.85,2,0,449.7,customer167@example.com
+ORD-00632,2025-09-03,East,Online,Desk,Furniture,292.06,1,0.05,277.46,customer125@example.com
+ORD-00237,2025-06-19,West,Store,Laptop,Electronics,906.91,5,0.05,4307.82,customer381@example.com
+ORD-00814,2025-03-31,East,Online,Monitor,Electronics,202.94,5,0,1014.7,customer228@example.com
+ORD-00059,2025-10-23,North,Online,Office Chair,Furniture,168.84,1,0.05,160.4,customer267@example.com
+ORD-00774,2025-12-31,East,Store,Pen Pack,Stationery,6.18,1,0.05,5.87,customer243@example.com
+ORD-00845,2025-09-01,East,Store,Monitor,Electronics,204.12,3,0,612.36,customer79@example.com
+ORD-00554,2025-07-14,North,Phone,Desk,Furniture,327.31,3,0.15,834.64,customer67@example.com
+ORD-00300,2025-07-27,East,Store,Pen Pack,Stationery,6.39,2,0,12.78,customer343@example.com
+ORD-00741,2025-09-05,South,Phone,Notebook,Stationery,4.21,6,0.15,21.47,customer296@example.com
+ORD-00182,2025-06-23,South,Phone,Pen Pack,Stationery,5.82,1,0,5.82,customer337@example.com
+ORD-00130,2025-10-28,South,Store,Notebook,Stationery,4.57,4,0,18.28,customer276@example.com
+ORD-00396,2025-01-17,North,Store,Pen Pack,Stationery,5.94,1,0,5.94,customer61@example.com
+ORD-00369,2025-12-29,East,Online,Notebook,Stationery,4.24,6,0.15,21.62,customer210@example.com
+ORD-00339,2025-11-19,South,Online,Laptop,Electronics,898.97,5,0,4494.85,customer259@example.com
+ORD-00754,2025-11-14,North,Online,Notebook,Stationery,4.88,8,0,39.04,customer176@example.com
+ORD-00272,2025-09-16,North,Phone,Headphones,Electronics,84.16,3,0.1,227.23,customer313@example.com
+ORD-00653,2025-07-25,East,Phone,Laptop,Electronics,971.65,2,0.15,1651.8,customer30@example.com
+ORD-00537,2025-09-08,South,Online,Monitor,Electronics,213.81,1,0.05,203.12,customer117@example.com
+ORD-00772,2025-11-10,North,Online,Monitor,Electronics,225.15,4,0.1,810.54,customer306@example.com
+ORD-00565,2025-08-21,North,Store,Pen Pack,Stationery,5.8,5,0.1,26.1,customer367@example.com
+ORD-00699,2025-08-12,West,Phone,Desk,Furniture,303.47,1,0.15,257.95,customer200@example.com
+ORD-00691,2025-07-19,East,Store,Laptop,Electronics,913.78,1,0,913.78,customer321@example.com
+ORD-00040,2025-05-14,South,Store,Office Chair,Furniture,169.35,4,0,677.4,customer203@example.com
+ORD-00283,2025-03-12,North,Store,Notebook,Stationery,4.52,3,0.15,11.53,customer270@example.com
+ORD-00496,2025-03-06,West,Store,Monitor,Electronics,199.88,1,0.15,169.9,customer104@example.com
+ORD-00500,2025-02-21,West,Store,Pen Pack,Stationery,6.51,3,0,19.53,customer275@example.com
+ORD-00987,2025-03-15,North,Phone,Notebook,Stationery,4.41,4,0,17.64,customer87@example.com
+ORD-00428,2025-05-03,South,Online,Notebook,Stationery,4.1,1,0.05,3.89,customer233@example.com
+ORD-00747,2025-07-21,South,Phone,Monitor,Electronics,204.51,1,0.05,194.28,customer382@example.com
+ORD-00128,2025-04-08,North,Online,Office Chair,Furniture,195.19,2,0,390.38,customer142@example.com
+ORD-00998,2025-06-09,South,Phone,Desk,Furniture,323.37,2,0,646.74,customer346@example.com
+ORD-00731,2025-10-13,West,Phone,Notebook,Stationery,4.72,2,0,9.44,customer296@example.com
+ORD-00926,2025-08-27,South,Phone,Laptop,Electronics,972.64,1,0,972.64,customer287@example.com
+ORD-00077,2025-06-02,West,Phone,Laptop,Electronics,998.16,6,0.05,5689.51,customer383@example.com
+ORD-00964,2025-11-22,South,Store,Headphones,Electronics,92.01,2,0,184.02,customer272@example.com
+ORD-00905,2025-02-27,North,Store,Headphones,Electronics,90.04,4,0.05,342.15,customer91@example.com
+ORD-00041,2025-06-03,East,Online,Monitor,Electronics,218.12,8,0,1744.96,customer235@example.com
+ORD-00838,2025-02-16,East,Phone,Notebook,Stationery,4.25,1,0.1,3.83,customer1@example.com
+ORD-00240,2025-02-10,South,Phone,Headphones,Electronics,82.07,1,0.05,77.97,customer368@example.com
+ORD-00803,2025-04-10,South,Online,Notebook,Stationery,4.05,1,0.15,3.44,customer378@example.com
+ORD-00603,2025-11-25,,Phone,Laptop,Electronics,991.85,1,0.15,843.07,customer24@example.com
+ORD-00687,2025-07-05,West,Store,Desk,Furniture,325.37,2,0.05,618.2,customer86@example.com
+ORD-00420,2025-06-04,West,Phone,Pen Pack,Stationery,5.65,3,0,16.95,customer201@example.com
+ORD-00648,2025-10-12,South,Store,Monitor,Electronics,219.29,18,0.1,3552.5,customer397@example.com
+ORD-00578,2025-06-30,East,Phone,Headphones,Electronics,86.06,3,0.15,219.45,customer214@example.com
+ORD-00254,2025-02-07,West,Store,Desk,Furniture,286.77,1,0,286.77,
+ORD-00080,2025-07-21,East,Phone,Office Chair,Furniture,183.31,4,0,733.24,customer220@example.com
+ORD-00552,2025-08-04,West,Online,Notebook,Stationery,4.63,5,0,23.15,
+ORD-00352,2025-02-10,West,Online,Pen Pack,Stationery,6.0,11,0,66.0,customer224@example.com
+ORD-00467,2025-10-18,South,Store,Notebook,Stationery,4.56,3,0,13.68,customer278@example.com
+ORD-00855,2025-08-21,North,Store,Pen Pack,Stationery,6.02,2,0.15,10.23,customer216@example.com
+ORD-00347,2025-06-19,South,Phone,Pen Pack,Stationery,6.08,6,0,36.48,customer22@example.com
+ORD-00238,2025-07-17,West,Store,Desk,Furniture,300.02,1,0.15,255.02,customer189@example.com
+ORD-00671,2025-03-07,East,Phone,Monitor,Electronics,200.38,5,0.05,951.8,customer17@example.com
+ORD-00557,2025-09-23,West,Store,Notebook,Stationery,4.52,4,0,18.08,customer339@example.com
+ORD-00871,2025-02-04,North,Phone,Notebook,Stationery,4.06,1,0,4.06,customer229@example.com
+ORD-00484,2025-03-26,West,Online,Desk,Furniture,316.65,2,0,633.3,customer170@example.com
+ORD-00955,2025-10-30,West,Phone,Laptop,Electronics,998.66,1,0.05,948.73,customer140@example.com
+ORD-00323,2025-03-31,West,Online,Office Chair,Furniture,184.54,2,0.05,350.63,customer177@example.com
+ORD-00223,2025-02-20,South,Online,Laptop,Electronics,1014.44,3,0,3043.32,customer20@example.com
+ORD-00957,2025-10-11,South,Phone,Pen Pack,Stationery,5.99,7,0,41.93,customer156@example.com
+ORD-00315,2025-10-04,West,Online,Notebook,Stationery,4.17,8,0,33.36,customer276@example.com
+ORD-00448,2025-02-08,South,Online,Desk,Furniture,337.5,1,0.1,303.75,customer80@example.com
+ORD-00906,2025-01-23,East,Store,Monitor,Electronics,200.38,1,0,200.38,customer129@example.com
+ORD-00990,2025-11-26,West,Phone,Pen Pack,Stationery,6.53,2,0.15,11.1,customer208@example.com
+ORD-00388,2025-09-19,East,Store,Headphones,Electronics,83.1,3,0.1,224.37,customer217@example.com
+ORD-00614,2025-10-17,East,Online,Notebook,Stationery,4.56,7,0.05,30.32,customer3@example.com
+ORD-00217,2025-08-29,South,Phone,Monitor,Electronics,237.77,1,0.15,202.1,customer226@example.com
+ORD-00927,2025-12-30,North,Online,Notebook,Stationery,4.75,1,0,4.75,customer277@example.com
+ORD-00780,2025-07-22,East,Phone,Monitor,Electronics,241.29,1,0.05,229.23,customer392@example.com
+ORD-00138,2025-11-20,North,Phone,Office Chair,Furniture,186.64,1,0,186.64,customer47@example.com
+ORD-00842,2025-05-31,North,Online,Pen Pack,Stationery,5.47,7,0,38.29,customer361@example.com
+ORD-00471,2025-12-06,South,Store,Laptop,Electronics,930.16,1,0,930.16,customer70@example.com
+ORD-00229,2025-08-02,North,Store,Headphones,Electronics,79.68,4,0.1,286.85,customer35@example.com
+ORD-00251,2025-07-05,East,Online,Notebook,Stationery,4.51,1,0,4.51,
+ORD-00750,2025-05-05,East,Phone,Notebook,Stationery,4.11,5,0,20.55,customer295@example.com
+ORD-00624,2025-07-03,East,Online,Notebook,Stationery,4.09,5,0,20.45,customer136@example.com
+ORD-00800,2025-09-28,West,Phone,Notebook,Stationery,4.94,2,0.15,8.4,customer362@example.com
+ORD-00534,2025-01-10,East,Online,Pen Pack,Stationery,6.21,3,0,18.63,customer356@example.com
+ORD-00050,2025-10-10,South,Store,Pen Pack,Stationery,5.58,1,0,5.58,customer21@example.com
+ORD-00618,2025-11-17,East,Phone,Headphones,Electronics,77.8,1,0,77.8,customer324@example.com
+ORD-00601,2025-01-28,North,Phone,Laptop,Electronics,888.82,1,0,888.82,customer117@example.com
+ORD-00940,2025-12-21,West,Online,Monitor,Electronics,237.81,6,0,1426.86,customer60@example.com
+ORD-00506,2025-02-15,East,Phone,Desk,Furniture,290.65,1,0.05,276.12,customer249@example.com
+ORD-00351,2025-07-19,East,Phone,Monitor,Electronics,227.79,3,0.05,649.2,customer72@example.com
+ORD-00159,2025-08-01,East,Store,Notebook,Stationery,4.64,6,0.1,25.06,customer144@example.com
+ORD-00413,2025-01-05,South,Phone,Notebook,Stationery,4.68,5,0.05,22.23,customer68@example.com
+ORD-00672,2025-12-18,South,Phone,Office Chair,Furniture,189.93,2,0,379.86,customer266@example.com
+ORD-00222,2025-09-15,North,Store,Desk,Furniture,302.19,2,0,604.38,customer115@example.com
+ORD-00495,2025-11-14,East,Online,Pen Pack,Stationery,5.58,12,0.05,63.61,customer86@example.com
+ORD-00900,2025-05-26,East,Phone,Notebook,Stationery,4.42,5,0.05,21.0,customer65@example.com
+ORD-00786,2025-12-28,North,Phone,Laptop,Electronics,940.39,2,0.1,1692.7,customer197@example.com
+ORD-00938,2025-09-05,South,Online,Pen Pack,Stationery,5.85,1,0,5.85,customer181@example.com
+ORD-00533,2025-01-20,South,Store,Desk,Furniture,312.09,4,0,1248.36,customer388@example.com
+ORD-00945,2025-10-21,West,Store,Headphones,Electronics,87.84,6,0.15,447.98,customer174@example.com
+ORD-00386,2025-06-30,North,Phone,Office Chair,Furniture,192.44,3,0.15,490.72,customer153@example.com
+ORD-00522,2025-01-19,South,Store,Desk,Furniture,315.15,16,0,5042.4,customer372@example.com
+ORD-00589,2025-01-03,West,Online,Office Chair,Furniture,173.9,4,0,695.6,customer79@example.com
+ORD-00889,2025-08-19,East,Online,Desk,Furniture,338.93,1,0,338.93,customer173@example.com
+ORD-00833,2025-05-03,East,Store,Desk,Furniture,317.49,3,0.05,904.85,customer34@example.com
+ORD-00199,2025-11-18,South,Store,Office Chair,Furniture,173.38,2,0.05,329.42,customer324@example.com
+ORD-00746,2025-07-21,North,Phone,Monitor,Electronics,240.73,5,0.1,1083.28,customer47@example.com
+ORD-00107,2025-08-02,East,Phone,Laptop,Electronics,970.2,5,0,4851.0,customer195@example.com
+ORD-00437,2025-10-20,West,Online,Headphones,Electronics,82.84,3,0,248.52,customer115@example.com
+ORD-00971,2025-12-20,South,Phone,Desk,Furniture,301.48,7,0.1,1899.32,customer391@example.com
+ORD-00694,2025-11-20,East,Phone,Office Chair,Furniture,188.96,8,0.05,1436.1,customer328@example.com
+ORD-00908,2025-09-21,North,Store,Pen Pack,Stationery,5.54,7,0.15,32.96,customer304@example.com
+ORD-00722,2025-12-04,East,Phone,Headphones,Electronics,92.94,7,0,650.58,customer350@example.com
+ORD-00395,2025-08-14,East,Phone,Pen Pack,Stationery,6.06,15,0,90.9,customer335@example.com
+ORD-00123,2025-09-13,South,Store,Office Chair,Furniture,184.51,5,0,922.55,customer282@example.com
+ORD-01000,2025-09-11,South,Store,Laptop,Electronics,967.3,2,0.15,1644.41,customer393@example.com
+ORD-00584,2025-07-18,West,Store,Laptop,Electronics,934.15,5,0.15,3970.14,customer283@example.com
+ORD-00726,2025-10-30,East,Phone,Office Chair,Furniture,171.21,2,0.1,308.18,customer37@example.com
+ORD-00048,2025-11-23,West,Phone,Headphones,Electronics,93.16,1,0.05,88.5,customer362@example.com
+ORD-00830,2025-06-16,West,Online,Pen Pack,Stationery,5.94,1,0.05,5.64,customer180@example.com
+ORD-00771,2025-11-23,East,Online,Desk,Furniture,336.86,1,0,336.86,customer68@example.com
+ORD-00759,2025-12-05,North,Store,Laptop,Electronics,906.55,8,0.15,6164.54,customer56@example.com
+ORD-00562,2025-06-11,East,Online,Pen Pack,Stationery,5.54,2,0.15,9.42,customer53@example.com
+ORD-00381,2025-06-19,East,Store,Monitor,Electronics,222.63,10,0,2226.3,customer323@example.com
+ORD-00737,2025-06-04,East,Store,Laptop,Electronics,856.25,13,0,11131.25,customer12@example.com
+ORD-00501,2025-05-16,,Store,Headphones,Electronics,83.01,2,0.1,149.42,customer20@example.com
+ORD-00166,2025-05-02,North,Online,Monitor,Electronics,223.91,1,0,223.91,customer65@example.com
+ORD-00145,2025-09-05,West,Phone,Monitor,Electronics,202.69,2,0,405.38,customer152@example.com
+ORD-00330,2025-03-02,West,Phone,Monitor,Electronics,230.86,4,0,923.44,customer310@example.com
+ORD-00839,2025-03-18,North,Phone,Pen Pack,Stationery,5.94,1,0.1,5.35,customer229@example.com
+ORD-00025,2025-12-10,South,Store,Headphones,Electronics,87.55,2,0.1,157.59,customer62@example.com
+ORD-00949,2025-12-13,West,Store,Office Chair,Furniture,186.18,1,0.1,167.56,customer100@example.com
+ORD-00523,2025-10-01,North,Store,Notebook,Stationery,4.62,3,0.15,11.78,customer260@example.com
+ORD-00067,2025-09-01,North,Store,Laptop,Electronics,971.14,5,0.05,4612.91,customer323@example.com
+ORD-00527,2025-03-02,South,Phone,Office Chair,Furniture,178.94,6,0.1,966.28,customer318@example.com
+ORD-00409,2025-08-08,South,Phone,Desk,Furniture,291.54,4,0,1166.16,customer155@example.com
+ORD-00491,2025-05-18,North,Phone,Headphones,Electronics,86.09,1,0.15,73.18,customer50@example.com
+ORD-00598,2025-10-03,West,Phone,Monitor,Electronics,221.46,4,0,885.84,
+ORD-00376,2025-07-20,South,Phone,Monitor,Electronics,218.37,4,0.15,742.46,
+ORD-00375,2025-04-24,North,Phone,Laptop,Electronics,952.03,2,0.1,1713.65,customer295@example.com
+ORD-00486,2025-05-02,South,Store,Notebook,Stationery,4.14,2,0.1,7.45,customer79@example.com
+ORD-00167,2025-02-28,South,Phone,Notebook,Stationery,4.72,2,0,9.44,customer304@example.com
+ORD-00861,2025-09-06,East,Store,Pen Pack,Stationery,5.62,2,0,11.24,customer44@example.com
+ORD-00801,2025-06-12,South,Store,Headphones,Electronics,80.91,3,0.1,218.46,customer67@example.com
+ORD-00319,2025-11-01,North,Online,Monitor,Electronics,199.48,4,0.15,678.23,customer126@example.com
+ORD-00713,2025-01-22,,Phone,Pen Pack,Stationery,6.1,4,0.15,20.74,customer80@example.com
+ORD-00045,2025-03-10,West,Phone,Laptop,Electronics,905.25,7,0.15,5386.24,customer80@example.com
+ORD-00836,2025-08-26,East,Online,Laptop,Electronics,916.82,1,0.05,870.98,customer158@example.com
+ORD-00625,2025-12-09,North,Store,Headphones,Electronics,80.02,10,0,800.2,customer241@example.com
+ORD-00276,2025-07-21,South,Phone,Office Chair,Furniture,197.66,4,0,790.64,customer173@example.com
+ORD-00748,2025-05-15,East,Online,Laptop,Electronics,871.17,2,0.15,1480.99,customer391@example.com
+ORD-00492,2025-10-05,East,Phone,Laptop,Electronics,933.66,6,0,5601.96,customer32@example.com
+ORD-00472,2025-08-12,East,Store,Monitor,Electronics,232.84,11,0.15,2177.05,
+ORD-00084,2025-01-21,West,Online,Pen Pack,Stationery,6.31,9,0,56.79,customer319@example.com
+ORD-00725,2025-02-20,East,Phone,Laptop,Electronics,861.05,3,0.05,2453.99,customer251@example.com
+ORD-00158,2025-07-09,South,Store,Monitor,Electronics,227.5,4,0.1,819.0,customer301@example.com
+ORD-00946,2025-09-03,North,Online,Notebook,Stationery,4.86,1,0.1,4.37,customer158@example.com
+ORD-00109,2025-02-20,East,Store,Laptop,Electronics,1035.04,1,0,1035.04,customer339@example.com
+ORD-00383,2025-01-03,South,Online,Office Chair,Furniture,187.37,1,0.15,159.26,customer296@example.com
+ORD-00404,2025-05-23,South,Store,Laptop,Electronics,986.99,7,0.05,6563.48,customer168@example.com
+ORD-00779,2025-12-27,East,Store,Office Chair,Furniture,190.33,3,0.05,542.44,customer22@example.com
+ORD-00292,2025-07-31,North,Online,Monitor,Electronics,212.53,2,0.15,361.3,
+ORD-00027,2025-01-31,East,Online,Laptop,Electronics,898.5,7,0,6289.5,customer264@example.com
+ORD-00337,2025-06-30,South,Online,Desk,Furniture,289.49,4,0.05,1100.06,customer278@example.com
+ORD-00097,2025-11-27,East,Online,Monitor,Electronics,229.32,2,0,458.64,customer151@example.com
+ORD-00511,2025-09-08,North,Phone,Laptop,Electronics,967.87,1,0.05,919.48,customer283@example.com
+ORD-00806,2025-06-15,East,Store,Headphones,Electronics,89.54,1,0,89.54,customer203@example.com
+ORD-00986,2025-12-12,North,Phone,Monitor,Electronics,219.63,1,0.05,208.65,customer338@example.com
+ORD-00427,2025-11-21,South,Online,Headphones,Electronics,89.47,4,0.15,304.2,customer159@example.com
+ORD-00541,2025-03-05,South,Online,Desk,Furniture,312.93,2,0,625.86,customer356@example.com
+ORD-00005,2025-07-14,North,Store,Headphones,Electronics,78.14,6,0.1,421.96,customer23@example.com
+ORD-00628,2025-02-09,East,Phone,Headphones,Electronics,85.28,1,0,85.28,customer208@example.com
+ORD-00887,2025-02-13,South,Online,Notebook,Stationery,4.85,2,0,9.7,customer19@example.com
+ORD-00521,2025-12-15,East,Store,Desk,Furniture,287.68,1,0.05,273.3,customer133@example.com
+ORD-00849,2025-10-10,East,Online,Desk,Furniture,329.84,2,0,659.68,customer218@example.com
+ORD-00764,2025-05-12,North,Phone,Pen Pack,Stationery,6.45,7,0,45.15,customer144@example.com
+ORD-00291,2025-05-03,East,Online,Office Chair,Furniture,170.73,3,0.1,460.97,customer327@example.com
+ORD-00796,2025-12-25,East,Store,Office Chair,Furniture,183.42,6,0,1100.52,customer384@example.com
+ORD-00096,2025-04-08,North,Phone,Office Chair,Furniture,165.08,4,0.05,627.3,customer389@example.com
+ORD-00358,2025-02-14,North,Phone,Headphones,Electronics,79.69,2,0.1,143.44,
+ORD-00127,2025-05-20,East,Online,Headphones,Electronics,83.56,2,0.05,158.76,customer234@example.com
+ORD-00933,2025-09-12,East,Online,Laptop,Electronics,883.59,1,0.15,751.05,
+ORD-00812,2025-11-07,North,Phone,Pen Pack,Stationery,5.87,4,0,23.48,customer162@example.com
+ORD-00636,2025-07-30,North,Phone,Monitor,Electronics,224.44,5,0,1122.2,customer338@example.com
+ORD-00469,2025-11-11,North,Online,Desk,Furniture,291.49,1,0.15,247.77,customer166@example.com
+ORD-00497,2025-11-01,East,Online,Pen Pack,Stationery,5.71,10,0,57.1,customer199@example.com
+ORD-00366,2025-04-01,East,Phone,Monitor,Electronics,240.44,11,0,2644.84,
+ORD-00453,2025-02-18,East,Online,Notebook,Stationery,4.47,5,0,22.35,customer7@example.com
+ORD-00042,2025-02-21,West,Online,Office Chair,Furniture,164.64,1,0,164.64,customer179@example.com
+ORD-00730,2025-09-30,East,Online,Laptop,Electronics,928.21,1,0.15,788.98,customer292@example.com
+ORD-00119,2025-09-09,East,Store,Desk,Furniture,339.08,2,0.05,644.25,customer165@example.com
+ORD-00894,2025-02-02,West,Phone,Monitor,Electronics,233.98,1,0.05,222.28,customer316@example.com
+ORD-00951,2025-08-07,East,Store,Monitor,Electronics,214.26,2,0,428.52,customer180@example.com
+ORD-00168,2025-04-24,South,Phone,Laptop,Electronics,1034.63,1,0.15,879.44,customer155@example.com
+ORD-00220,2025-03-05,East,Store,Pen Pack,Stationery,5.74,4,0,22.96,customer263@example.com
+ORD-00482,2025-05-14,North,Store,Headphones,Electronics,92.68,1,0,92.68,customer83@example.com
+ORD-00037,2025-01-26,South,Online,Notebook,Stationery,4.58,2,0.1,8.24,customer30@example.com
+ORD-00188,2025-01-29,West,Online,Desk,Furniture,279.48,1,0,279.48,customer392@example.com
+ORD-00236,2025-05-10,East,Store,Pen Pack,Stationery,5.44,3,0,16.32,customer400@example.com
+ORD-00791,2025-10-06,West,Online,Desk,Furniture,329.06,4,0.05,1250.43,customer112@example.com
+ORD-00861,2025-09-06,East,Store,Pen Pack,Stationery,5.62,2,0,11.24,customer44@example.com
+ORD-00649,2025-03-12,South,Online,Notebook,Stationery,4.82,3,0.15,12.29,customer229@example.com
+ORD-00055,2025-06-29,West,Online,Pen Pack,Stationery,5.77,5,0,28.85,customer13@example.com
+ORD-00993,2025-07-15,West,Phone,Laptop,Electronics,-969.87,1,0,969.87,customer320@example.com
+ORD-00931,2025-07-08,South,Online,Headphones,Electronics,90.1,9,0,810.9,customer235@example.com
+ORD-00757,2025-01-10,East,Online,Notebook,Stationery,4.39,7,0.1,27.66,customer131@example.com
+ORD-00324,2025-09-26,East,Store,Notebook,Stationery,4.34,2,0,8.68,customer193@example.com
+ORD-00169,2025-01-16,East,Store,Desk,Furniture,282.77,2,0.05,537.26,customer352@example.com
+ORD-00893,2025-03-30,North,Store,Notebook,Stationery,4.62,7,0,32.34,customer313@example.com
+ORD-00586,2025-07-08,East,Online,Notebook,Stationery,4.73,3,0.1,12.77,customer398@example.com
+ORD-00530,2025-04-03,South,Online,Monitor,Electronics,232.27,2,0.15,394.86,customer161@example.com
+ORD-00271,2025-01-24,South,Store,Pen Pack,Stationery,5.88,3,0,17.64,customer284@example.com
+ORD-00270,2025-01-05,South,Phone,Desk,Furniture,331.52,2,0,663.04,customer188@example.com
+ORD-00919,2025-02-12,East,Store,Desk,Furniture,313.63,1,0.15,266.59,customer112@example.com
+ORD-00441,2025-05-06,East,Online,Office Chair,Furniture,167.42,8,0,1339.36,customer278@example.com
+ORD-00370,2025-11-21,East,Phone,Notebook,Stationery,4.32,1,0,4.32,customer217@example.com
+ORD-00288,2025-10-06,East,Online,Laptop,Electronics,927.14,15,0,13907.1,customer149@example.com
+ORD-00956,2025-08-25,North,Online,Desk,Furniture,323.04,5,0,1615.2,customer96@example.com
+ORD-00131,2025-10-10,South,Online,Desk,Furniture,326.3,2,0,652.6,customer358@example.com
+ORD-00046,2025-04-18,South,Store,Headphones,Electronics,88.7,1,0.15,75.39,customer259@example.com
+ORD-00837,2025-02-25,North,Store,Desk,Furniture,321.5,3,0.05,916.27,customer254@example.com
+ORD-00120,2025-03-24,North,Phone,Notebook,Stationery,4.35,4,0,17.4,customer206@example.com
+ORD-00600,2025-02-06,South,Phone,Pen Pack,Stationery,6.3,1,0.05,5.98,customer170@example.com
+ORD-00146,2025-12-04,South,Phone,Notebook,Stationery,4.41,1,0.15,3.75,customer26@example.com
+ORD-00979,2025-01-08,West,Online,Laptop,Electronics,955.48,4,0,3821.92,customer387@example.com
+ORD-00992,2025-03-10,East,Store,Monitor,Electronics,199.31,4,0,797.24,customer348@example.com
+ORD-00763,2025-12-17,North,Phone,Monitor,Electronics,213.48,4,0,853.92,customer142@example.com
+ORD-00673,2025-01-05,South,Online,Desk,Furniture,279.73,1,0.1,251.76,customer167@example.com
+ORD-00605,2025-08-13,South,Store,Laptop,Electronics,927.47,6,0,5564.82,
+ORD-00480,2025-09-10,West,Online,Monitor,Electronics,236.8,1,0.05,224.96,customer246@example.com
+ORD-00348,2025-12-21,North,Online,Monitor,Electronics,237.05,3,0,711.15,customer351@example.com
+ORD-00505,2025-06-03,North,Store,Pen Pack,Stationery,6.57,2,0,13.14,customer374@example.com
+ORD-00516,2025-08-05,East,Store,Notebook,Stationery,4.86,6,0.05,27.7,customer112@example.com
+ORD-00174,2025-02-18,South,Store,Desk,Furniture,298.38,1,0,298.38,
+ORD-00880,2025-02-06,North,Online,Laptop,Electronics,963.56,1,0.05,915.38,customer255@example.com
+ORD-00184,2025-03-22,South,Phone,Desk,Furniture,301.94,4,0.1,1086.98,customer44@example.com
+ORD-00898,2025-05-05,North,Phone,Office Chair,Furniture,195.32,1,0,195.32,customer314@example.com
+ORD-00043,2025-07-09,West,Phone,Laptop,Electronics,909.15,2,0.1,1636.47,customer155@example.com
+ORD-00573,2025-06-14,East,Phone,Notebook,Stationery,4.5,2,0.1,8.1,customer391@example.com
+ORD-00136,2025-06-23,West,Store,Pen Pack,Stationery,6.15,2,0,12.3,customer346@example.com
+ORD-00380,2025-11-28,West,Online,Laptop,Electronics,875.78,6,0.15,4466.48,customer265@example.com
+ORD-00405,2025-02-17,North,Phone,Office Chair,Furniture,188.31,2,0.15,320.13,customer184@example.com
+ORD-00983,2025-07-04,North,Online,Office Chair,Furniture,187.37,3,0,562.11,customer168@example.com
+ORD-00391,2025-07-16,North,Store,Desk,Furniture,338.76,2,0.05,643.64,customer351@example.com
+ORD-00982,2025-07-28,East,Store,Monitor,Electronics,202.97,14,0,2841.58,customer57@example.com
+ORD-00787,2025-09-19,West,Store,Notebook,Stationery,4.6,1,0.1,4.14,customer23@example.com
+ORD-00006,2025-03-05,South,Store,Notebook,Stationery,4.93,1,0.1,4.44,customer322@example.com
+ORD-00047,2025-01-27,North,Online,Desk,Furniture,284.72,2,0,569.44,
+ORD-00613,2025-04-10,North,Phone,Office Chair,Furniture,173.44,2,0.1,312.19,customer157@example.com
+ORD-00363,2025-11-01,East,Store,Notebook,Stationery,4.61,2,0,9.22,customer4@example.com
+ORD-00756,2025-09-25,North,Phone,Monitor,Electronics,231.02,3,0.1,623.75,customer73@example.com
+ORD-00241,2025-08-16,North,Phone,Desk,Furniture,300.8,1,0,300.8,
+ORD-00853,2025-11-09,North,Phone,Office Chair,Furniture,165.18,3,0.15,421.21,customer343@example.com
+ORD-00736,2025-08-18,West,Store,Headphones,Electronics,92.82,1,0,92.82,customer306@example.com
+ORD-00061,2025-03-05,East,Phone,Headphones,Electronics,88.74,1,0,88.74,customer210@example.com
+ORD-00571,2025-01-03,West,Phone,Monitor,Electronics,221.34,1,0.05,210.27,customer248@example.com
+ORD-00999,2025-12-17,East,Online,Desk,Furniture,312.44,3,0.1,843.59,customer260@example.com
+ORD-00075,2025-08-01,North,Online,Notebook,Stationery,4.42,3,0.05,12.6,customer106@example.com
+ORD-00910,2025-07-31,North,Online,Monitor,Electronics,236.27,2,0,472.54,customer242@example.com
+ORD-00612,2025-06-19,East,Online,Notebook,Stationery,4.37,4,0,17.48,customer146@example.com
+ORD-00883,2025-02-05,West,Store,Desk,Furniture,312.49,1,0.15,265.62,customer63@example.com
+ORD-00393,2025-10-03,South,Phone,Laptop,Electronics,909.85,6,0.1,4913.19,customer396@example.com
+ORD-00218,2025-07-15,West,Online,Desk,Furniture,310.18,2,0,620.36,customer310@example.com
+ORD-00408,2025-02-20,North,Online,Pen Pack,Stationery,6.15,6,0,36.9,customer81@example.com
+ORD-00332,2025-05-14,South,Online,Notebook,Stationery,4.37,7,0.05,29.06,customer370@example.com
+ORD-00790,2025-03-09,North,Online,Monitor,Electronics,240.26,1,0,240.26,customer235@example.com
+ORD-00481,2025-11-30,,Online,Pen Pack,Stationery,6.31,1,0.05,5.99,customer18@example.com
+ORD-00011,2025-11-24,West,Online,Headphones,Electronics,88.2,1,0,88.2,customer118@example.com
+ORD-00088,2025-04-12,South,Online,Desk,Furniture,283.71,4,0.15,964.61,customer53@example.com
+ORD-00470,2025-10-28,North,Phone,Laptop,Electronics,988.89,1,0,988.89,customer187@example.com
+ORD-00597,2025-06-01,East,Online,Desk,Furniture,334.69,1,0.1,301.22,customer50@example.com
+ORD-00379,2025-12-23,South,Phone,Laptop,Electronics,940.96,1,0,940.96,customer59@example.com
+ORD-00255,2025-03-07,East,Phone,Notebook,Stationery,4.84,5,0.15,20.57,customer94@example.com
+ORD-00462,2025-10-17,East,Online,Pen Pack,Stationery,6.0,2,0,12.0,customer164@example.com
+ORD-00678,2025-04-01,West,Phone,Desk,Furniture,305.13,1,0.15,259.36,
+ORD-00769,2025-10-17,North,Phone,Pen Pack,Stationery,6.5,2,0.1,11.7,customer369@example.com
+ORD-00682,2025-12-14,North,Phone,Desk,Furniture,338.71,1,0.1,304.84,customer333@example.com
+ORD-00298,2025-02-27,North,Store,Headphones,Electronics,82.12,4,0.15,279.21,customer368@example.com
+ORD-00885,2025-06-24,South,Phone,Laptop,Electronics,870.29,2,0,1740.58,
+ORD-00150,2025-06-01,North,Online,Notebook,Stationery,4.34,2,0,8.68,customer277@example.com
+ORD-00820,2025-05-22,North,Online,Monitor,Electronics,221.42,5,0.15,941.03,customer140@example.com
+ORD-00965,2025-09-21,West,Phone,Notebook,Stationery,4.22,3,0,12.66,customer386@example.com
+ORD-00429,2025-06-08,East,Online,Office Chair,Furniture,185.98,3,0,557.94,customer7@example.com
+ORD-00194,2025-07-25,South,Phone,Monitor,Electronics,221.05,2,0,442.1,customer174@example.com
+ORD-00290,2025-10-03,North,Online,Monitor,Electronics,209.93,3,0,629.79,customer56@example.com
+ORD-00221,2025-02-16,West,Store,Monitor,Electronics,239.64,1,0.05,227.66,customer14@example.com
+ORD-00676,2025-10-20,South,Online,Headphones,Electronics,78.73,3,0,236.19,customer370@example.com
+ORD-00212,2025-09-06,West,Online,Headphones,Electronics,79.76,35,0,2791.6,customer152@example.com
+ORD-00442,2025-12-22,East,Phone,Headphones,Electronics,91.41,12,0,1096.92,customer193@example.com
+ORD-00715,2025-07-02,North,Online,Notebook,Stationery,4.63,4,0,18.52,customer250@example.com
+ORD-00392,2025-08-16,South,Online,Desk,Furniture,309.3,1,0,309.3,customer150@example.com
+ORD-00664,2025-09-22,West,Online,Desk,Furniture,312.21,4,0,1248.84,
+ORD-00295,2025-01-20,East,Online,Monitor,Electronics,238.18,1,0,238.18,customer204@example.com
+ORD-00273,2025-02-19,North,Phone,Laptop,Electronics,929.84,5,0,4649.2,customer188@example.com
+ORD-00196,2025-11-27,South,Store,Pen Pack,Stationery,6.38,1,0,6.38,customer102@example.com
+ORD-00918,2025-09-16,West,Phone,Laptop,Electronics,861.39,3,0.05,2454.96,customer51@example.com
+ORD-00693,2025-05-20,East,Phone,Pen Pack,Stationery,6.06,1,0.15,5.15,customer91@example.com
+ORD-00122,2025-01-01,West,Online,Desk,Furniture,319.77,2,0.05,607.56,customer97@example.com
+ORD-00507,2025-07-11,East,Online,Pen Pack,Stationery,6.39,2,0,12.78,customer160@example.com
+ORD-00739,2025-01-20,North,Store,Office Chair,Furniture,178.57,1,0,178.57,customer299@example.com
+ORD-00925,2025-06-21,East,Store,Laptop,Electronics,994.79,1,0.15,845.57,customer27@example.com
+ORD-00539,2025-01-20,East,Phone,Headphones,Electronics,82.88,3,0.1,223.78,customer25@example.com
+ORD-00015,2025-03-12,West,Online,Monitor,Electronics,220.42,1,0,220.42,customer79@example.com
+ORD-00121,2025-01-19,East,Online,Pen Pack,Stationery,5.95,1,0,5.95,customer396@example.com
+ORD-00994,2025-12-05,East,Online,Laptop,Electronics,997.81,6,0.05,5687.52,customer151@example.com
+ORD-00175,2025-02-04,West,Online,Notebook,Stationery,4.13,1,0.05,3.92,customer382@example.com
+ORD-00698,2025-05-30,South,Store,Pen Pack,Stationery,6.12,5,0.1,27.54,customer97@example.com
+ORD-00685,2025-10-20,East,Online,Desk,Furniture,304.1,9,0,2736.9,customer176@example.com
+ORD-00153,2025-10-13,West,Store,Notebook,Stationery,4.38,6,0,26.28,customer275@example.com
+ORD-00707,2025-08-29,North,Store,Desk,Furniture,290.26,7,0,2031.82,customer7@example.com
+ORD-00841,2025-06-26,West,Phone,Notebook,Stationery,4.94,3,0.1,13.34,customer207@example.com
+ORD-00440,2025-11-15,South,Online,Pen Pack,Stationery,5.69,2,0.05,10.81,customer376@example.com
+ORD-00633,2025-10-31,North,Phone,Laptop,Electronics,885.61,4,0,3542.44,customer76@example.com
+ORD-00727,2025-04-17,West,Store,Laptop,Electronics,979.59,8,0,7836.72,customer328@example.com
+ORD-00051,2025-05-08,North,Store,Headphones,Electronics,87.84,1,0.1,79.06,customer318@example.com
+ORD-00173,2025-04-21,East,Store,Pen Pack,Stationery,5.92,7,0.05,39.37,customer233@example.com
+ORD-00269,2025-06-30,North,Phone,Monitor,Electronics,200.14,1,0.1,180.13,customer345@example.com
+ORD-00701,2025-11-29,South,Online,Notebook,Stationery,4.72,7,0.05,31.39,customer36@example.com
+ORD-00934,2025-10-05,West,Store,Desk,Furniture,336.77,3,0.05,959.79,customer378@example.com
+ORD-00092,2025-11-30,East,Store,Monitor,Electronics,209.88,7,0.1,1322.24,customer239@example.com
+ORD-00235,2025-04-13,North,Phone,Monitor,Electronics,236.97,1,0,236.97,customer204@example.com
+ORD-00939,2025-03-27,South,Store,Headphones,Electronics,87.02,1,0.1,78.32,customer94@example.com
+ORD-00627,2025-05-15,South,Phone,Pen Pack,Stationery,6.09,3,0.05,17.36,customer194@example.com
+ORD-00891,2025-10-02,West,Online,Notebook,Stationery,4.18,3,0,12.54,customer377@example.com
+ORD-00572,2025-04-01,West,Online,Office Chair,Furniture,186.91,1,0,186.91,customer199@example.com
+ORD-00024,2025-04-19,East,Online,Pen Pack,Stationery,6.51,4,0.15,22.13,customer366@example.com
+ORD-00797,2025-01-19,South,Store,Office Chair,Furniture,165.35,1,0,165.35,customer35@example.com
+ORD-00230,2025-09-17,East,Online,Office Chair,Furniture,181.95,2,0.05,345.7,customer326@example.com
+ORD-00854,2025-10-04,East,Store,Laptop,Electronics,1006.64,1,0,1006.64,customer274@example.com
+ORD-00387,2025-12-11,,Online,Office Chair,Furniture,166.82,1,0,166.82,customer94@example.com
+ORD-00773,2025-01-14,North,Online,Monitor,Electronics,213.81,4,0.05,812.48,customer258@example.com
+ORD-00187,2025-12-14,South,Online,Laptop,Electronics,967.7,3,0,2903.1,customer113@example.com
+ORD-00799,2025-09-26,East,Online,Headphones,Electronics,80.07,1,0,80.07,customer293@example.com
+ORD-00974,2025-02-09,West,Online,Pen Pack,Stationery,5.42,2,0.05,10.3,customer101@example.com
+ORD-00087,2025-06-09,North,Phone,Pen Pack,Stationery,5.53,1,0,5.53,
+ORD-00204,2025-06-25,West,Online,Pen Pack,Stationery,6.58,1,0.15,5.59,customer21@example.com
+ORD-00289,2025-02-10,South,Phone,Laptop,Electronics,920.81,2,0,1841.62,customer246@example.com
+ORD-00336,2025-06-22,West,Phone,Notebook,Stationery,4.28,6,0.15,21.83,customer379@example.com
+ORD-00608,2025-10-21,North,Store,Laptop,Electronics,968.36,3,0,2905.08,customer108@example.com
+ORD-00909,2025-04-12,South,Online,Office Chair,Furniture,188.9,7,0,1322.3,customer167@example.com
+ORD-00178,2025-06-30,East,Phone,Headphones,Electronics,78.26,2,0,156.52,customer247@example.com
+ORD-00267,2025-06-17,West,Online,Pen Pack,Stationery,6.52,4,0,26.08,customer256@example.com
+ORD-00137,2025-06-12,East,Phone,Pen Pack,Stationery,6.15,7,0.05,40.9,customer19@example.com
+ORD-00490,2025-07-15,North,Store,Desk,Furniture,301.9,2,0,603.8,customer239@example.com
+ORD-00463,2025-05-24,North,Store,Office Chair,Furniture,164.11,15,0.1,2215.49,customer393@example.com
+ORD-00328,2025-11-06,South,Phone,Headphones,Electronics,86.75,8,0,694.0,customer371@example.com
+ORD-00924,2025-05-19,,Online,Headphones,Electronics,88.37,3,0.1,238.6,customer351@example.com
+ORD-00703,2025-01-10,North,Online,Desk,Furniture,288.43,11,0,3172.73,customer53@example.com
+ORD-00609,2025-06-26,East,Online,Notebook,Stationery,4.24,8,0.1,30.53,customer83@example.com
+ORD-00134,2025-10-30,North,Online,Laptop,Electronics,918.08,1,0.05,872.18,customer270@example.com
+ORD-00665,2025-06-25,South,Store,Laptop,Electronics,869.45,9,0.05,7433.8,customer182@example.com
+ORD-00960,2025-11-27,West,Store,Desk,Furniture,294.17,1,0,294.17,customer35@example.com
+ORD-00256,2025-08-10,West,Phone,Pen Pack,Stationery,6.0,7,0,42.0,customer79@example.com
+ORD-00162,2025-11-25,East,Store,Laptop,Electronics,976.5,14,0,13671.0,customer125@example.com
+ORD-00114,2025-11-01,West,Store,Monitor,Electronics,230.95,3,0,692.85,customer64@example.com
+ORD-00085,2025-08-31,North,Store,Monitor,Electronics,227.46,3,0,682.38,customer359@example.com
+ORD-00590,2025-11-17,East,Phone,Headphones,Electronics,86.97,4,0.05,330.49,customer282@example.com
+ORD-00868,2025-11-30,South,Online,Pen Pack,Stationery,6.43,2,0,12.86,customer131@example.com
+ORD-00313,2025-04-03,South,Phone,Laptop,Electronics,1001.1,5,0.15,4254.68,
+ORD-00644,2025-07-29,West,Online,Office Chair,Furniture,171.28,1,0.15,145.59,customer296@example.com
+ORD-00975,2025-12-04,North,Store,Laptop,Electronics,952.56,1,0,952.56,customer23@example.com
+ORD-00411,2025-07-22,North,Store,Notebook,Stationery,4.61,4,0,18.44,customer336@example.com
+ORD-00004,2025-03-23,West,Online,Pen Pack,Stationery,6.24,1,0,6.24,customer391@example.com
+ORD-00886,2025-07-16,East,Online,Monitor,Electronics,227.07,1,0.05,215.72,customer323@example.com
+ORD-00734,2025-06-16,West,Store,Office Chair,Furniture,192.41,2,0.15,327.1,customer372@example.com
+ORD-00455,2025-10-28,North,Online,Notebook,Stationery,4.28,7,0,29.96,customer102@example.com
+ORD-00646,2025-11-30,North,Store,Laptop,Electronics,966.22,1,0.1,869.6,customer290@example.com
+ORD-00189,2025-03-03,South,Online,Headphones,Electronics,76.63,4,0,306.52,customer195@example.com
+ORD-00752,2025-06-06,North,Phone,Notebook,Stationery,4.2,1,0.05,3.99,customer75@example.com
+ORD-00657,2025-10-28,South,Online,Notebook,Stationery,4.23,1,0.15,3.6,customer47@example.com
+ORD-00054,2025-12-26,North,Online,Headphones,Electronics,78.34,8,0.05,595.38,customer103@example.com
+ORD-00901,2025-05-19,North,Phone,Monitor,Electronics,221.02,2,0,442.04,customer355@example.com
+ORD-00712,2025-06-16,East,Online,Monitor,Electronics,198.66,5,0.1,893.97,customer203@example.com
+ORD-00969,2025-04-07,East,Phone,Monitor,Electronics,232.98,3,0.15,594.1,customer273@example.com
+ORD-00335,2025-04-11,South,Store,Desk,Furniture,299.45,1,0,299.45,customer282@example.com
+ORD-00966,2025-06-11,East,Store,Monitor,Electronics,234.38,4,0,937.52,customer351@example.com
+ORD-00917,2025-10-30,East,Store,Desk,Furniture,337.67,10,0,3376.7,customer23@example.com
+ORD-00431,2025-03-06,North,Online,Headphones,Electronics,89.25,6,0.15,455.18,customer395@example.com
+ORD-00361,2025-03-28,East,Online,Monitor,Electronics,204.11,1,0.05,193.9,customer33@example.com
+ORD-00068,2025-12-23,North,Phone,Office Chair,Furniture,175.82,2,0,351.64,
+ORD-00519,2025-06-22,East,Store,Laptop,Electronics,1042.79,3,0,3128.37,customer336@example.com
+ORD-00268,2025-06-07,East,Phone,Office Chair,Furniture,179.91,1,0.05,170.91,customer235@example.com
+ORD-00716,2025-10-13,South,Phone,Monitor,Electronics,232.7,6,0.05,1326.39,customer99@example.com
+ORD-00766,2025-12-18,West,Store,Office Chair,Furniture,170.19,1,0,170.19,customer160@example.com
+ORD-00103,2025-01-28,,Phone,Monitor,Electronics,222.35,4,0,889.4,customer386@example.com
+ORD-00892,2025-01-10,East,Online,Monitor,Electronics,218.73,8,0,1749.84,customer360@example.com
+ORD-00651,2025-01-27,East,Online,Notebook,Stationery,4.19,10,0,41.9,customer75@example.com
+ORD-00341,2025-10-10,North,Store,Laptop,Electronics,933.15,1,0.15,793.18,customer275@example.com
+ORD-00916,2025-05-23,West,Online,Desk,Furniture,279.9,2,0,559.8,customer168@example.com
+ORD-00834,2025-12-22,North,Phone,Headphones,Electronics,86.55,6,0.05,493.33,customer176@example.com
+ORD-00483,2025-02-17,North,Phone,Notebook,Stationery,4.35,13,0.05,53.72,customer16@example.com
+ORD-00504,2025-06-09,West,Phone,Pen Pack,Stationery,5.74,2,0.15,9.76,customer51@example.com
+ORD-00083,2025-10-04,North,Phone,Desk,Furniture,282.23,12,0,3386.76,customer36@example.com
+ORD-00281,2025-01-17,East,Online,Pen Pack,Stationery,6.09,4,0,24.36,customer226@example.com
+ORD-00035,2025-05-27,West,Phone,Pen Pack,Stationery,5.91,10,0.1,53.19,customer368@example.com
+ORD-00864,2025-03-01,East,Store,Headphones,Electronics,77.39,2,0.05,147.04,customer244@example.com
+ORD-00877,2025-07-18,North,Online,Pen Pack,Stationery,5.8,1,0,5.8,customer226@example.com
+ORD-00811,2025-05-24,West,Phone,Laptop,Electronics,1014.74,1,0.05,964.0,customer274@example.com
+ORD-00647,2025-12-15,East,Phone,Headphones,Electronics,83.26,1,0.1,74.93,customer248@example.com
+ORD-00450,2025-03-03,East,Phone,Headphones,Electronics,78.04,5,0,390.2,customer357@example.com
+ORD-00911,2025-08-12,East,Online,Office Chair,Furniture,167.22,9,0.05,1429.73,customer199@example.com
+ORD-00216,2025-11-09,West,Online,Monitor,Electronics,210.54,6,0.05,1200.08,customer274@example.com
+ORD-00295,2025-01-20,East,Online,Monitor,Electronics,238.18,1,0,238.18,customer204@example.com
+ORD-00947,2025-04-23,South,Phone,Laptop,Electronics,939.73,1,0,939.73,customer329@example.com
+ORD-00843,2025-07-03,West,Online,Office Chair,Furniture,165.95,1,0,165.95,customer222@example.com
+ORD-00309,2025-08-15,West,Store,Headphones,Electronics,78.48,1,0.1,70.63,customer47@example.com
+ORD-00262,2025-10-07,West,Online,Desk,Furniture,296.96,12,0.05,3385.34,customer351@example.com
+ORD-00403,2025-05-18,East,Phone,Monitor,Electronics,225.62,1,0,225.62,customer394@example.com
+ORD-00009,2025-03-25,West,Phone,Notebook,Stationery,4.38,1,0,4.38,customer350@example.com
+ORD-00398,2025-11-12,South,Online,Notebook,Stationery,4.18,1,0,4.18,customer292@example.com
+ORD-00454,2025-04-24,West,Phone,Laptop,Electronics,879.84,5,0,4399.2,customer323@example.com
+ORD-00243,2025-01-16,North,Online,Notebook,Stationery,4.18,3,0.05,11.91,customer65@example.com
+ORD-00548,2025-06-01,West,Online,Desk,Furniture,295.38,1,0,295.38,customer149@example.com
+ORD-00125,2025-03-23,North,Online,Pen Pack,Stationery,5.77,1,0.05,5.48,customer116@example.com
+ORD-00943,2025-01-13,South,Store,Office Chair,Furniture,176.56,2,0,353.12,customer164@example.com
+ORD-00872,2025-05-26,North,Online,Headphones,Electronics,80.78,1,0.1,72.7,customer30@example.com
+ORD-00718,2025-10-05,East,Phone,Desk,Furniture,322.22,1,0,322.22,customer179@example.com
+ORD-00655,2025-11-03,North,Online,Monitor,Electronics,220.46,5,0.1,992.07,customer346@example.com
+ORD-00317,2025-09-30,East,Store,Notebook,Stationery,4.39,1,0.05,4.17,customer80@example.com
+ORD-00394,2025-09-19,East,Store,Pen Pack,Stationery,5.54,1,0.1,4.99,customer278@example.com
+ORD-00566,2025-08-20,South,Online,Notebook,Stationery,4.15,5,0,20.75,customer175@example.com
+ORD-00260,2025-10-16,South,Online,Office Chair,Furniture,163.48,8,0,1307.84,customer329@example.com
+ORD-00246,2025-11-29,South,Phone,Headphones,Electronics,81.24,13,0,1056.12,customer96@example.com
+ORD-00862,2025-03-20,East,Store,Monitor,Electronics,234.86,4,0.05,892.47,customer122@example.com
+ORD-00708,2025-05-08,West,Phone,Laptop,Electronics,928.11,457,0,424146.27,customer18@example.com
+ORD-00056,2025-06-18,North,Store,Notebook,Stationery,4.3,1,0,4.3,customer329@example.com
+ORD-00679,2025-09-07,South,Online,Notebook,Stationery,4.32,3,0.1,11.66,customer204@example.com
+ORD-00758,2025-04-13,North,Store,Monitor,Electronics,232.72,3,0,698.16,customer336@example.com
+ORD-00036,2025-06-01,North,Phone,Desk,Furniture,292.5,1,0.15,248.62,customer32@example.com
+ORD-00621,2025-05-29,East,Store,Pen Pack,Stationery,5.56,2,0,11.12,customer187@example.com
+ORD-00661,2025-05-09,West,Store,Pen Pack,Stationery,6.23,11,0.1,61.68,customer395@example.com
+ORD-00022,2025-10-18,North,Online,Laptop,Electronics,1034.92,1,0.05,983.17,customer390@example.com
+ORD-00316,2025-04-25,East,Store,Desk,Furniture,330.76,4,0,1323.04,customer345@example.com
+ORD-00377,2025-09-05,West,Online,Headphones,Electronics,78.28,2,0,156.56,customer374@example.com
+ORD-00733,2025-12-03,East,Store,Desk,Furniture,288.81,26,0.05,7133.61,customer162@example.com
+ORD-00808,2025-11-27,West,Phone,Desk,Furniture,287.42,1,0.05,273.05,customer172@example.com
+ORD-00372,2025-10-06,East,Phone,Pen Pack,Stationery,5.44,14,0.15,64.74,customer305@example.com
+ORD-00149,2025-11-27,West,Phone,Laptop,Electronics,862.49,6,0,5174.94,customer187@example.com
+ORD-00804,2025-11-12,North,Store,Pen Pack,Stationery,6.6,2,0,13.2,customer287@example.com
+ORD-00922,2025-07-27,West,Store,Monitor,Electronics,206.14,7,0.15,1226.53,customer361@example.com
+ORD-00253,2025-07-23,North,Store,Laptop,Electronics,1044.92,4,0.1,3761.71,customer394@example.com
+ORD-00700,2025-05-15,South,Phone,Pen Pack,Stationery,5.5,3,0.1,14.85,customer356@example.com
+ORD-00991,2025-03-17,East,Store,Desk,Furniture,326.62,1,0,326.62,customer255@example.com
+ORD-00828,2025-11-26,,Online,Desk,Furniture,323.03,3,0,969.09,customer74@example.com
+ORD-00559,2025-03-22,North,Online,Laptop,Electronics,951.06,2,0.05,1807.01,customer39@example.com
+ORD-00325,2025-08-31,,Online,Monitor,Electronics,208.6,1,0.15,177.31,customer238@example.com
+ORD-00116,2025-08-10,East,Online,Laptop,Electronics,994.56,3,0,2983.68,customer118@example.com
+ORD-00717,2025-07-03,East,Store,Laptop,Electronics,992.64,1,0,992.64,customer362@example.com
+ORD-00384,2025-10-02,West,Online,Laptop,Electronics,890.52,2,0.05,1691.99,customer135@example.com
+ORD-00547,2025-09-19,West,Phone,Monitor,Electronics,201.3,4,0,805.2,customer119@example.com
+ORD-00503,2025-01-26,East,Online,Headphones,Electronics,89.18,8,0,713.44,customer173@example.com
+ORD-00058,2025-11-02,North,Store,Headphones,Electronics,83.89,5,0,419.45,
+ORD-00604,2025-07-03,West,Store,Notebook,Stationery,4.89,1,0.15,4.16,customer311@example.com
+ORD-00261,2025-11-30,East,Phone,Pen Pack,Stationery,5.65,3,0.1,15.26,customer16@example.com
+ORD-00419,2025-10-11,North,Phone,Notebook,Stationery,4.59,5,0,22.95,customer14@example.com
+ORD-00451,2025-06-17,North,Store,Office Chair,Furniture,167.34,4,0,669.36,customer263@example.com
+ORD-00282,2025-07-31,South,Store,Headphones,Electronics,88.24,2,0.1,158.83,customer377@example.com
+ORD-00220,2025-03-05,East,Store,Pen Pack,Stationery,5.74,4,0,22.96,customer263@example.com
+ORD-00180,2025-10-15,South,Phone,Pen Pack,Stationery,6.57,7,0.1,41.39,customer330@example.com
+ORD-00110,2025-03-30,North,Store,Laptop,Electronics,959.88,1,0.05,911.89,customer353@example.com
+ORD-00148,2025-12-14,East,Online,Monitor,Electronics,231.25,6,0.15,1179.38,customer322@example.com
+ORD-00224,2025-08-30,West,Store,Headphones,Electronics,88.33,1,0.15,75.08,customer230@example.com
+ORD-00434,2025-02-22,North,Online,Monitor,Electronics,237.35,3,0,712.05,customer380@example.com
+ORD-00856,2025-05-31,West,Phone,Headphones,Electronics,81.42,1,0.1,73.28,customer156@example.com
+ORD-00762,2025-05-07,North,Store,Notebook,Stationery,4.88,1,0.05,4.64,customer382@example.com
+ORD-00767,2025-10-05,South,Phone,Office Chair,Furniture,166.74,4,0.1,600.26,customer351@example.com
+ORD-00826,2025-04-12,South,Online,Headphones,Electronics,88.62,3,0.1,239.27,customer387@example.com
+ORD-00400,2025-09-21,,Online,Office Chair,Furniture,197.48,4,0,789.92,customer385@example.com
+ORD-00755,2025-06-06,West,Phone,Notebook,Stationery,4.46,1,0,4.46,customer276@example.com
+ORD-00599,2025-12-17,North,Phone,Pen Pack,Stationery,5.91,1,0.1,5.32,customer380@example.com
+ORD-00338,2025-09-26,West,Online,Notebook,Stationery,4.08,6,0.15,20.81,customer392@example.com
+ORD-00976,2025-01-06,South,Online,Laptop,Electronics,998.36,5,0.1,4492.62,customer301@example.com
+ORD-00827,2025-03-09,East,Store,Pen Pack,Stationery,5.51,5,0.15,23.42,customer50@example.com
+ORD-00792,2025-08-21,East,Online,Office Chair,Furniture,176.77,1,0.1,159.09,customer126@example.com
+ORD-00126,2025-08-25,West,Store,Pen Pack,Stationery,6.54,3,0,19.62,customer367@example.com
+ORD-00615,2025-04-24,North,Store,Headphones,Electronics,88.61,3,0,265.83,customer69@example.com
+ORD-00244,2025-11-27,North,Online,Laptop,Electronics,924.6,2,0.1,1664.28,customer310@example.com
+ORD-00860,2025-10-30,East,Online,Laptop,Electronics,995.4,4,0,3981.6,customer134@example.com
+ORD-00509,2025-04-13,West,Online,Monitor,Electronics,234.83,386,0.05,86112.16,customer185@example.com
+ORD-00972,2025-06-05,North,Online,Headphones,Electronics,76.99,5,0,384.95,customer356@example.com
+ORD-00538,2025-03-09,East,Online,Monitor,Electronics,207.29,1,0.1,186.56,customer64@example.com
+ORD-00794,2025-01-19,East,Phone,Laptop,Electronics,882.62,1,0.1,794.36,customer153@example.com
+ORD-00595,2025-05-05,West,Store,Office Chair,Furniture,196.52,4,0,786.08,customer59@example.com
+ORD-00681,2025-07-04,South,Store,Notebook,Stationery,4.37,3,0,13.11,customer11@example.com
+ORD-00937,2025-10-08,East,Store,Notebook,Stationery,4.45,1,0,4.45,customer88@example.com
+ORD-00124,2025-08-13,West,Phone,Monitor,Electronics,236.76,2,0,473.52,customer312@example.com
+ORD-00513,2025-10-20,North,Phone,Laptop,Electronics,1003.17,1,0,1003.17,customer116@example.com
+ORD-00753,2025-04-30,North,Online,Desk,Furniture,291.38,1,0.15,247.67,customer58@example.com
+ORD-00585,2025-05-09,,Online,Laptop,Electronics,893.59,6,0.05,5093.46,customer325@example.com
+ORD-00115,2025-12-25,East,Store,Desk,Furniture,303.96,1,0.1,273.56,customer225@example.com
+ORD-00907,2025-08-21,East,Online,Headphones,Electronics,77.24,4,0.1,278.06,customer81@example.com
+ORD-00144,2025-06-03,West,Store,Headphones,Electronics,87.36,2,0,174.72,customer155@example.com
+ORD-00742,2025-11-01,West,Store,Pen Pack,Stationery,6.17,1,0.1,5.55,customer41@example.com
+ORD-00407,2025-06-22,West,Store,Headphones,Electronics,85.8,1,0.05,81.51,customer350@example.com
+ORD-00093,2025-10-31,West,Store,Desk,Furniture,295.64,8,0,2365.12,customer231@example.com
+ORD-00674,2025-05-13,East,Store,Headphones,Electronics,79.68,1,0,79.68,
+ORD-00968,2025-09-06,South,Online,Office Chair,Furniture,176.83,8,0,1414.64,customer112@example.com
+ORD-00373,2025-02-25,West,Online,Notebook,Stationery,4.74,3,0,14.22,customer332@example.com
+ORD-00417,2025-08-15,East,Online,Desk,Furniture,332.32,1,0,332.32,customer386@example.com
+ORD-00920,2025-05-03,South,Phone,Monitor,Electronics,226.5,1,0.05,215.17,customer157@example.com
+ORD-00306,2025-08-30,East,Online,Notebook,Stationery,4.73,5,0,23.65,customer349@example.com
+ORD-00617,2025-11-07,North,Phone,Laptop,Electronics,870.58,1,0,870.58,customer101@example.com
+ORD-00322,2025-12-05,West,Online,Headphones,Electronics,85.36,2,0,170.72,customer286@example.com
+ORD-00086,2025-03-27,East,Online,Headphones,Electronics,86.8,10,0.15,737.8,customer399@example.com
+ORD-00057,2025-10-02,South,Online,Office Chair,Furniture,173.92,1,0,173.92,customer298@example.com
+ORD-00021,2025-11-03,,Store,Office Chair,Furniture,173.67,1,0,173.67,
+ORD-00802,2025-09-24,East,Phone,Office Chair,Furniture,188.25,2,0,376.5,customer120@example.com
+ORD-00895,2025-04-14,North,Phone,Monitor,Electronics,216.75,5,0.15,921.19,customer206@example.com
+ORD-00740,2025-06-03,North,Phone,Monitor,Electronics,202.04,2,0,404.08,customer40@example.com
+ORD-00044,2025-12-01,West,Store,Office Chair,Furniture,181.04,4,0.1,651.74,customer340@example.com
+ORD-00873,2025-04-22,East,Online,Office Chair,Furniture,196.22,3,0.15,500.36,customer45@example.com
+ORD-00660,2025-05-31,North,Store,Office Chair,Furniture,174.24,1,0.1,156.82,customer276@example.com
+ORD-00181,2025-12-03,North,Store,Office Chair,Furniture,191.86,1,0,191.86,customer360@example.com
+ORD-00564,2025-10-15,West,Store,Headphones,Electronics,80.02,4,0,320.08,customer28@example.com
+ORD-00675,2025-09-13,South,Store,Headphones,Electronics,83.71,2,0,167.42,customer206@example.com
+ORD-00285,2025-12-15,West,Store,Pen Pack,Stationery,6.17,5,0.1,27.77,customer99@example.com
+ORD-00823,2025-11-10,North,Online,Monitor,Electronics,237.26,3,0,711.78,customer15@example.com
+ORD-00809,2025-07-31,West,Store,Desk,Furniture,336.52,1,0.1,302.87,customer290@example.com
+ORD-00265,2025-09-21,East,Online,Monitor,Electronics,222.71,1,0.05,211.57,customer137@example.com
+ORD-00030,2025-01-28,East,Online,Desk,Furniture,320.75,13,0,4169.75,customer207@example.com
+ORD-00140,2025-01-29,North,Online,Laptop,Electronics,910.74,1,0,910.74,customer272@example.com
+ORD-00996,2025-08-09,North,Store,Pen Pack,Stationery,6.46,1,0.05,6.14,customer193@example.com
+ORD-00164,2025-06-18,West,Online,Pen Pack,Stationery,6.33,5,0.1,28.48,customer142@example.com
+ORD-00207,2025-10-13,South,Phone,Laptop,Electronics,-983.89,1,0.15,836.31,customer309@example.com
+ORD-00038,2025-04-06,North,Store,Office Chair,Furniture,164.47,1,0,164.47,customer62@example.com
+ORD-00663,2025-11-21,North,Online,Headphones,Electronics,89.91,1,0.15,76.42,customer162@example.com
+ORD-00433,2025-09-19,East,Online,Laptop,Electronics,923.42,2,0.1,1662.16,
+ORD-00447,2025-06-11,South,Store,Headphones,Electronics,-92.24,2,0.15,156.81,customer163@example.com
+ORD-00574,2025-06-25,South,Online,Monitor,Electronics,240.7,2,0,481.4,customer212@example.com
+ORD-00498,2025-06-16,South,Phone,Office Chair,Furniture,192.84,2,0,385.68,customer320@example.com
+ORD-00476,2025-11-10,South,Online,Office Chair,Furniture,169.95,3,0.05,484.36,customer170@example.com
+ORD-00318,2025-02-27,North,Online,Headphones,Electronics,77.05,3,0.1,208.03,customer124@example.com
+ORD-00848,2025-08-22,South,Phone,Pen Pack,Stationery,6.47,4,0.05,24.59,customer93@example.com
+ORD-00817,2025-08-24,East,Online,Monitor,Electronics,215.05,7,0,1505.35,customer160@example.com
+ORD-00252,2025-07-04,East,Online,Pen Pack,Stationery,6.06,1,0.1,5.45,customer314@example.com
+ORD-00029,2025-07-28,West,Store,Monitor,Electronics,206.38,1,0.05,196.06,
+ORD-00197,2025-12-02,East,Store,Monitor,Electronics,201.32,12,0.15,2053.46,customer238@example.com
+ORD-00154,2025-12-11,South,Phone,Laptop,Electronics,997.31,1,0.05,947.44,customer191@example.com
+ORD-00117,2025-10-22,West,Store,Notebook,Stationery,4.58,1,0.15,3.89,customer296@example.com
+ORD-00245,2025-07-09,East,Online,Monitor,Electronics,214.37,5,0.1,964.66,customer272@example.com
+ORD-00416,2025-03-26,East,Phone,Laptop,Electronics,938.62,4,0.15,3191.31,customer78@example.com
+ORD-00242,2025-01-30,East,Phone,Headphones,Electronics,77.78,3,0,233.34,customer384@example.com
+ORD-00616,2025-09-03,East,Store,Notebook,Stationery,4.47,1,0,4.47,customer283@example.com
+ORD-00704,2025-08-13,South,Online,Headphones,Electronics,88.86,1,0,88.86,customer253@example.com
+ORD-00263,2025-02-07,South,Store,Desk,Furniture,321.69,1,0.05,305.61,customer238@example.com
+ORD-00165,2025-03-08,West,Phone,Pen Pack,Stationery,6.05,5,0,30.25,customer14@example.com
+ORD-00662,2025-08-23,East,Store,Monitor,Electronics,227.99,7,0,1595.93,customer60@example.com
+ORD-00294,2025-05-28,East,Phone,Monitor,Electronics,212.13,3,0,636.39,customer294@example.com
+ORD-00953,2025-03-25,South,Phone,Pen Pack,Stationery,6.37,11,0.05,66.57,customer213@example.com
+ORD-00274,2025-11-05,,Online,Pen Pack,Stationery,6.01,3,0,18.03,customer71@example.com
+ORD-00423,2025-12-16,South,Online,Desk,Furniture,289.71,3,0,869.13,customer301@example.com
+ORD-00867,2025-12-16,West,Phone,Headphones,Electronics,92.75,1,0.1,83.48,customer182@example.com
+ORD-00209,2025-03-08,East,Phone,Notebook,Stationery,4.59,9,0,41.31,customer193@example.com
+ORD-00650,2025-03-24,East,Phone,Pen Pack,Stationery,5.52,2,0,11.04,customer315@example.com
+ORD-00066,2025-05-01,North,Online,Headphones,Electronics,87.94,1,0,87.94,customer13@example.com
+ORD-00851,2025-01-18,East,Store,Office Chair,Furniture,197.22,3,0.15,502.91,customer58@example.com
+ORD-00881,2025-01-01,East,Online,Monitor,Electronics,239.05,3,0,717.15,customer359@example.com
+ORD-00327,2025-08-19,East,Online,Headphones,Electronics,90.9,1,0.15,77.27,customer27@example.com
+ORD-00421,2025-05-03,East,Phone,Headphones,Electronics,84.91,1,0.05,80.66,customer305@example.com
+ORD-00446,2025-02-08,West,Online,Notebook,Stationery,4.58,1,0.15,3.89,customer122@example.com
+ORD-00509,2025-04-13,West,Online,Monitor,Electronics,234.83,386,0.05,86112.16,customer185@example.com
+ORD-00980,2025-02-20,North,Store,Office Chair,Furniture,195.27,8,0.15,1327.84,customer188@example.com
+ORD-00784,2025-08-19,South,Online,Desk,Furniture,280.54,2,0.15,476.92,
+ORD-00702,2025-02-26,North,Phone,Monitor,Electronics,226.02,3,0,678.06,customer319@example.com
+ORD-00765,2025-07-21,North,Phone,Monitor,Electronics,226.9,1,0.05,215.56,customer348@example.com
+ORD-00155,2025-08-30,East,Store,Laptop,Electronics,859.75,7,0.1,5416.43,customer313@example.com
+ORD-00247,2025-10-15,East,Store,Desk,Furniture,286.3,6,0.15,1460.13,customer110@example.com
+ORD-00152,2025-02-28,South,Phone,Pen Pack,Stationery,5.96,1,0,5.96,customer371@example.com
+ORD-00474,2025-07-13,West,Online,Office Chair,Furniture,173.05,4,0,692.2,customer374@example.com
+ORD-00374,2025-11-27,North,Store,Office Chair,Furniture,186.39,2,0,372.78,customer55@example.com
+ORD-00206,2025-06-23,South,Phone,Desk,Furniture,321.09,1,0.15,272.93,customer172@example.com
+ORD-00535,2025-02-22,South,Online,Headphones,Electronics,83.02,3,0,249.06,customer24@example.com
+ORD-00062,2025-06-01,South,Store,Headphones,Electronics,85.93,1,0.15,73.04,customer347@example.com
+ORD-00642,2025-09-04,North,Phone,Desk,Furniture,327.95,2,0.1,590.31,customer390@example.com
+ORD-00745,2025-06-13,East,Phone,Headphones,Electronics,85.68,1,0.1,77.11,customer114@example.com
+ORD-00580,2025-01-28,South,Store,Laptop,Electronics,982.35,1,0,982.35,customer350@example.com
+ORD-00445,2025-08-23,West,Phone,Notebook,Stationery,4.93,1,0,4.93,customer69@example.com
+ORD-00929,2025-09-15,West,Store,Headphones,Electronics,88.06,1,0,88.06,customer177@example.com
+ORD-00788,2025-06-21,North,Online,Pen Pack,Stationery,6.08,3,0,18.24,customer75@example.com
+ORD-00874,2025-07-12,East,Online,Pen Pack,Stationery,6.19,7,0.1,39.0,customer57@example.com
+ORD-00630,2025-04-28,South,Online,Monitor,Electronics,201.39,3,0,604.17,customer96@example.com
+ORD-00829,2025-05-13,West,Phone,Pen Pack,Stationery,6.5,2,0.15,11.05,
+ORD-00546,2025-01-07,North,Phone,Headphones,Electronics,87.92,7,0.1,553.9,customer253@example.com
+ORD-00654,2025-11-24,West,Phone,Pen Pack,Stationery,5.99,1,0.15,5.09,customer147@example.com
+ORD-00275,2025-08-31,South,Online,Notebook,Stationery,4.52,1,0.1,4.07,customer168@example.com
+ORD-00479,2025-02-25,South,Phone,Headphones,Electronics,88.75,1,0.05,84.31,customer215@example.com
+ORD-00807,2025-01-15,East,Phone,Notebook,Stationery,4.8,1,0,4.8,customer246@example.com
+ORD-00984,2025-05-26,North,Store,Desk,Furniture,307.33,4,0.15,1044.92,customer116@example.com
+ORD-00677,2025-10-12,West,Phone,Headphones,Electronics,83.85,2,0,167.7,customer77@example.com
+ORD-00219,2025-01-27,West,Online,Monitor,Electronics,226.21,6,0.1,1221.53,customer365@example.com
+ORD-00512,2025-05-13,South,Online,Headphones,Electronics,89.23,4,0,356.92,customer198@example.com
+ORD-00591,2025-12-29,North,Phone,Headphones,Electronics,81.9,1,0,81.9,customer35@example.com
+ORD-00192,2025-11-24,South,Store,Office Chair,Furniture,177.04,1,0,177.04,customer88@example.com
+ORD-00884,2025-07-03,East,Phone,Office Chair,Furniture,174.0,1,0,174.0,customer332@example.com
+ORD-00529,2025-03-19,North,Phone,Desk,Furniture,287.52,1,0.05,273.14,customer235@example.com
+ORD-00721,2025-04-05,East,Phone,Notebook,Stationery,4.84,3,0,14.52,customer123@example.com
+ORD-00643,2025-02-20,East,Online,Pen Pack,Stationery,5.91,1,0,5.91,customer146@example.com
+ORD-00020,2025-09-17,West,Phone,Headphones,Electronics,86.85,1,0,86.85,customer399@example.com
+ORD-00903,2025-04-09,East,Phone,Laptop,Electronics,877.33,2,0,1754.66,customer186@example.com
+ORD-00185,2025-11-13,North,Phone,Laptop,Electronics,864.45,1,0.05,821.23,customer218@example.com
+ORD-00561,2025-05-01,South,Store,Notebook,Stationery,4.12,2,0.1,7.42,customer46@example.com
+ORD-00782,2025-11-10,South,Store,Monitor,Electronics,238.44,5,0,1192.2,customer331@example.com
+ORD-00688,2025-03-06,West,Phone,Monitor,Electronics,230.02,3,0.15,586.55,customer384@example.com
+ORD-00465,2025-04-23,East,Store,Laptop,Electronics,964.38,13,0.05,11910.09,customer89@example.com
+ORD-00528,2025-04-10,,Phone,Laptop,Electronics,950.09,6,0.05,5415.51,customer153@example.com
+ORD-00078,2025-11-05,East,Store,Notebook,Stationery,4.86,3,0,14.58,customer249@example.com
+ORD-00258,2025-10-10,North,Phone,Headphones,Electronics,81.17,4,0.1,292.21,customer48@example.com
+ORD-00549,2025-06-10,West,Online,Headphones,Electronics,83.74,1,0,83.74,customer71@example.com
+ORD-00425,2025-08-01,East,Phone,Notebook,Stationery,4.43,2,0.15,7.53,customer276@example.com
+ORD-00205,2025-08-13,East,Store,Monitor,Electronics,221.06,3,0,663.18,customer145@example.com
+ORD-00321,2025-10-22,North,Store,Headphones,Electronics,81.92,4,0.15,278.53,customer122@example.com
+ORD-00553,2025-03-23,North,Phone,Notebook,Stationery,4.14,8,0.05,31.46,customer348@example.com
+ORD-00680,2025-01-31,East,Online,Laptop,Electronics,895.94,1,0.15,761.55,customer231@example.com
+ORD-00444,2025-03-14,West,Phone,Laptop,Electronics,990.21,1,0,990.21,customer212@example.com
+ORD-00308,2025-10-08,North,Online,Laptop,Electronics,1026.55,1,0.1,923.89,customer85@example.com
+ORD-00871,2025-02-04,North,Phone,Notebook,Stationery,4.06,1,0,4.06,customer229@example.com
+ORD-00517,2025-09-24,South,Online,Desk,Furniture,330.11,2,0,660.22,customer262@example.com
+ORD-00310,2025-01-29,South,Phone,Office Chair,Furniture,178.32,2,0.05,338.81,customer30@example.com
+ORD-00844,2025-11-17,East,Store,Notebook,Stationery,4.34,2,0.05,8.25,customer280@example.com
+ORD-00668,2025-02-24,North,Store,Headphones,Electronics,78.54,1,0.15,66.76,customer315@example.com
+ORD-00079,2025-12-09,South,Store,Laptop,Electronics,984.04,2,0,1968.08,customer66@example.com
+ORD-00815,2025-09-05,North,Store,Office Chair,Furniture,194.58,1,0,194.58,customer376@example.com
+ORD-00356,2025-05-18,North,Online,Notebook,Stationery,4.19,4,0.15,14.25,customer379@example.com
+ORD-00215,2025-03-26,East,Phone,Pen Pack,Stationery,6.27,1,0,6.27,customer369@example.com
+ORD-00438,2025-01-24,East,Store,Pen Pack,Stationery,6.54,1,0.05,6.21,customer397@example.com
+ORD-00487,2025-08-07,South,Phone,Laptop,Electronics,871.65,6,0.15,4445.41,customer246@example.com
+ORD-00544,2025-02-24,North,Phone,Headphones,Electronics,84.96,3,0,254.88,customer104@example.com
+ORD-00821,2025-02-28,North,Online,Monitor,Electronics,198.67,3,0.1,536.41,customer106@example.com
+ORD-00581,2025-02-01,North,Online,Headphones,Electronics,88.24,1,0.1,79.42,customer184@example.com
+ORD-00069,2025-02-24,West,Phone,Laptop,Electronics,1002.9,1,0.15,852.46,customer238@example.com
+ORD-00280,2025-09-03,North,Store,Notebook,Stationery,4.2,3,0.1,11.34,customer76@example.com
+ORD-00345,2025-02-11,West,Online,Notebook,Stationery,4.64,353,0,1637.92,customer208@example.com
+ORD-00607,2025-11-28,East,Phone,Headphones,Electronics,82.84,12,0.1,894.67,
+ORD-00098,2025-05-05,South,Phone,Monitor,Electronics,211.47,3,0.05,602.69,customer272@example.com
+ORD-00593,2025-07-04,South,Phone,Notebook,Stationery,4.31,10,0.1,38.79,customer244@example.com
+ORD-00865,2025-09-30,West,Store,Notebook,Stationery,4.26,4,0.05,16.19,customer135@example.com
+ORD-00735,2025-10-16,East,Phone,Headphones,Electronics,85.78,2,0.1,154.4,customer131@example.com
+ORD-00095,2025-07-01,East,Phone,Monitor,Electronics,233.1,1,0.1,209.79,customer142@example.com
+ORD-00981,2025-08-14,East,Store,Notebook,Stationery,4.66,1,0,4.66,customer218@example.com
+ORD-00761,2025-11-02,East,Store,Headphones,Electronics,85.54,1,0.1,76.99,customer288@example.com
+ORD-00640,2025-02-17,East,Phone,Office Chair,Furniture,179.36,1,0.1,161.42,customer1@example.com
+ORD-00232,2025-02-23,East,Online,Notebook,Stationery,4.74,4,0,18.96,customer23@example.com
+ORD-00824,2025-01-26,West,Store,Desk,Furniture,285.57,1,0.05,271.29,customer92@example.com
+ORD-00412,2025-01-01,East,Online,Laptop,Electronics,895.55,1,0.1,806.0,customer266@example.com
+ORD-00588,2025-07-13,East,Online,Notebook,Stationery,4.09,1,0,4.09,customer83@example.com
+ORD-00305,2025-03-10,North,Store,Office Chair,Furniture,179.21,2,0.1,322.58,customer213@example.com
+ORD-00049,2025-02-27,East,Phone,Desk,Furniture,283.67,7,0,1985.69,customer19@example.com

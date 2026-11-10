@@ -1,0 +1,97 @@
+[project]
+name = "insights-forge"
+version = "0.1.0"
+description = "Connect any data source (Excel, CSV, SQL, NoSQL, cloud) and get automatic data-quality reports, profiling and insights."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Juan Avendaño", email = "84890303+JuanAvendan@users.noreply.github.com" },
+]
+requires-python = ">=3.12"
+keywords = ["data-analysis", "eda", "data-profiling", "data-quality", "duckdb", "streamlit"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Typing :: Typed",
+]
+dependencies = [
+    "duckdb>=1.4",
+    "fastexcel>=0.14",
+    "plotly>=6.0",
+    "polars>=1.30",
+    "pyarrow>=20.0",
+    "streamlit>=1.50",
+]
+
+[project.urls]
+Repository = "https://github.com/JuanAvendan/insights-forge"
+Issues = "https://github.com/JuanAvendan/insights-forge/issues"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.18",
+    "openpyxl>=3.1",
+    "pre-commit>=4.3",
+    "pytest>=8.4",
+    "pytest-cov>=7.0",
+    "ruff>=0.14",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"
+
+# ---------------------------------------------------------------- ruff
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle
+    "F",        # pyflakes
+    "I",        # isort
+    "B",        # bugbear
+    "UP",       # pyupgrade
+    "SIM",      # simplify
+    "N",        # pep8-naming
+    "C4",       # comprehensions
+    "PTH",      # use pathlib
+    "PT",       # pytest style
+    "RUF",      # ruff-specific
+    "S",        # bandit (security)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]  # assert is fine in tests
+
+# ---------------------------------------------------------------- mypy
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests", "scripts"]
+
+[[tool.mypy.overrides]]
+module = ["openpyxl.*", "fastexcel.*"]
+ignore_missing_imports = true
+
+# ---------------------------------------------------------------- pytest
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=insights_forge",
+    "--cov-report=term-missing",
+]
+
+[tool.coverage.run]
+branch = true
+omit = ["src/insights_forge/app/*"]
