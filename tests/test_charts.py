@@ -30,13 +30,17 @@ def test_top_values_largest_on_top(make_profile: MakeProfile) -> None:
     assert list(bar.y) == ["a", "b", "c"]  # plotly draws the last bar on top
 
 
-def test_correlation_heatmap_is_symmetric(make_profile: MakeProfile) -> None:
+def test_correlation_heatmap_lower_triangle(make_profile: MakeProfile) -> None:
     p = make_profile("SELECT range AS a, range * 2 AS b, (range * 7) % 5 AS c FROM range(20)")
-    z = charts.correlation_heatmap(p).data[0].z
-    n = len(z)
-    assert n == 3
-    assert all(z[i][i] == 1.0 for i in range(n))
-    assert all(z[i][j] == z[j][i] for i in range(n) for j in range(n))
+    heat = charts.correlation_heatmap(p).data[0]
+    assert list(heat.y) == ["b", "c"]
+    assert list(heat.x) == ["a", "b"]
+    z = heat.z
+    assert z[0][0] == pytest.approx(1.0)  # b vs a
+    assert z[0][1] is None or z[0][1] != z[0][1]  # above the diagonal: empty
+    assert z[1][0] == pytest.approx(
+        next(c.pearson for c in p.correlations if {c.column_a, c.column_b} == {"a", "c"})
+    )
 
 
 def test_chart_sample_caps_rows() -> None:
@@ -53,4 +57,6 @@ def test_distribution_value_range_filters_values(df: pl.DataFrame) -> None:
 
 def test_heatmap_keeps_table_column_order(make_profile: MakeProfile) -> None:
     p = make_profile("SELECT (range * 7) % 5 AS c, range AS a, range * 2 AS b FROM range(20)")
-    assert list(charts.correlation_heatmap(p).data[0].x) == ["c", "a", "b"]
+    heat = charts.correlation_heatmap(p).data[0]
+    assert list(heat.y) == ["a", "b"]
+    assert list(heat.x) == ["c", "a"]

@@ -13,7 +13,7 @@ from insights_forge.insights import (
     candidate_dimensions,
     candidate_measures,
 )
-from insights_forge.insights.engine import total_of
+from insights_forge.insights.engine import time_axis, total_of
 from insights_forge.insights.roles import aggregation_for
 from insights_forge.pipeline import Analysis
 
@@ -78,22 +78,41 @@ def render_compare(a: Analysis, mode: charts.Mode) -> None:
         data = breakdowns.categories_over_time(
             a.df, a.profile, dim, date, measure, agg, periods=periods
         )
+        axis = time_axis(a.profile, date)
         st.markdown(f"**{sentence_case(label)} by {dim} over time**")
-        st.plotly_chart(charts.lines(data, label, mode), width="stretch")
+        st.plotly_chart(
+            charts.lines(data, label, mode, axis.granularity if axis else None),
+            width="stretch",
+        )
         if agg is not Aggregation.AVG and measure is not None:
-            st.caption(
-                "Totals also grow when a group simply has more rows in a period; switch the "
-                "aggregation to Average to compare like with like."
-            )
+            entity = trend.entity if trend is not None and roles.date == date else None
+            if entity:
+                st.caption(
+                    f"The number of {entity} values reporting changes between periods, so a "
+                    "group's total can jump just because more of its members reported. "
+                    "Switch the aggregation to Average to compare like with like."
+                )
+            else:
+                st.caption(
+                    "Totals also grow when a group simply has more rows in a period; switch "
+                    "the aggregation to Average to compare like with like."
+                )
     elif view == SPREAD and measure:
         data, order = breakdowns.spread_by_category(a.df, dim, measure)
+        values = data[measure]
         log = st.toggle(
             "Log scale",
-            value=breakdowns.is_heavily_skewed(data[measure]),
-            disabled=not breakdowns.is_positive(data[measure]),
+            value=breakdowns.is_heavily_skewed(values),
+            disabled=not breakdowns.can_use_log(values),
             key="cmp_log",
             help="Spreads out values that span several orders of magnitude so a few huge "
-            "rows don't flatten the boxes. Only for positive values.",
+            "rows don't flatten the boxes. Needs non-negative values.",
         )
         st.markdown(f"**Distribution of {measure} by {dim}**")
         st.plotly_chart(charts.spread(data, measure, order, mode, log=log), width="stretch")
+        hidden = breakdowns.non_positive_count(values) if log else 0
+        if hidden:
+            st.caption(
+                f"{hidden:,} rows with {measure} = 0 cannot be drawn on a log scale and are "
+                "left out of the boxes; turn the log scale off to include them."
+            )

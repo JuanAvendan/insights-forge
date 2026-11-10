@@ -161,17 +161,26 @@ def spread_by_category(
     return data, order
 
 
-def is_positive(values: pl.Series) -> bool:
-    """True when a log scale is possible (every value > 0)."""
-    low = values.min()
-    return values.len() > 0 and isinstance(low, int | float) and low > 0
+def can_use_log(values: pl.Series) -> bool:
+    """A log scale makes sense for non-negative data with some positive values.
+
+    Zeros (e.g. a country-year with no homicides) are common in counts; they are left
+    out of a log axis rather than ruling it out.
+    """
+    low, high = values.min(), values.max()
+    return isinstance(low, int | float) and isinstance(high, int | float) and low >= 0 < high
+
+
+def non_positive_count(values: pl.Series) -> int:
+    return int((values <= 0).sum())
 
 
 def is_heavily_skewed(values: pl.Series, ratio: float = SKEW_FOR_LOG) -> bool:
-    """Positive values whose max dwarfs the median: a log scale reads better."""
-    if not is_positive(values):
+    """Values spanning orders of magnitude (max far above the median): log reads better."""
+    if not can_use_log(values):
         return False
-    high, median = values.max(), values.median()
+    positive = values.filter(values > 0)
+    high, median = positive.max(), positive.median()
     return (
         isinstance(high, int | float) and isinstance(median, int | float) and high > ratio * median
     )

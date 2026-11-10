@@ -16,7 +16,7 @@ import polars as pl
 
 from insights_forge.breakdowns import OTHER
 from insights_forge.formatting import fmt_compact
-from insights_forge.insights import TrendSeries
+from insights_forge.insights import Granularity, TrendSeries
 from insights_forge.profiling import ColumnProfile, DatasetProfile
 
 Mode = Literal["light", "dark"]
@@ -127,20 +127,28 @@ def top_values(col: ColumnProfile, mode: Mode = "light") -> go.Figure:
 
 
 def correlation_heatmap(profile: DatasetProfile, mode: Mode = "light") -> go.Figure:
-    """Symmetric Pearson matrix on a diverging scale fixed to [-1, 1]."""
+    """Lower triangle of the Pearson matrix on a diverging scale fixed to [-1, 1].
+
+    The matrix is symmetric and its diagonal is always 1, so only the cells below
+    the diagonal carry information: showing them alone halves the clutter.
+    """
     palette = PALETTES[mode]
     in_matrix = {n for c in profile.correlations for n in (c.column_a, c.column_b)}
     names = [c.name for c in profile.columns if c.name in in_matrix]  # keep table order
     index = {name: i for i, name in enumerate(names)}
-    matrix = [[1.0 if i == j else 0.0 for j in range(len(names))] for i in range(len(names))]
+    full = [[0.0] * len(names) for _ in names]
     for c in profile.correlations:
         i, j = index[c.column_a], index[c.column_b]
-        matrix[i][j] = matrix[j][i] = c.pearson
+        full[i][j] = full[j][i] = c.pearson
+    # rows 1..n-1, columns 0..n-2, keep only j < i
+    matrix: list[list[float | None]] = [
+        [full[i][j] if j < i else None for j in range(len(names) - 1)] for i in range(1, len(names))
+    ]
 
     fig = px.imshow(
         matrix,
-        x=names,
-        y=names,
+        x=names[:-1],
+        y=names[1:],
         zmin=-1,
         zmax=1,
         text_auto=".2f",
@@ -153,7 +161,9 @@ def correlation_heatmap(profile: DatasetProfile, mode: Mode = "light") -> go.Fig
     )
     fig.update_traces(hovertemplate="%{y} vs %{x}<br>r = %{z:.3f}<extra></extra>", xgap=2, ygap=2)
     fig.update_layout(coloraxis_colorbar={"title": "r", "thickness": 12})
-    return _style(fig, palette, height=max(320, 56 * len(names) + 80))
+    fig.update_xaxes(showgrid=False, tickangle=-35)
+    fig.update_yaxes(showgrid=False)
+    return _style(fig, palette, height=max(320, 44 * len(names) + 120))
 
 
 def trend(series: TrendSeries, label: str, mode: Mode = "light") -> go.Figure:
@@ -248,8 +258,16 @@ def wrap_label(text: str, width: int = 22) -> str:
     return "<br>".join(lines) or text
 
 
-def lines(data: pl.DataFrame, label: str, mode: Mode = "light") -> go.Figure:
-    """One 2px line per group (rows already ordered by rank), with a legend."""
+def lines(
+    data: pl.DataFrame,
+    label: str,
+    mode: Mode = "light",
+    granularity: Granularity | None = None,
+) -> go.Figure:
+    """One 2px line per group (rows already ordered by rank), with a legend.
+
+    ``granularity`` formats periods in tooltips ("2005", "Q3 2005", "May 2005").
+    """
     palette = PALETTES[mode]
     fig = go.Figure()
     groups = list(dict.fromkeys(data["category"].to_list()))[:MAX_LINE_SERIES]
@@ -264,8 +282,11 @@ def lines(data: pl.DataFrame, label: str, mode: Mode = "light") -> go.Figure:
                 mode="lines+markers",
                 line={"color": color, "width": 2},
                 marker={"size": 6, "color": color},
-                customdata=[fmt_compact(v) for v in part["value"].to_list()],
-                hovertemplate=f"{group}<br>%{{x|%Y-%m-%d}}<br>{label}: %{{customdata}}"
+                customdata=[
+                    [granularity.label(p) if granularity else p.isoformat(), fmt_compact(v)]
+                    for p, v in zip(part["period"].to_list(), part["value"].to_list(), strict=True)
+                ],
+                hovertemplate=f"{group}<br>%{{customdata[0]}}<br>{label}: %{{customdata[1]}}"
                 "<extra></extra>",
             )
         )
@@ -289,12 +310,20 @@ def spread(
 ) -> go.Figure:
     """Horizontal box plots per group (median, IQR, outliers), highest median on top.
 
-    ``log`` uses a log axis so a few huge values don't flatten every box.
+    ``log`` uses a log axis so a few huge values don't flatten every box; a log axis
+    cannot show zero or negatives, so those rows are left out of the boxes.
+    Plotly's built-in box hover prints every statistic as a separate label, which
+    overlaps on horizontal boxes, so each group gets one summary tooltip instead.
     """
     palette = PALETTES[mode]
     fig = go.Figure()
     for group in reversed(order):
-        values = data.filter(pl.col("category") == group)[measure].to_list()
+        series = data.filter(pl.col("category") == group)[measure]
+        if log:
+            series = series.filter(series > 0)
+        if series.is_empty():
+            continue
+        values = series.to_list()
         fig.add_trace(
             go.Box(
                 x=values,
@@ -304,6 +333,23 @@ def spread(
                 line={"width": 1.5},
                 fillcolor="rgba(42,120,214,0.25)",
                 boxpoints="outliers",
+                hoverinfo="skip",
+                showlegend=False,
+            )
+        )
+        q1, median, q3 = (series.quantile(q, "linear") for q in (0.25, 0.5, 0.75))
+        fig.add_trace(
+            go.Scatter(
+                x=[median],
+                y=[group],
+                mode="markers",
+                marker={"size": 22, "color": "rgba(0,0,0,0)"},  # invisible hover target
+                showlegend=False,
+                hovertemplate=(
+                    f"<b>{group}</b><br>median: {fmt_compact(median)}<br>"
+                    f"middle 50%: {fmt_compact(q1)} to {fmt_compact(q3)}<br>"
+                    f"{series.len():,} rows<extra></extra>"
+                ),
             )
         )
     fig.update_layout(xaxis_title=f"{measure} (log scale)" if log else measure)

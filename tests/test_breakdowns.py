@@ -201,7 +201,8 @@ def test_spread_missing_and_coverage_charts(
     sales: pl.DataFrame, panel: tuple[pl.DataFrame, DatasetProfile]
 ) -> None:
     data, order = breakdowns.spread_by_category(sales, "region", "amount")
-    assert len(charts.spread(data, "amount", order).data) == len(order)
+    fig = charts.spread(data, "amount", order)
+    assert sum(t.type == "box" for t in fig.data) == len(order)
     missing = pl.DataFrame({"column": ["a"], "missing_pct": [40.0], "missing": [4]})
     assert charts.missing_values(missing).data[0].text == ("40%",)
 
@@ -232,18 +233,40 @@ def test_scatter_explorer() -> None:
 
 
 @pytest.mark.parametrize(
-    ("values", "positive", "skewed"),
+    ("values", "loggable", "skewed"),
     [
         ([1.0, 2.0, 3.0, 500.0], True, True),
+        ([0.0, 0.0, 1.0, 2.0, 3.0, 500.0], True, True),  # zeros don't rule out a log scale
         ([1.0, 2.0, 3.0], True, False),
         ([-1.0, 2.0, 900.0], False, False),
+        ([0.0, 0.0], False, False),
         ([], False, False),
     ],
 )
-def test_log_scale_heuristics(values: list[float], positive: bool, skewed: bool) -> None:
+def test_log_scale_heuristics(values: list[float], loggable: bool, skewed: bool) -> None:
     series = pl.Series(values, dtype=pl.Float64)
-    assert breakdowns.is_positive(series) is positive
+    assert breakdowns.can_use_log(series) is loggable
     assert breakdowns.is_heavily_skewed(series) is skewed
+
+
+def test_spread_log_drops_zeros_and_has_one_tooltip_per_group() -> None:
+    data = pl.DataFrame({"category": ["a", "a", "a", "b"], "v": [0.0, 10.0, 1000.0, 5.0]})
+    fig = charts.spread(data, "v", ["a", "b"], log=True)
+    boxes = [t for t in fig.data if t.type == "box"]
+    assert sorted(boxes[-1].x) == [10.0, 1000.0]  # group "a" without its zero
+    assert all(b.hoverinfo == "skip" for b in boxes)
+    summaries = [t for t in fig.data if t.type == "scatter"]
+    assert len(summaries) == 2
+    assert "median: 505" in summaries[-1].hovertemplate
+
+
+def test_lines_tooltip_uses_period_labels(panel: tuple[pl.DataFrame, DatasetProfile]) -> None:
+    df, profile = panel
+    data = breakdowns.categories_over_time(
+        df, profile, "region", "year", "homicides", Aggregation.SUM
+    )
+    fig = charts.lines(data, "total homicides", granularity=Granularity.YEAR)
+    assert fig.data[0].customdata[0][0] == "2000"
 
 
 def test_spread_log_axis() -> None:

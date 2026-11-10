@@ -30,6 +30,11 @@ and a UN-style country-year panel of homicide statistics (2000-2024).
   coverage, not the quantity itself).
 
 ### Fixed
+- Box plots: one readable summary tooltip per group (Plotly's per-statistic labels
+  overlapped on horizontal boxes); the log scale also works with zeros, which are
+  left out of the boxes with a note.
+- Over-time tooltips show periods as "2005" / "Q3 2005" instead of "2005-01-01".
+- Correlation heatmap shows only the lower triangle (no mirrored values, no diagonal).
 - Measure auto-detection works on the words of a column name: `aspect_ratio_value`
   is no longer picked as a summed amount, `box_office_usd` / `budget_usd` rank
   first, and calendar columns such as `release_year` are never measures.
