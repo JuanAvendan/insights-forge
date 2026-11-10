@@ -55,3 +55,71 @@ def test_command_is_required() -> None:
     with pytest.raises(SystemExit) as exc:
         main([])
     assert exc.value.code == 2
+
+
+# --------------------------------------------------------------------------- databases
+
+
+def test_tables_of_a_sqlite_file(shop_db: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    assert main(["tables", str(shop_db)]) == 0
+    assert capsys.readouterr().out.split() == ["revenue_by_region", "sales"]
+
+
+def test_summary_of_a_sqlite_table(shop_db: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    assert main(["summary", str(shop_db), "--table", "sales"]) == 0
+    out = capsys.readouterr().out
+    assert out.startswith("sales: 1,012 rows")
+    assert "Analyzing total over order_date" in out
+
+
+def test_db_url_from_environment(
+    shop_db: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setenv("INSIGHTS_FORGE_DB_URL", f"sqlite:///{shop_db.as_posix()}")
+    assert main(["summary", "--query", "SELECT region, total FROM sales", "--limit", "50"]) == 0
+    assert capsys.readouterr().out.startswith("query: 50 rows x 2 columns")
+
+
+def test_password_on_command_line_gets_a_tip(capsys: pytest.CaptureFixture[str]) -> None:
+    url = "nosuchdb://bob:s3cret@localhost/shop"  # fails before any network access
+    assert main(["tables", "--db", url]) == 1
+    err = capsys.readouterr().err
+    assert "INSIGHTS_FORGE_DB_URL" in err
+    assert "s3cret" not in err
+
+
+def test_db_report_default_name(
+    shop_db: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    assert main(["report", str(shop_db), "--table", "sales"]) == 0
+    assert (tmp_path / "sales.report.html").exists()
+
+
+def test_blocked_query_is_an_error(shop_db: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    assert main(["summary", str(shop_db), "--query", "DELETE FROM sales"]) == 1
+    assert "Only read queries" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize(
+    ("args", "message"),
+    [
+        (["summary"], "give a data file, --db URL"),
+        (["summary", "x.csv", "--table", "t"], "apply to databases"),
+        (["summary", "x.csv", "--db", "sqlite:///a.db"], "either a file or --db"),
+        (["summary", "missing.db", "--table", "t"], "SQLite file not found"),
+        (["summary", "--db", "sqlite:///a.db"], "exactly one of --table or --query"),
+        (["tables", "x.csv"], "needs a database"),
+    ],
+)
+def test_usage_errors(
+    args: list[str],
+    message: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    monkeypatch.delenv("INSIGHTS_FORGE_DB_URL", raising=False)
+    with pytest.raises(SystemExit) as exc:
+        main(args)
+    assert exc.value.code == 2
+    assert message in capsys.readouterr().err

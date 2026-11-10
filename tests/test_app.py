@@ -80,3 +80,52 @@ def test_row_count_without_date(sample_app: AppTest) -> None:
     sample_app.selectbox(key="measure").select("(row count)").run()
     sample_app.selectbox(key="date").select("(none)").run()
     assert not sample_app.exception
+
+
+# --------------------------------------------------------------------------- databases
+
+
+def _database_app(monkeypatch: pytest.MonkeyPatch, url: str | None) -> AppTest:
+    if url is None:
+        monkeypatch.delenv("INSIGHTS_FORGE_DB_URL", raising=False)
+    else:
+        monkeypatch.setenv("INSIGHTS_FORGE_DB_URL", url)
+    at = AppTest.from_file(str(APP), default_timeout=60).run()
+    at.sidebar.segmented_control(key="source_kind").set_value("Database").run()
+    return at
+
+
+def _connect(at: AppTest) -> AppTest:
+    next(b for b in at.sidebar.button if b.label == "Connect").click().run()
+    return at
+
+
+def test_database_table_via_environment(shop_db: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    at = _connect(_database_app(monkeypatch, f"sqlite:///{shop_db.as_posix()}"))
+    assert not at.exception
+    assert at.sidebar.selectbox(key="db_table").options == ["revenue_by_region", "sales"]
+    at.sidebar.selectbox(key="db_table").select("sales").run()
+    assert at.subheader[0].value.startswith("sales (sqlite:///")
+    assert {m.label: m.value for m in at.metric}["Rows"] == "1,012"
+
+
+def test_database_query(shop_db: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    at = _connect(_database_app(monkeypatch, f"sqlite:///{shop_db.as_posix()}"))
+    at.sidebar.radio(key="db_mode").set_value("Query").run()
+    at.sidebar.text_area(key="db_query").input("SELECT region, total FROM sales").run()
+    assert not at.exception
+    assert at.subheader[0].value.startswith("query (")
+
+
+def test_database_blocked_query_shows_error(shop_db: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    at = _connect(_database_app(monkeypatch, f"sqlite:///{shop_db.as_posix()}"))
+    at.sidebar.radio(key="db_mode").set_value("Query").run()
+    at.sidebar.text_area(key="db_query").input("DELETE FROM sales").run()
+    assert "Only read queries" in at.error[0].value
+
+
+def test_database_form_validates_port(monkeypatch: pytest.MonkeyPatch) -> None:
+    at = _database_app(monkeypatch, None)
+    at.sidebar.text_input[1].input("abc")  # Port
+    _connect(at)
+    assert "Port must be a number" in at.sidebar.error[0].value

@@ -5,23 +5,19 @@ Run with:  uv run streamlit run src/insights_forge/app/streamlit_app.py
 
 from __future__ import annotations
 
-import hashlib
-import tempfile
-from pathlib import Path
-
 import polars as pl
 import streamlit as st
 
 from insights_forge import __version__, breakdowns, charts
 from insights_forge.app.compare_view import render_compare
 from insights_forge.app.insights_view import render_insights
-from insights_forge.connectors import SUPPORTED_EXTENSIONS, ConnectorError
+from insights_forge.app.sources import render_sidebar
+from insights_forge.connectors import ConnectorError
 from insights_forge.formatting import fmt_number
 from insights_forge.insights import candidate_dimensions
-from insights_forge.pipeline import Analysis, analyze_file
+from insights_forge.pipeline import Analysis
 from insights_forge.profiling import ColumnKind, ColumnProfile, DatasetProfile, Issue, Severity
 
-SAMPLE_FILE = Path(__file__).resolve().parents[3] / "data" / "sample" / "sales.csv"
 REPO_URL = "https://github.com/JuanAvendan/insights-forge"
 PREVIEW_ROWS = 100
 
@@ -41,19 +37,6 @@ KIND_ICON = {
 
 
 # --------------------------------------------------------------------------- loading
-
-
-@st.cache_data(show_spinner="Analyzing data...", max_entries=5)
-def analyze_upload(name: str, data: bytes) -> Analysis:
-    with tempfile.TemporaryDirectory() as tmp:
-        path = Path(tmp) / Path(name).name
-        path.write_bytes(data)
-        return analyze_file(path)
-
-
-@st.cache_data(show_spinner="Analyzing sample data...")
-def analyze_sample() -> Analysis:
-    return analyze_file(SAMPLE_FILE)
 
 
 def theme_mode() -> charts.Mode:
@@ -382,27 +365,19 @@ def main() -> None:
     st.caption(f"Load data from any source and get automatic insights · v{__version__}")
 
     with st.sidebar:
-        st.header("Data source")
-        uploaded = st.file_uploader(
-            "Upload a file",
-            type=list(SUPPORTED_EXTENSIONS),
-            on_change=lambda: st.session_state.update(source="upload"),
-        )
-        if st.button("Try with sample data", disabled=not SAMPLE_FILE.exists()):
-            st.session_state.source = "sample"
+        source = render_sidebar()
         st.divider()
         st.caption(f"[Source code on GitHub]({REPO_URL})")
 
-    source = st.session_state.get("source")
+    if source is None:
+        st.write(
+            "Upload a file, load the sample dataset or connect to a database from the "
+            "sidebar to get started."
+        )
+        return
+    load, source_key = source
     try:
-        if source == "sample":
-            render_analysis(analyze_sample(), source_key="sample")
-        elif uploaded is not None:
-            data = uploaded.getvalue()
-            key = f"{uploaded.name}:{hashlib.sha256(data).hexdigest()}"
-            render_analysis(analyze_upload(uploaded.name, data), source_key=key)
-        else:
-            st.write("Upload a file or load the sample dataset from the sidebar to get started.")
+        render_analysis(load(), source_key=source_key)
     except ConnectorError as exc:
         st.error(f"Could not load the data: {exc}")
 

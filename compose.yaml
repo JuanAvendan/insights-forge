@@ -1,0 +1,48 @@
+# Local test databases loaded with data/sample/sales.csv.
+#
+#   docker compose up -d --wait
+#
+#   PostgreSQL  postgresql+psycopg://analyst:analyst@localhost:55432/shop
+#   MySQL       mysql+pymysql://analyst:analyst@localhost:53306/shop
+#
+# `analyst` can only SELECT (least privilege). These credentials are for local
+# development only. Non-default host ports avoid clashing with databases you
+# may already run on 5432/3306.
+name: insights-forge
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: forge
+      POSTGRES_PASSWORD: forge
+      POSTGRES_DB: shop
+    ports:
+      - "55432:5432"
+    volumes:
+      - ./docker/postgres:/docker-entrypoint-initdb.d:ro
+      - ./data/sample:/seed:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U forge -d shop"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: shop
+    # The entrypoint chowns the secure-file-priv directory, which fails on a read-only
+    # mount, so the restriction is lifted for this local-only test server.
+    command: ["--secure-file-priv="]
+    ports:
+      - "53306:3306"
+    volumes:
+      - ./docker/mysql:/docker-entrypoint-initdb.d:ro
+      - ./data/sample:/seed:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 2s
+      timeout: 5s
+      retries: 60

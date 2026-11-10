@@ -4,6 +4,26 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the
 project uses [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] - 2026-11-10
+
+### Added
+- **SQL sources**: `SQLConnector` reads a table, a view or a `SELECT` query from
+  PostgreSQL, MySQL and SQLite (any SQLAlchemy dialect works). Drivers are optional
+  extras: `insights-forge[postgres]`, `insights-forge[mysql]`.
+- Read-only by design, in three layers: read-only sessions (`SET TRANSACTION READ
+  ONLY`, SQLite `mode=ro` + `query_only`), single `SELECT`/`WITH` statement validation
+  with a wrapping `LIMIT`, and table names checked against the catalog and quoted.
+- Credentials never shown: URLs are rendered with `***` in titles, errors and logs.
+- 10-second connection timeout (a wrong host used to hang for minutes on Windows).
+- SQLite text dates (ISO format) become real dates; NUMERIC/DECIMAL become floats.
+- CLI: `tables` command, `--db`/`--table`/`--query`/`--schema`/`--limit`, the
+  `INSIGHTS_FORGE_DB_URL` variable, and SQLite files given as a path.
+- App: **Database** source (connection form, table or query, row limit) and SQLite
+  files in the uploader with a table picker.
+- `compose.yaml`: PostgreSQL 17 and MySQL 8.4 seeded with the sample data and a
+  SELECT-only `analyst` user, for local development and CI.
+- CI job running integration tests against the real databases.
+
 ## [0.4.0] - 2026-11-10
 
 Improvements found by running the tool on real datasets: 26k movies (1896-2027)
@@ -88,6 +108,7 @@ and a UN-style country-year panel of homicide statistics (2000-2024).
 - Connector architecture and `FileConnector` (CSV/TSV, Excel, Parquet, JSON).
 - Minimal Streamlit app and a synthetic sample dataset.
 
+[0.5.0]: https://github.com/JuanAvendan/insights-forge/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/JuanAvendan/insights-forge/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/JuanAvendan/insights-forge/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/JuanAvendan/insights-forge/compare/163596d...v0.2.0

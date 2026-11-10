@@ -17,7 +17,7 @@
 
 ---
 
-> 🚧 **En desarrollo.** El flujo completo funciona: archivos → perfilado → calidad de datos → insights → reporte HTML. Las fuentes SQL, NoSQL y en la nube son lo siguiente. Mira la [hoja de ruta](#hoja-de-ruta).
+> 🚧 **En desarrollo.** El flujo completo funciona: archivos y bases de datos SQL → perfilado → calidad de datos → insights → reporte HTML. Las fuentes NoSQL y en la nube son lo siguiente. Mira la [hoja de ruta](#hoja-de-ruta).
 
 ## Por qué
 
@@ -29,6 +29,7 @@ una colección NoSQL o un almacenamiento en la nube, y te dice qué hay y qué e
 
 - **Muchas fuentes, un solo motor.** Cada fuente se carga en una tabla de [DuckDB](https://duckdb.org/) en memoria, así el código de análisis se escribe una vez y funciona con todas.
 - **Carga inteligente de archivos.** CSV/TSV con detección automática de delimitador, encabezado y tipos, además de Excel (cualquier hoja), Parquet y JSON.
+- **Bases de datos SQL.** PostgreSQL, MySQL y SQLite: una tabla, una vista o tu propio `SELECT`. Estrictamente de solo lectura (ver [Bases de datos](#bases-de-datos)).
 - **Perfilado de columnas.** Estadísticas según el tipo de dato, calculadas con SQL dentro de DuckDB: cuartiles, media, desviación estándar, ceros, negativos, longitudes de texto, rangos de fechas y valores más frecuentes.
 - **Chequeos de calidad de datos.** Cada hallazgo indica su severidad y cuántas filas afecta:
 
@@ -97,6 +98,39 @@ uv run insights-forge report data/sample/sales.csv -o reporte.html
 uv run insights-forge report ventas.xlsx --sheet Datos --measure ingresos --date-column fecha
 ```
 
+### Bases de datos
+
+Levanta las bases de prueba locales (PostgreSQL 17 y MySQL 8.4 con los datos de ejemplo):
+
+```bash
+docker compose up -d --wait
+```
+
+```bash
+export INSIGHTS_FORGE_DB_URL="postgresql+psycopg://analyst:analyst@localhost:55432/shop"
+uv run insights-forge tables
+uv run insights-forge summary --table sales
+uv run insights-forge report --query "SELECT * FROM sales WHERE channel = 'Online'"
+uv run insights-forge summary tienda.db --table pedidos      # un archivo SQLite
+```
+
+En la app, elige **Database** en la barra lateral, o sube un archivo `.db`/`.sqlite`.
+MySQL funciona igual con `mysql+pymysql://analyst:analyst@localhost:53306/shop`.
+Fuera de este repo, instala el driver que necesites: `pip install "insights-forge[postgres]"`
+o `"insights-forge[mysql]"`.
+
+**Solo lectura por diseño.** La herramienta nunca escribe en tu base de datos, y lo garantiza en tres capas:
+
+1. Sesiones de solo lectura: `SET TRANSACTION READ ONLY` (PostgreSQL, MySQL); los archivos SQLite se abren con `mode=ro` y `PRAGMA query_only`.
+2. El SQL propio debe ser una sola sentencia `SELECT`/`WITH`, y se ejecuta envuelto en `SELECT * FROM (...) LIMIT n`.
+3. Los nombres de tabla se validan contra el catálogo de la base de datos y SQLAlchemy los escapa.
+
+Las contraseñas se enmascaran (`***`) en cualquier lugar donde podrían mostrarse, la CLI lee
+la URL de `INSIGHTS_FORGE_DB_URL` para que no quede en el historial de la terminal, las
+conexiones expiran a los 10 segundos y las lecturas se limitan a 1.000.000 de filas por
+defecto. Buena práctica: usa un usuario que solo pueda hacer `SELECT`, como el usuario
+`analyst` de `compose.yaml`.
+
 ### Como librería
 
 ```python
@@ -130,7 +164,7 @@ O todo el flujo en una sola llamada: `insights_forge.pipeline.analyze_file(ruta)
 - [x] **v0.3: Insights.** Hallazgos por reglas en lenguaje natural, tendencias temporales, reporte HTML exportable, CLI
 - [x] **v0.4: Comparaciones y robustez con datos reales.** Pestaña Compare, explorador de dispersión, gráficos de cobertura; datos de panel, años enteros y medidas incompletas bien manejados
 - [ ] **Demo en vivo** en Streamlit Community Cloud
-- [ ] **v0.5: Fuentes SQL.** PostgreSQL, MySQL, SQLite (Docker Compose para bases de prueba locales)
+- [x] **v0.5: Fuentes SQL.** PostgreSQL, MySQL, SQLite; solo lectura por diseño; bases de prueba con Docker Compose
 - [ ] **v0.6: NoSQL y nube.** MongoDB, S3 / GCS, Google Sheets
 - [ ] **v0.7: Insights con IA.** Resúmenes opcionales del perfil generados por un LLM
 
@@ -139,6 +173,7 @@ O todo el flujo en una sola llamada: `insights_forge.pipeline.analyze_file(ruta)
 | Área | Herramientas |
 |---|---|
 | Motor de datos | DuckDB, Polars, PyArrow, fastexcel |
+| Bases de datos | SQLAlchemy 2, psycopg 3, PyMySQL, Docker Compose |
 | App, gráficos y reporte | Streamlit, Plotly, Jinja2 |
 | Herramientas | uv, Ruff, mypy (estricto), pytest + coverage, pre-commit |
 | CI | GitHub Actions (Linux + Windows, Python 3.12 / 3.13) |
@@ -150,6 +185,12 @@ uv sync                          # instala todo, incluidas las herramientas de d
 uv run pre-commit install        # lint, formato y tipos en cada commit
 uv run pytest                    # tests + cobertura
 uv run ruff check . && uv run mypy
+
+# tests de integración contra PostgreSQL y MySQL reales
+docker compose up -d --wait
+export INSIGHTS_FORGE_TEST_POSTGRES_URL="postgresql+psycopg://analyst:analyst@localhost:55432/shop"
+export INSIGHTS_FORGE_TEST_MYSQL_URL="mysql+pymysql://analyst:analyst@localhost:53306/shop"
+uv run pytest -m integration
 ```
 
 ### Estructura del proyecto
@@ -167,6 +208,8 @@ insights-forge/
 │   └── cli.py            # comando `insights-forge`
 ├── tests/
 ├── scripts/              # utilidades (p. ej. generador de datos de ejemplo)
+├── docker/               # scripts de carga de las bases de prueba
+├── compose.yaml          # PostgreSQL + MySQL para desarrollo y CI
 └── data/sample/          # datasets sintéticos pequeños (los datos reales se ignoran en git)
 ```
 

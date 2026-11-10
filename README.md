@@ -17,7 +17,7 @@
 
 ---
 
-> 🚧 **Work in progress.** Files → profiling → data quality → insights → HTML report works end to end. SQL, NoSQL and cloud sources are next. See the [roadmap](#roadmap).
+> 🚧 **Work in progress.** Files and SQL databases → profiling → data quality → insights → HTML report works end to end. NoSQL and cloud sources are next. See the [roadmap](#roadmap).
 
 ## Why
 
@@ -29,6 +29,7 @@ collection or cloud storage, and it tells you what's in there and what's wrong w
 
 - **Many sources, one engine.** Every source is loaded into an in-memory [DuckDB](https://duckdb.org/) table, so the analysis code is written once and works everywhere.
 - **Smart file loading.** CSV/TSV with automatic delimiter, header and type detection, plus Excel (any sheet), Parquet and JSON.
+- **SQL databases.** PostgreSQL, MySQL and SQLite: a table, a view or your own `SELECT`. Strictly read-only (see [Databases](#databases)).
 - **Column profiling.** Type-aware statistics computed in SQL inside DuckDB: quartiles, mean, standard deviation, zeros, negatives, text lengths, date ranges and top values.
 - **Data-quality checks.** Each finding gets a severity and the number of affected rows:
 
@@ -97,6 +98,38 @@ uv run insights-forge report data/sample/sales.csv -o report.html
 uv run insights-forge report sales.xlsx --sheet Data --measure revenue --date-column day
 ```
 
+### Databases
+
+Start the local test databases (PostgreSQL 17 and MySQL 8.4 with the sample data):
+
+```bash
+docker compose up -d --wait
+```
+
+```bash
+export INSIGHTS_FORGE_DB_URL="postgresql+psycopg://analyst:analyst@localhost:55432/shop"
+uv run insights-forge tables
+uv run insights-forge summary --table sales
+uv run insights-forge report --query "SELECT * FROM sales WHERE channel = 'Online'"
+uv run insights-forge summary shop.db --table orders        # a SQLite file
+```
+
+In the app, choose **Database** in the sidebar, or upload a `.db`/`.sqlite` file.
+MySQL works the same with `mysql+pymysql://analyst:analyst@localhost:53306/shop`.
+Outside this repo, install the driver you need: `pip install "insights-forge[postgres]"`
+or `"insights-forge[mysql]"`.
+
+**Read-only by design.** The tool never writes to your database, enforced in three layers:
+
+1. Read-only sessions: `SET TRANSACTION READ ONLY` (PostgreSQL, MySQL); SQLite files open with `mode=ro` and `PRAGMA query_only`.
+2. Custom SQL must be one `SELECT`/`WITH` statement, and it runs wrapped in `SELECT * FROM (...) LIMIT n`.
+3. Table names are checked against the database catalog and quoted by SQLAlchemy.
+
+Passwords are masked (`***`) everywhere they could be shown, the CLI reads the URL from
+`INSIGHTS_FORGE_DB_URL` so it stays out of your shell history, connections time out
+after 10 seconds, and reads are capped at 1,000,000 rows by default. Best practice: use
+a database user that can only `SELECT`, like the `analyst` user in `compose.yaml`.
+
 ### As a library
 
 ```python
@@ -130,7 +163,7 @@ Or the whole pipeline in one call: `insights_forge.pipeline.analyze_file(path)`.
 - [x] **v0.3: Insights.** Rule-based findings in plain language, time-series trends, HTML report export, CLI
 - [x] **v0.4: Comparisons & real-world robustness.** Compare tab, scatter explorer, coverage charts; panel data, integer years and sparse measures handled correctly
 - [ ] **Live demo** on Streamlit Community Cloud
-- [ ] **v0.5: SQL sources.** PostgreSQL, MySQL, SQLite (Docker Compose for local test databases)
+- [x] **v0.5: SQL sources.** PostgreSQL, MySQL, SQLite; read-only by design; Docker Compose test databases
 - [ ] **v0.6: NoSQL & cloud.** MongoDB, S3 / GCS, Google Sheets
 - [ ] **v0.7: AI insights.** Optional LLM-generated summaries of the profile
 
@@ -139,6 +172,7 @@ Or the whole pipeline in one call: `insights_forge.pipeline.analyze_file(path)`.
 | Area | Tools |
 |---|---|
 | Data engine | DuckDB, Polars, PyArrow, fastexcel |
+| Databases | SQLAlchemy 2, psycopg 3, PyMySQL, Docker Compose |
 | App, charts & report | Streamlit, Plotly, Jinja2 |
 | Tooling | uv, Ruff, mypy (strict), pytest + coverage, pre-commit |
 | CI | GitHub Actions (Linux + Windows, Python 3.12 / 3.13) |
@@ -150,6 +184,12 @@ uv sync                          # install everything, including dev tools
 uv run pre-commit install        # run lint, format and type checks on every commit
 uv run pytest                    # tests + coverage
 uv run ruff check . && uv run mypy
+
+# integration tests against real PostgreSQL and MySQL
+docker compose up -d --wait
+export INSIGHTS_FORGE_TEST_POSTGRES_URL="postgresql+psycopg://analyst:analyst@localhost:55432/shop"
+export INSIGHTS_FORGE_TEST_MYSQL_URL="mysql+pymysql://analyst:analyst@localhost:53306/shop"
+uv run pytest -m integration
 ```
 
 ### Project structure
@@ -167,6 +207,8 @@ insights-forge/
 │   └── cli.py            # `insights-forge` command
 ├── tests/
 ├── scripts/              # utilities (e.g. sample data generator)
+├── docker/               # seed scripts for the test databases
+├── compose.yaml          # PostgreSQL + MySQL for development and CI
 └── data/sample/          # small synthetic datasets (real data is git-ignored)
 ```
 
