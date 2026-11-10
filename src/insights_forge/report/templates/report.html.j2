@@ -99,7 +99,16 @@
   <p class="note">Dotted line: least-squares linear trend.</p>
   {% endif %}
 
+  {% if ranking_chart %}
+  <h2>{{ ranking_title }}</h2>
+  <div class="card chart">{{ ranking_chart }}</div>
+  {% endif %}
+
   <h2>Data quality</h2>
+  {% if missing_chart %}
+  <div class="card chart">{{ missing_chart }}</div>
+  <p class="note">Share of missing values per column.</p>
+  {% endif %}
   {% if profile.issues %}
   <div class="table-wrap"><table>
     <thead><tr><th>Severity</th><th>Column</th><th>Issue</th><th class="num">Rows</th></tr></thead>

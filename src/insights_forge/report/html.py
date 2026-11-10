@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 from jinja2 import Environment, PackageLoader, select_autoescape
 from markupsafe import Markup
 
-from insights_forge import __version__, charts
+from insights_forge import __version__, breakdowns, charts
 from insights_forge.formatting import fmt_number, sentence_case
 from insights_forge.pipeline import Analysis
 from insights_forge.profiling import ColumnProfile, Severity
@@ -70,6 +70,16 @@ def render_html(
     trend_chart = (
         to_html(charts.trend(trend, analysis.insights.roles.measure_label)) if trend else None
     )
+    missing = breakdowns.missing_by_column(analysis.profile)
+    missing_chart = to_html(charts.missing_values(missing)) if missing.height else None
+    roles = analysis.insights.roles
+    ranking_chart, ranking_title = None, ""
+    if roles.dimensions:
+        dim = roles.dimensions[0]
+        data = breakdowns.rank_categories(analysis.df, dim, roles.measure, roles.aggregation)
+        label = "rows" if roles.measure is None else roles.measure_label
+        ranking_chart = to_html(charts.ranking(data, label))
+        ranking_title = f"{sentence_case(label)} by {dim}"
     correlation_chart = (
         to_html(charts.correlation_heatmap(analysis.profile))
         if analysis.profile.correlations
@@ -84,6 +94,9 @@ def render_html(
         insights=analysis.insights,
         trend_chart=trend_chart,
         correlation_chart=correlation_chart,
+        missing_chart=missing_chart,
+        ranking_chart=ranking_chart,
+        ranking_title=ranking_title,
         severity_icon=SEVERITY_ICON,
         column_summary=column_summary,
     )

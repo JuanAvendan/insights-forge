@@ -86,13 +86,35 @@ def candidate_measures(profile: DatasetProfile) -> tuple[str, ...]:
     return tuple(c.name for c in sorted(cols, key=_measure_rank, reverse=True))
 
 
+_INTEGER_TYPES = frozenset(
+    {"TINYINT", "SMALLINT", "INTEGER", "BIGINT", "UTINYINT", "USMALLINT", "UINTEGER", "UBIGINT"}
+)
+_YEAR_WORDS = frozenset({"year", "yr", "anio", "ano", "fiscal"})
+
+
+def is_year_column(col: ColumnProfile) -> bool:
+    """An integer column holding calendar years, e.g. ``year`` = 2015 in country-year panels."""
+    stats = col.numeric
+    return (
+        col.dtype.upper() in _INTEGER_TYPES
+        and stats is not None
+        and col.distinct > 1
+        and stats.min >= 1800
+        and stats.max <= 2200
+        and bool(_YEAR_WORDS & set(name_tokens(col.name)))
+    )
+
+
 def candidate_dates(profile: DatasetProfile) -> tuple[str, ...]:
-    cols = [
+    """Real date/timestamp columns first, then integer year columns."""
+    dates = [
         c
         for c in profile.columns_of(ColumnKind.TEMPORAL)
         if c.temporal and c.temporal.span_days > 0
     ]
-    return tuple(c.name for c in sorted(cols, key=lambda c: c.distinct, reverse=True))
+    years = [c for c in profile.columns_of(ColumnKind.NUMERIC) if is_year_column(c)]
+    by_detail = sorted(dates, key=lambda c: c.distinct, reverse=True)
+    return tuple(c.name for c in [*by_detail, *years])
 
 
 def candidate_dimensions(profile: DatasetProfile) -> tuple[str, ...]:

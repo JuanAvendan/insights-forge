@@ -213,12 +213,13 @@ def test_segment_difference(con: duckdb.DuckDBPyConnection) -> None:
 def test_correlation_and_skew(con: duckdb.DuckDBPyConnection) -> None:
     report = _insights(
         con,
-        "SELECT range AS units, range * 2 + 1 AS revenue, "
+        "SELECT range AS units, range * 2 + (range * 7919) % 150 AS revenue, "
+        "range * 3 AS revenue_copy, "
         "CASE WHEN range < 95 THEN 1 + range % 3 ELSE 1000 END AS wait_minutes FROM range(100)",
     )
-    assert any(
-        "units and revenue rise together" in t for t in _kinds(report, InsightKind.CORRELATION)
-    )
+    correlations = _kinds(report, InsightKind.CORRELATION)
+    assert any("units and revenue rise together" in t for t in correlations)
+    assert any("units and revenue_copy are nearly the same measure" in t for t in correlations)
     assert any("wait_minutes" in t for t in _kinds(report, InsightKind.DISTRIBUTION))
 
 
@@ -250,3 +251,24 @@ def test_sample_dataset_headline_insights(con: duckdb.DuckDBPyConnection) -> Non
     assert "Laptop accounts for" in titles
     peak = next(i for i in report.insights if i.kind is InsightKind.PEAK)
     assert "single row" in peak.detail  # the injected outlier orders
+
+
+def test_segment_gap_driven_by_outliers(con: duckdb.DuckDBPyConnection) -> None:
+    report = _insights(
+        con,
+        "SELECT ['east', 'west'][range % 2 + 1] AS region, "
+        "CASE WHEN range = 1 THEN 50000 ELSE 100 + range % 9 END AS total FROM range(100)",
+    )
+    segment = next(i for i in report.insights if i.kind is InsightKind.SEGMENT)
+    assert "higher for west than for east" in segment.title
+    assert "medians are close" in segment.detail
+
+
+def test_segment_gap_confirmed_by_medians(con: duckdb.DuckDBPyConnection) -> None:
+    report = _insights(
+        con,
+        "SELECT ['premium', 'basic'][range % 2 + 1] AS plan, "
+        "CASE WHEN range % 2 = 0 THEN 300 ELSE 100 END + range % 5 AS total FROM range(100)",
+    )
+    segment = next(i for i in report.insights if i.kind is InsightKind.SEGMENT)
+    assert "Medians confirm it" in segment.detail

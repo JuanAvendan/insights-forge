@@ -6,9 +6,23 @@ project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-Fixes found by running the tool on a real 26k-row movies dataset (1896-2027).
+Improvements found by running the tool on real datasets: 26k movies (1896-2027)
+and a UN-style country-year panel of homicide statistics (2000-2024).
 
 ### Added
+- **Compare** tab: ranking (top 15 + Other), evolution of the top 5 groups over time,
+  and box-plot spread per group with an automatic log scale for skewed data.
+- **Scatter explorer** in Correlations: any pair, optional color by group (3 + Other),
+  least-squares line.
+- Data quality charts: missing values per column and rows per period.
+- HTML report: ranking by the main dimension and missing-values chart.
+- Integer year columns (e.g. `year = 2015`) work as the time axis.
+- Panel-data awareness: when an entity column (e.g. `country`) identifies each row per
+  period, a thin trailing period is dropped and totals carry a coverage caveat.
+  Transactional data is left alone (fewer orders is real activity).
+- Segment insights compare medians: they say whether a gap is typical or driven by a
+  few very large rows.
+- Near-perfect correlations (|r| >= 0.98) are reported as likely duplicate measures.
 - Aggregation override (`Auto` / `Sum` / `Average`) in the app and `--aggregation`
   in the CLI.
 - Yearly granularity for histories longer than ten years.

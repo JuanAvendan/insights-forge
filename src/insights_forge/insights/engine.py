@@ -25,15 +25,21 @@ from insights_forge.insights.models import (
     Roles,
     TrendSeries,
 )
-from insights_forge.insights.roles import detect_roles
-from insights_forge.profiling import DatasetProfile
+from insights_forge.insights.roles import detect_roles, is_year_column
+from insights_forge.profiling import ColumnKind, DatasetProfile
 from insights_forge.profiling.profiler import quote_ident
+from insights_forge.profiling.quality import looks_like_identifier
 
 MIN_TREND_PERIODS = 3
 MIN_SEGMENT_ROWS = 10
 MAX_PER_KIND = 3
 SINGLE_ROW_DOMINANCE = 0.25
 MISSING_CAVEAT_PCT = 20.0
+MIN_COVERAGE_RATIO = 0.5  # a trailing period with < 50% of the usual rows is incomplete
+COVERAGE_CAVEAT_RATIO = 0.8  # warn when the smallest period has < 80% of the largest's rows
+NEAR_DUPLICATE_R = 0.98
+SEGMENT_RATIO = 1.5
+MAX_ENTITY_CANDIDATES = 10
 
 
 def change_text(first: float, last: float) -> str:
@@ -106,37 +112,90 @@ def linear_fit(values: list[float]) -> tuple[float, float]:
     return slope, r2
 
 
+@dataclass(frozen=True, slots=True)
+class TimeAxis:
+    """How to bucket rows into periods: a SQL expression yielding each row's period start."""
+
+    granularity: Granularity
+    period_sql: str
+    max_date: dt.date  # last date the data covers
+
+
+def time_axis(profile: DatasetProfile, date: str) -> TimeAxis | None:
+    col = profile.column(date)
+    d = quote_ident(date)
+    if col.temporal is not None:
+        g = granularity_for(col.temporal.span_days)
+        return TimeAxis(g, f"date_trunc('{g}', {d})::DATE", col.temporal.max)
+    if is_year_column(col) and col.numeric is not None:
+        # Integer years (country-year panels): a year is the finest grain available.
+        last = dt.date(int(col.numeric.max), 12, 31)
+        return TimeAxis(Granularity.YEAR, f"make_date({d}::INTEGER, 1, 1)", last)
+    return None
+
+
 def build_trend(ctx: _Context) -> TrendSeries | None:
-    date = ctx.roles.date
-    if date is None:
+    if ctx.roles.date is None:
         return None
-    stats = ctx.profile.column(date).temporal
-    if stats is None:
+    axis = time_axis(ctx.profile, ctx.roles.date)
+    if axis is None:
         return None
 
-    g = granularity_for(stats.span_days)
-    d = quote_ident(date)
+    g, d = axis.granularity, quote_ident(ctx.roles.date)
     rows = ctx.rows(
-        f"SELECT date_trunc('{g}', {d})::DATE AS p, {ctx.agg_sql} AS v "
+        f"SELECT {axis.period_sql} AS p, {ctx.agg_sql} AS v, count(*) AS n "
         f"FROM {ctx.table} WHERE {d} IS NOT NULL GROUP BY p ORDER BY p"
     )
-    points = [(p, float(v)) for p, v in rows if v is not None]
-    # A trailing period that the data does not fully cover would look like a drop.
-    if len(points) > MIN_TREND_PERIODS and stats.max < period_end(points[-1][0], g):
-        points.pop()
+    points = [(p, float(v), int(n)) for p, v, n in rows if v is not None]
+    entity = panel_entity(ctx, axis)
+    if len(points) > MIN_TREND_PERIODS:
+        # A trailing period the data does not fully cover would look like a drop, either
+        # because the dates stop early or, in panel data, because far fewer entities
+        # reported for it. (In transactional data fewer rows is real, lower activity.)
+        counts = sorted(n for _, _, n in points[:-1])
+        median_rows = counts[len(counts) // 2]
+        thin = entity is not None and points[-1][2] < MIN_COVERAGE_RATIO * median_rows
+        if axis.max_date < period_end(points[-1][0], g) or thin:
+            points.pop()
     if len(points) < MIN_TREND_PERIODS:
         return None
 
-    values = [v for _, v in points]
+    values = [v for _, v, _ in points]
     mean = sum(values) / len(values)
     slope, r2 = linear_fit(values)
     return TrendSeries(
         granularity=g,
-        periods=tuple(p for p, _ in points),
+        periods=tuple(p for p, _, _ in points),
         values=tuple(values),
         slope_pct=100 * slope / mean if mean else None,
         r2=r2,
+        counts=tuple(n for _, _, n in points),
+        entity=entity,
     )
+
+
+def panel_entity(ctx: _Context, axis: TimeAxis) -> str | None:
+    """The column that, with the period, identifies each row (``country`` in country-year).
+
+    Candidates repeat across periods (fewer distinct values than half the rows), so
+    row-level identifiers such as ``order_id`` are never mistaken for entities.
+    """
+    rows = ctx.profile.rows
+    candidates = [
+        c.name
+        for c in ctx.profile.columns
+        if c.kind is ColumnKind.TEXT and c.nulls == 0 and 2 <= c.distinct <= rows / 2
+    ]
+    # Prefer readable names (`country`) over codes (`iso3`, `country_code`) for messages.
+    candidates.sort(key=lambda n: (any(ch.isdigit() for ch in n), looks_like_identifier(n)))
+    for name in candidates[:MAX_ENTITY_CANDIDATES]:
+        e = quote_ident(name)
+        [(pairs,)] = ctx.rows(
+            f"SELECT count(*) FROM (SELECT DISTINCT {e}, {axis.period_sql} FROM {ctx.table})"
+        )
+        if pairs == rows:
+            return name
+    return None
 
 
 def trend_insights(ctx: _Context, trend: TrendSeries | None) -> Iterable[Insight]:
@@ -148,7 +207,7 @@ def trend_insights(ctx: _Context, trend: TrendSeries | None) -> Iterable[Insight
     change = f" ({change_text(first, last)})" if first > 0 else ""
     span = f"From {labels[0]} ({fmt_number(first)}) to {labels[-1]} ({fmt_number(last)}){change}."
     cols = tuple(c for c in (ctx.roles.measure, ctx.roles.date) if c)
-    caveat = _missing_caveat(ctx)
+    caveat = _missing_caveat(ctx) + _coverage_caveat(ctx, trend)
 
     if trend.r2 >= 0.5 and abs(trend.slope_pct) >= 1:
         direction = "growing" if trend.slope_pct > 0 else "declining"
@@ -205,6 +264,19 @@ def trend_insights(ctx: _Context, trend: TrendSeries | None) -> Iterable[Insight
     )
 
 
+def _coverage_caveat(ctx: _Context, trend: TrendSeries) -> str:
+    """Totals per period are only comparable if each period has similar coverage."""
+    if ctx.roles.aggregation is not Aggregation.SUM or not trend.counts or not trend.entity:
+        return ""
+    low, high = min(trend.counts), max(trend.counts)
+    if high == 0 or low / high >= COVERAGE_CAVEAT_RATIO:
+        return ""
+    return (
+        f" The number of {trend.entity} values per {trend.granularity} ranges from {low:,} "
+        f"to {high:,}, so totals partly reflect coverage; the average is more comparable."
+    )
+
+
 def _missing_caveat(ctx: _Context) -> str:
     """Warn when a summed measure is mostly missing: totals then track data coverage."""
     measure = ctx.roles.measure
@@ -224,9 +296,12 @@ def _largest_row_share(ctx: _Context, period: dt.date, g: Granularity) -> float 
     measure, date = ctx.roles.measure, ctx.roles.date
     if measure is None or date is None or ctx.roles.aggregation is not Aggregation.SUM:
         return None
-    m, d = quote_ident(measure), quote_ident(date)
+    axis = time_axis(ctx.profile, date)
+    if axis is None:  # pragma: no cover - a trend exists only when there is an axis
+        return None
+    m = quote_ident(measure)
     [(largest, total)] = ctx.rows(
-        f"SELECT max({m}), sum({m}) FROM {ctx.table} WHERE date_trunc('{g}', {d})::DATE = ?",
+        f"SELECT max({m}), sum({m}) FROM {ctx.table} WHERE {axis.period_sql} = ?",
         [period],
     )
     if largest is None or not total or total <= 0:
@@ -287,22 +362,40 @@ def segment_insights(ctx: _Context) -> Iterable[Insight]:
     for dim in ctx.roles.dimensions:
         d = quote_ident(dim)
         rows = ctx.rows(
-            f"SELECT CAST({d} AS VARCHAR) AS k, avg({m}) AS a FROM {ctx.table} "
-            f"WHERE {d} IS NOT NULL GROUP BY k HAVING count({m}) >= ? ORDER BY a DESC",
+            f"SELECT CAST({d} AS VARCHAR) AS k, avg({m}) AS a, median({m}) AS med "
+            f"FROM {ctx.table} WHERE {d} IS NOT NULL GROUP BY k HAVING count({m}) >= ? "
+            "ORDER BY a DESC",
             [MIN_SEGMENT_ROWS],
         )
         if len(rows) < 2:
             continue
-        (hi_key, hi), (lo_key, lo) = rows[0], rows[-1]
-        if lo is None or hi is None or lo <= 0 or hi / lo < 1.5:
+        (hi_key, hi, hi_med), (lo_key, lo, lo_med) = rows[0], rows[-1]
+        if lo is None or hi is None or lo <= 0 or hi / lo < SEGMENT_RATIO:
             continue
         ratio = hi / lo
+        detail = (
+            f"By {dim}: {hi_key} averages {fmt_number(hi)} vs. {fmt_number(lo)} for "
+            f"{lo_key} (groups with at least {MIN_SEGMENT_ROWS} rows)."
+        )
+        score = min(0.8, 0.3 + math.log(ratio) / 5)
+        if hi_med is not None and lo_med is not None and lo_med > 0:
+            if hi_med / lo_med < SEGMENT_RATIO:
+                # Means differ but typical rows don't: a few large rows create the gap.
+                detail += (
+                    f" Their medians are close ({fmt_number(hi_med)} vs. {fmt_number(lo_med)}), "
+                    "so the gap comes from a few very large rows, not typical ones."
+                )
+                score *= 0.75
+            else:
+                detail += (
+                    f" Medians confirm it ({fmt_number(hi_med)} vs. {fmt_number(lo_med)}): "
+                    "typical rows differ too."
+                )
         yield Insight(
             InsightKind.SEGMENT,
             f"Average {measure} is {ratio:.1f}x higher for {hi_key} than for {lo_key}",
-            f"By {dim}: {hi_key} averages {fmt_number(hi)} vs. {fmt_number(lo)} for "
-            f"{lo_key} (groups with at least {MIN_SEGMENT_ROWS} rows).",
-            score=min(0.8, 0.3 + math.log(ratio) / 5),
+            detail,
+            score=score,
             columns=(dim, measure),
         )
 
@@ -313,6 +406,16 @@ def segment_insights(ctx: _Context) -> Iterable[Insight]:
 def correlation_insights(ctx: _Context) -> Iterable[Insight]:
     for c in ctx.profile.correlations:
         if abs(c.pearson) < 0.5:
+            continue
+        if abs(c.pearson) >= NEAR_DUPLICATE_R:
+            yield Insight(
+                InsightKind.CORRELATION,
+                f"{c.column_a} and {c.column_b} are nearly the same measure (r = {c.pearson:.2f})",
+                "One is probably derived from, or a copy of, the other. Use just one of "
+                "them in comparisons and models.",
+                score=0.45,
+                columns=(c.column_a, c.column_b),
+            )
             continue
         movement = "rise together" if c.pearson > 0 else "move in opposite directions"
         yield Insight(

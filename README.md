@@ -42,7 +42,8 @@ collection or cloud storage, and it tells you what's in there and what's wrong w
   | Constant columns | *every value is identical* |
   | Text hygiene | blank strings, untrimmed spaces, numbers or dates stored as text |
 
-- **Correlations.** Pearson matrix across numeric columns, with the notable relationships listed.
+- **Correlations.** Pearson matrix across numeric columns, notable relationships, near-duplicate detection and a scatter explorer with a fitted line.
+- **Comparisons.** Rank groups (top 15 + Other), follow the top 5 over time, and check with box plots whether a gap is typical or driven by outliers.
 - **Interactive web app.** Streamlit + Plotly: overview, filterable issue list, per-column explorer (with an outlier-hiding zoom) and a correlation heatmap. Chart colors come from a colorblind-safe palette with separate light and dark steps.
 - **Automatic insights.** Ranked, plain-language findings, for example:
   - *"Laptop accounts for 66% of total. The top 2 of 7 products make up 80%."*

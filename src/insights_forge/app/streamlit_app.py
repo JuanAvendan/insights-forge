@@ -12,10 +12,12 @@ from pathlib import Path
 import polars as pl
 import streamlit as st
 
-from insights_forge import __version__, charts
+from insights_forge import __version__, breakdowns, charts
+from insights_forge.app.compare_view import render_compare
 from insights_forge.app.insights_view import render_insights
 from insights_forge.connectors import SUPPORTED_EXTENSIONS, ConnectorError
 from insights_forge.formatting import fmt_number
+from insights_forge.insights import candidate_dimensions
 from insights_forge.pipeline import Analysis, analyze_file
 from insights_forge.profiling import ColumnKind, ColumnProfile, DatasetProfile, Issue, Severity
 
@@ -141,6 +143,31 @@ def render_quality(a: Analysis) -> None:
     if not issues:
         st.success("No data-quality issues found.", icon="✅")
         return
+
+    mode = theme_mode()
+    missing = breakdowns.missing_by_column(a.profile)
+    trend = a.insights.trend
+    left, right = st.columns(2, gap="large")
+    if missing.height:
+        with left:
+            st.markdown("**Where is data missing?**")
+            st.plotly_chart(charts.missing_values(missing, mode), width="stretch")
+    if trend is not None and trend.counts:
+        with right:
+            st.markdown(f"**Rows per {trend.granularity}**")
+            st.plotly_chart(charts.coverage(trend, mode), width="stretch")
+            low, high = min(trend.counts), max(trend.counts)
+            if trend.entity is None:
+                st.caption("Data volume per period. Gaps or sudden drops can reveal missing data.")
+            elif high and low / high < 0.8:
+                st.caption(
+                    f"Coverage varies: {low:,} to {high:,} {trend.entity} values per "
+                    f"{trend.granularity}. Compare averages rather than totals across periods."
+                )
+            else:
+                st.caption(
+                    f"Coverage is even: every {trend.granularity} has similar {trend.entity}s."
+                )
 
     options = [s for s in SEVERITY_LABEL if any(i.severity is s for i in issues)]
     selected = st.pills(
@@ -285,11 +312,41 @@ def render_correlations(a: Analysis) -> None:
         )
 
 
+def render_scatter_explorer(a: Analysis) -> None:
+    p = a.profile
+    numeric = [c.name for c in p.columns_of(ColumnKind.NUMERIC) if c.distinct > 1]
+    if len(numeric) < 2 or not p.correlations:  # pragma: no cover - guarded by caller
+        return
+    st.markdown("#### Explore a relationship")
+    st.caption(
+        "A scatter plot shows whether a correlation holds across the data or is driven by a "
+        "few extreme points."
+    )
+    strongest = p.correlations[0]
+    left, middle, right = st.columns(3)
+    x = left.selectbox("X axis", numeric, index=numeric.index(strongest.column_a), key="sc_x")
+    y_options = [n for n in numeric if n != x]
+    default_y = strongest.column_b if strongest.column_b in y_options else y_options[0]
+    y = middle.selectbox("Y axis", y_options, index=y_options.index(default_y), key="sc_y")
+    color = right.selectbox("Color by", ["(none)", *candidate_dimensions(p)], key="sc_color")
+
+    points = breakdowns.scatter_points(a.df, x, y, None if color == "(none)" else color)
+    st.plotly_chart(charts.scatter(points, x, y, theme_mode()), width="stretch")
+    r = next(
+        (c.pearson for c in p.correlations if {c.column_a, c.column_b} == {x, y}),
+        None,
+    )
+    note = f"r = {r:.2f} · " if r is not None else ""
+    sampled = " (random sample)" if points.height >= breakdowns.MAX_SCATTER_POINTS else ""
+    st.caption(f"{note}{points.height:,} rows with both values{sampled}. Dotted line: linear fit.")
+
+
 def render_analysis(a: Analysis, source_key: str) -> None:
     st.subheader(a.name)
-    insights, overview, quality, columns, correlations, preview = st.tabs(
+    insights, compare, overview, quality, columns, correlations, preview = st.tabs(
         [
             "Insights",
+            "Compare",
             "Overview",
             f"Data quality ({len(a.profile.issues)})",
             "Columns",
@@ -299,6 +356,8 @@ def render_analysis(a: Analysis, source_key: str) -> None:
     )
     with insights:
         render_insights(a, source_key, theme_mode())
+    with compare:
+        render_compare(a, theme_mode())
     with overview:
         render_overview(a)
     with quality:
@@ -307,6 +366,8 @@ def render_analysis(a: Analysis, source_key: str) -> None:
         render_columns(a)
     with correlations:
         render_correlations(a)
+        if a.profile.correlations:
+            render_scatter_explorer(a)
     with preview:
         st.dataframe(a.df.head(PREVIEW_ROWS), width="stretch")
         st.caption(f"First {min(PREVIEW_ROWS, a.df.height):,} of {a.df.height:,} rows.")

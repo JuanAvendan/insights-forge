@@ -35,9 +35,9 @@ def test_sample_data_overview(sample_app: AppTest) -> None:
 
 def test_sample_data_tabs(sample_app: AppTest) -> None:
     labels = [t.label for t in sample_app.tabs]
-    assert labels[:2] == ["Insights", "Overview"]
-    assert labels[2].startswith("Data quality (")
-    assert labels[3:] == ["Columns", "Correlations", "Preview"]
+    assert labels[:3] == ["Insights", "Compare", "Overview"]
+    assert labels[3].startswith("Data quality (")
+    assert labels[4:] == ["Columns", "Correlations", "Preview"]
 
 
 def test_column_explorer_switches_column(sample_app: AppTest) -> None:

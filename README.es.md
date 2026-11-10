@@ -42,7 +42,8 @@ una colección NoSQL o un almacenamiento en la nube, y te dice qué hay y qué e
   | Columnas constantes | *todos los valores son idénticos* |
   | Higiene de texto | textos vacíos, espacios sin recortar, números o fechas guardados como texto |
 
-- **Correlaciones.** Matriz de Pearson entre columnas numéricas, con la lista de relaciones relevantes.
+- **Correlaciones.** Matriz de Pearson entre columnas numéricas, relaciones relevantes, detección de columnas casi duplicadas y un explorador de dispersión con recta ajustada.
+- **Comparaciones.** Ranking de grupos (top 15 + Other), evolución de los 5 principales en el tiempo y diagramas de caja para ver si una diferencia es típica o la producen los outliers.
 - **App web interactiva.** Streamlit + Plotly: resumen, lista de problemas filtrable, explorador por columna (con zoom que oculta outliers) y mapa de calor de correlaciones. Los colores de los gráficos vienen de una paleta apta para daltonismo, con tonos propios para modo claro y oscuro.
 - **Insights automáticos.** Hallazgos en lenguaje natural, ordenados por importancia. Por ejemplo:
   - *"Laptop representa el 66% del total. 2 de 7 productos suman el 80%."*

@@ -74,6 +74,10 @@ class TrendSeries:
     values: tuple[float, ...]
     slope_pct: float | None  # fitted change per period, % of the mean
     r2: float | None  # goodness of the linear fit
+    counts: tuple[int, ...] = ()  # rows behind each period
+    # Panel data (one row per entity per period, e.g. country-year): the entity
+    # column. Then fewer rows in a period means less coverage, not less activity.
+    entity: str | None = None
 
     @property
     def labels(self) -> tuple[str, ...]:
