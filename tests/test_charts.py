@@ -3,7 +3,7 @@ from __future__ import annotations
 import polars as pl
 import pytest
 
-from insights_forge.app import charts
+from insights_forge import charts
 from tests.conftest import MakeProfile
 
 

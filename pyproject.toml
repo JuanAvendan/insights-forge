@@ -1,6 +1,6 @@
 [project]
 name = "insights-forge"
-version = "0.2.0"
+version = "0.3.0"
 description = "Connect any data source (Excel, CSV, SQL, NoSQL, cloud) and get automatic data-quality reports, profiling and insights."
 readme = "README.md"
 license = "MIT"
@@ -22,11 +22,15 @@ classifiers = [
 dependencies = [
     "duckdb>=1.4",
     "fastexcel>=0.14",
+    "jinja2>=3.1",
     "plotly>=6.0",
     "polars>=1.30",
     "pyarrow>=20.0",
     "streamlit>=1.50",
 ]
+
+[project.scripts]
+insights-forge = "insights_forge.cli:main"
 
 [project.urls]
 Repository = "https://github.com/JuanAvendan/insights-forge"
@@ -73,6 +77,7 @@ select = [
 # Identifiers cannot be bound as SQL parameters: every table/column name goes
 # through quote_ident() and every value through `?` placeholders.
 "src/insights_forge/profiling/profiler.py" = ["S608"]
+"src/insights_forge/insights/engine.py" = ["S608"]
 
 # ---------------------------------------------------------------- mypy
 [tool.mypy]

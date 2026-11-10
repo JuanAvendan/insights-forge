@@ -17,7 +17,7 @@
 
 ---
 
-> 🚧 **En desarrollo.** La carga de archivos, el perfilado de columnas y los chequeos de calidad de datos están listos. Los insights en lenguaje natural y el reporte HTML son lo siguiente. Mira la [hoja de ruta](#hoja-de-ruta).
+> 🚧 **En desarrollo.** El flujo completo funciona: archivos → perfilado → calidad de datos → insights → reporte HTML. Las fuentes SQL, NoSQL y en la nube son lo siguiente. Mira la [hoja de ruta](#hoja-de-ruta).
 
 ## Por qué
 
@@ -44,7 +44,14 @@ una colección NoSQL o un almacenamiento en la nube, y te dice qué hay y qué e
 
 - **Correlaciones.** Matriz de Pearson entre columnas numéricas, con la lista de relaciones relevantes.
 - **App web interactiva.** Streamlit + Plotly: resumen, lista de problemas filtrable, explorador por columna (con zoom que oculta outliers) y mapa de calor de correlaciones. Los colores de los gráficos vienen de una paleta apta para daltonismo, con tonos propios para modo claro y oscuro.
-- **Insights automáticos** *(próximamente)*. Tendencias en el tiempo y hallazgos en lenguaje natural.
+- **Insights automáticos.** Hallazgos en lenguaje natural, ordenados por importancia. Por ejemplo:
+  - *"Laptop representa el 66% del total. 2 de 7 productos suman el 80%."*
+  - *"Mayo 2025 fue el mejor mes (+228%). Una sola fila aporta el 88% de ese mes: revisa que no sea un outlier."*
+  - *"Las filas duplicadas inflan el total un 5,2%."*
+
+  El motor detecta automáticamente las columnas de **medida**, **fecha** y **dimensión** (con nombres en inglés y en español) y decide si sumar o promediar según el significado. Cubre tendencias (ajuste por mínimos cuadrados con R², ignorando períodos finales incompletos), picos, concentración y Pareto, diferencias entre segmentos, sesgo, correlaciones y el impacto de los duplicados.
+- **Reporte HTML para compartir.** Un solo archivo autocontenido con insights, gráfico de tendencia, tabla de calidad, resumen de columnas y correlaciones, en modo claro y oscuro. Usa `--offline` para incrustar plotly.js.
+- **Línea de comandos.** `insights-forge summary` e `insights-forge report`.
 
 ## Arquitectura
 
@@ -81,6 +88,14 @@ uv run streamlit run src/insights_forge/app/streamlit_app.py
 
 Luego sube un archivo, o haz clic en **Try with sample data** en la barra lateral.
 
+### Desde la línea de comandos
+
+```bash
+uv run insights-forge summary data/sample/sales.csv              # problemas + insights en la terminal
+uv run insights-forge report data/sample/sales.csv -o reporte.html
+uv run insights-forge report ventas.xlsx --sheet Datos --measure ingresos --date-column fecha
+```
+
 ### Como librería
 
 ```python
@@ -89,6 +104,7 @@ from pathlib import Path
 import duckdb
 from insights_forge.connectors import FileConnector
 
+from insights_forge.insights import generate_insights
 from insights_forge.profiling import profile_table
 
 con = duckdb.connect()
@@ -98,13 +114,20 @@ perfil = profile_table(con, "sales")
 print(f"{perfil.rows:,} filas, {perfil.completeness_pct:.1f}% completo")
 for issue in perfil.issues:
     print(f"[{issue.severity}] {issue.column or 'tabla'}: {issue.message}")
+
+reporte = generate_insights(con, perfil)  # o measure="quantity", date="order_date"
+for insight in reporte.insights[:3]:
+    print(insight.title)
 ```
+
+O todo el flujo en una sola llamada: `insights_forge.pipeline.analyze_file(ruta)`.
 
 ## Hoja de ruta
 
 - [x] **v0.1: Fundamentos.** Configuración del proyecto, CI, arquitectura de conectores, conector de archivos, UI básica
 - [x] **v0.2: Perfilado.** Estadísticas por columna, chequeos de calidad, distribuciones y correlaciones
-- [ ] **v0.3: Insights.** Hallazgos por reglas en lenguaje natural, tendencias temporales, exportar reporte HTML, demo en vivo
+- [x] **v0.3: Insights.** Hallazgos por reglas en lenguaje natural, tendencias temporales, reporte HTML exportable, CLI
+- [ ] **Demo en vivo** en Streamlit Community Cloud
 - [ ] **v0.4: Fuentes SQL.** PostgreSQL, MySQL, SQLite (Docker Compose para bases de prueba locales)
 - [ ] **v0.5: NoSQL y nube.** MongoDB, S3 / GCS, Google Sheets
 - [ ] **v0.6: Insights con IA.** Resúmenes opcionales del perfil generados por un LLM
@@ -114,7 +137,7 @@ for issue in perfil.issues:
 | Área | Herramientas |
 |---|---|
 | Motor de datos | DuckDB, Polars, PyArrow, fastexcel |
-| App y gráficos | Streamlit, Plotly |
+| App, gráficos y reporte | Streamlit, Plotly, Jinja2 |
 | Herramientas | uv, Ruff, mypy (estricto), pytest + coverage, pre-commit |
 | CI | GitHub Actions (Linux + Windows, Python 3.12 / 3.13) |
 
@@ -134,7 +157,12 @@ insights-forge/
 ├── src/insights_forge/
 │   ├── connectors/       # un módulo por tipo de fuente
 │   ├── profiling/        # estadísticas (SQL en DuckDB) y chequeos de calidad
-│   └── app/              # interfaz Streamlit y gráficos Plotly
+│   ├── insights/         # detección de roles y generadores de insights por reglas
+│   ├── report/           # reporte HTML con Jinja2
+│   ├── app/              # interfaz Streamlit
+│   ├── charts.py         # gráficos Plotly compartidos por la app y el reporte
+│   ├── pipeline.py       # cargar -> perfilar -> insights en una llamada
+│   └── cli.py            # comando `insights-forge`
 ├── tests/
 ├── scripts/              # utilidades (p. ej. generador de datos de ejemplo)
 └── data/sample/          # datasets sintéticos pequeños (los datos reales se ignoran en git)

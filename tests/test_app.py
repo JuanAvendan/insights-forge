@@ -35,20 +35,20 @@ def test_sample_data_overview(sample_app: AppTest) -> None:
 
 def test_sample_data_tabs(sample_app: AppTest) -> None:
     labels = [t.label for t in sample_app.tabs]
-    assert labels[0] == "Overview"
-    assert labels[1].startswith("Data quality (")
-    assert labels[2:] == ["Columns", "Correlations", "Preview"]
+    assert labels[:2] == ["Insights", "Overview"]
+    assert labels[2].startswith("Data quality (")
+    assert labels[3:] == ["Columns", "Correlations", "Preview"]
 
 
 def test_column_explorer_switches_column(sample_app: AppTest) -> None:
-    sample_app.selectbox[0].select("region").run()
+    sample_app.selectbox(key="column").select("region").run()
     assert not sample_app.exception
-    sample_app.selectbox[0].select("order_date").run()
+    sample_app.selectbox(key="column").select("order_date").run()
     assert not sample_app.exception
 
 
 def test_outlier_toggle_on_numeric_column(sample_app: AppTest) -> None:
-    sample_app.selectbox[0].select("quantity").run()
+    sample_app.selectbox(key="column").select("quantity").run()
     toggle = sample_app.toggle[0]
     assert toggle.label.startswith("Hide 11 extreme outliers")
     toggle.set_value(True).run()
@@ -59,3 +59,24 @@ def test_sample_survives_rerun(sample_app: AppTest) -> None:
     """The sample stays loaded after unrelated interactions (stored in session state)."""
     sample_app.run()
     assert sample_app.subheader[0].value == "sales.csv"
+
+
+def test_insights_tab_defaults(sample_app: AppTest) -> None:
+    assert sample_app.selectbox(key="measure").value == "total"
+    assert sample_app.selectbox(key="date").value == "order_date"
+    titles = [m.value for m in sample_app.markdown]
+    assert any("key insights" in t for t in titles)
+    assert any("Duplicate rows inflate total" in t for t in titles)
+
+
+def test_changing_measure_regenerates_insights(sample_app: AppTest) -> None:
+    sample_app.selectbox(key="measure").select("quantity").run()
+    assert not sample_app.exception
+    titles = " ".join(m.value for m in sample_app.markdown)
+    assert "Quantity by month" in titles
+
+
+def test_row_count_without_date(sample_app: AppTest) -> None:
+    sample_app.selectbox(key="measure").select("(row count)").run()
+    sample_app.selectbox(key="date").select("(none)").run()
+    assert not sample_app.exception

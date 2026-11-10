@@ -5,26 +5,19 @@ Run with:  uv run streamlit run src/insights_forge/app/streamlit_app.py
 
 from __future__ import annotations
 
+import hashlib
 import tempfile
-from dataclasses import dataclass
 from pathlib import Path
 
-import duckdb
 import polars as pl
 import streamlit as st
 
-from insights_forge import __version__
-from insights_forge.app import charts
-from insights_forge.connectors import SUPPORTED_EXTENSIONS, ConnectorError, FileConnector
+from insights_forge import __version__, charts
+from insights_forge.app.insights_view import render_insights
+from insights_forge.connectors import SUPPORTED_EXTENSIONS, ConnectorError
 from insights_forge.formatting import fmt_number
-from insights_forge.profiling import (
-    ColumnKind,
-    ColumnProfile,
-    DatasetProfile,
-    Issue,
-    Severity,
-    profile_table,
-)
+from insights_forge.pipeline import Analysis, analyze_file
+from insights_forge.profiling import ColumnKind, ColumnProfile, DatasetProfile, Issue, Severity
 
 SAMPLE_FILE = Path(__file__).resolve().parents[3] / "data" / "sample" / "sales.csv"
 REPO_URL = "https://github.com/JuanAvendan/insights-forge"
@@ -45,28 +38,10 @@ KIND_ICON = {
 }
 
 
-@dataclass(frozen=True, slots=True)
-class Analysis:
-    name: str
-    df: pl.DataFrame
-    profile: DatasetProfile
-
-
 # --------------------------------------------------------------------------- loading
 
 
-def analyze_file(path: Path) -> Analysis:
-    con = duckdb.connect()
-    try:
-        relation = FileConnector(path).load(con)
-        profile = profile_table(con)
-        df: pl.DataFrame = relation.pl()  # duckdb types .pl() as Any
-    finally:
-        con.close()
-    return Analysis(name=path.name, df=df, profile=profile)
-
-
-@st.cache_data(show_spinner="Profiling data...", max_entries=5)
+@st.cache_data(show_spinner="Analyzing data...", max_entries=5)
 def analyze_upload(name: str, data: bytes) -> Analysis:
     with tempfile.TemporaryDirectory() as tmp:
         path = Path(tmp) / Path(name).name
@@ -74,7 +49,7 @@ def analyze_upload(name: str, data: bytes) -> Analysis:
         return analyze_file(path)
 
 
-@st.cache_data(show_spinner="Profiling sample data...")
+@st.cache_data(show_spinner="Analyzing sample data...")
 def analyze_sample() -> Analysis:
     return analyze_file(SAMPLE_FILE)
 
@@ -221,6 +196,7 @@ def render_columns(a: Analysis) -> None:
         "Column",
         [c.name for c in p.columns],
         format_func=lambda n: f"{KIND_ICON[p.column(n).kind]} {n}",
+        key="column",
     )
     if name is None:
         return
@@ -309,10 +285,11 @@ def render_correlations(a: Analysis) -> None:
         )
 
 
-def render_analysis(a: Analysis) -> None:
+def render_analysis(a: Analysis, source_key: str) -> None:
     st.subheader(a.name)
-    overview, quality, columns, correlations, preview = st.tabs(
+    insights, overview, quality, columns, correlations, preview = st.tabs(
         [
+            "Insights",
             "Overview",
             f"Data quality ({len(a.profile.issues)})",
             "Columns",
@@ -320,6 +297,8 @@ def render_analysis(a: Analysis) -> None:
             "Preview",
         ]
     )
+    with insights:
+        render_insights(a, source_key, theme_mode())
     with overview:
         render_overview(a)
     with quality:
@@ -356,9 +335,11 @@ def main() -> None:
     source = st.session_state.get("source")
     try:
         if source == "sample":
-            render_analysis(analyze_sample())
+            render_analysis(analyze_sample(), source_key="sample")
         elif uploaded is not None:
-            render_analysis(analyze_upload(uploaded.name, uploaded.getvalue()))
+            data = uploaded.getvalue()
+            key = f"{uploaded.name}:{hashlib.sha256(data).hexdigest()}"
+            render_analysis(analyze_upload(uploaded.name, data), source_key=key)
         else:
             st.write("Upload a file or load the sample dataset from the sidebar to get started.")
     except ConnectorError as exc:

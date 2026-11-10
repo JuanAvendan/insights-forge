@@ -1,4 +1,4 @@
-"""Plotly figure builders for the app.
+"""Plotly figure builders shared by the web app and the HTML report.
 
 Pure functions (data in, figure out) so they can be unit-tested without a
 running Streamlit server. Colors come from a CVD-validated palette with
@@ -14,6 +14,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import polars as pl
 
+from insights_forge.insights import TrendSeries
 from insights_forge.profiling import ColumnProfile, DatasetProfile
 
 Mode = Literal["light", "dark"]
@@ -138,3 +139,49 @@ def correlation_heatmap(profile: DatasetProfile, mode: Mode = "light") -> go.Fig
     fig.update_traces(hovertemplate="%{y} vs %{x}<br>r = %{z:.3f}<extra></extra>", xgap=2, ygap=2)
     fig.update_layout(coloraxis_colorbar={"title": "r", "thickness": 12})
     return _style(fig, palette, height=max(320, 56 * len(names) + 80))
+
+
+def trend(series: TrendSeries, label: str, mode: Mode = "light") -> go.Figure:
+    """Measure per period as a 2px line with markers, plus the fitted linear trend."""
+    palette = PALETTES[mode]
+    x = list(series.periods)
+    fig = go.Figure(
+        go.Scatter(
+            x=x,
+            y=list(series.values),
+            mode="lines+markers",
+            line={"color": palette.series, "width": 2},
+            marker={"size": 8, "color": palette.series},
+            customdata=list(series.labels),
+            hovertemplate=f"%{{customdata}}<br>{label}: %{{y:,.4~g}}<extra></extra>",
+        )
+    )
+    if series.slope_pct is not None and len(x) >= 2:
+        n = len(series.values)
+        mean = sum(series.values) / n
+        slope = series.slope_pct / 100 * mean
+        fitted = [mean + slope * (i - (n - 1) / 2) for i in range(n)]
+        fig.add_trace(
+            go.Scatter(
+                x=x,
+                y=fitted,
+                mode="lines",
+                line={"color": palette.muted_ink, "width": 1.5, "dash": "dot"},
+                hoverinfo="skip",
+            )
+        )
+    fig.update_layout(yaxis_title=label, hovermode="x")
+    return _style(fig, palette)
+
+
+def transparent(fig: go.Figure) -> go.Figure:
+    """Let the host page's background (light or dark) show through."""
+    fig.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font={"color": PALETTES["light"].muted_ink},
+    )
+    # A translucent neutral grid reads on both light and dark pages.
+    fig.update_xaxes(gridcolor="rgba(137,135,129,0.25)")
+    fig.update_yaxes(gridcolor="rgba(137,135,129,0.25)")
+    return fig

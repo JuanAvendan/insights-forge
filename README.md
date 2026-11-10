@@ -17,7 +17,7 @@
 
 ---
 
-> 🚧 **Work in progress.** File loading, column profiling and data-quality checks are ready. Plain-language insights and the HTML report are next. See the [roadmap](#roadmap).
+> 🚧 **Work in progress.** Files → profiling → data quality → insights → HTML report works end to end. SQL, NoSQL and cloud sources are next. See the [roadmap](#roadmap).
 
 ## Why
 
@@ -44,7 +44,14 @@ collection or cloud storage, and it tells you what's in there and what's wrong w
 
 - **Correlations.** Pearson matrix across numeric columns, with the notable relationships listed.
 - **Interactive web app.** Streamlit + Plotly: overview, filterable issue list, per-column explorer (with an outlier-hiding zoom) and a correlation heatmap. Chart colors come from a colorblind-safe palette with separate light and dark steps.
-- **Automatic insights** *(next)*. Trends over time and plain-language findings.
+- **Automatic insights.** Ranked, plain-language findings, for example:
+  - *"Laptop accounts for 66% of total. The top 2 of 7 products make up 80%."*
+  - *"May 2025 was the strongest month (+228%). A single row contributes 88% of that month: check it is not an outlier."*
+  - *"Duplicate rows inflate total by 5.2%."*
+
+  The engine detects the **measure**, **date** and **dimension** columns automatically (English and Spanish names) and picks sum or average by meaning. It covers trends (least-squares fit with R², ignoring incomplete trailing periods), peaks, concentration and Pareto, segment gaps, skew, correlations and the impact of duplicates.
+- **Shareable HTML report.** One self-contained file with insights, trend chart, data-quality table, column summary and correlations, in light and dark mode. Use `--offline` to embed plotly.js.
+- **Command-line interface.** `insights-forge summary` and `insights-forge report`.
 
 ## Architecture
 
@@ -81,6 +88,14 @@ uv run streamlit run src/insights_forge/app/streamlit_app.py
 
 Then upload a file, or click **Try with sample data** in the sidebar.
 
+### From the command line
+
+```bash
+uv run insights-forge summary data/sample/sales.csv              # issues + insights in the terminal
+uv run insights-forge report data/sample/sales.csv -o report.html
+uv run insights-forge report sales.xlsx --sheet Data --measure revenue --date-column day
+```
+
 ### As a library
 
 ```python
@@ -89,6 +104,7 @@ from pathlib import Path
 import duckdb
 from insights_forge.connectors import FileConnector
 
+from insights_forge.insights import generate_insights
 from insights_forge.profiling import profile_table
 
 con = duckdb.connect()
@@ -98,13 +114,20 @@ profile = profile_table(con, "sales")
 print(f"{profile.rows:,} rows, {profile.completeness_pct:.1f}% complete")
 for issue in profile.issues:
     print(f"[{issue.severity}] {issue.column or 'table'}: {issue.message}")
+
+report = generate_insights(con, profile)  # or measure="quantity", date="order_date"
+for insight in report.insights[:3]:
+    print(insight.title)
 ```
+
+Or the whole pipeline in one call: `insights_forge.pipeline.analyze_file(path)`.
 
 ## Roadmap
 
 - [x] **v0.1: Foundations.** Project setup, CI, connector architecture, file connector, basic UI
 - [x] **v0.2: Profiling.** Column statistics, data-quality checks, distributions and correlations
-- [ ] **v0.3: Insights.** Rule-based findings in plain language, time-series trends, HTML report export, live demo
+- [x] **v0.3: Insights.** Rule-based findings in plain language, time-series trends, HTML report export, CLI
+- [ ] **Live demo** on Streamlit Community Cloud
 - [ ] **v0.4: SQL sources.** PostgreSQL, MySQL, SQLite (Docker Compose for local test databases)
 - [ ] **v0.5: NoSQL & cloud.** MongoDB, S3 / GCS, Google Sheets
 - [ ] **v0.6: AI insights.** Optional LLM-generated summaries of the profile
@@ -114,7 +137,7 @@ for issue in profile.issues:
 | Area | Tools |
 |---|---|
 | Data engine | DuckDB, Polars, PyArrow, fastexcel |
-| App & charts | Streamlit, Plotly |
+| App, charts & report | Streamlit, Plotly, Jinja2 |
 | Tooling | uv, Ruff, mypy (strict), pytest + coverage, pre-commit |
 | CI | GitHub Actions (Linux + Windows, Python 3.12 / 3.13) |
 
@@ -134,7 +157,12 @@ insights-forge/
 ├── src/insights_forge/
 │   ├── connectors/       # one module per source type
 │   ├── profiling/        # statistics (SQL in DuckDB) and data-quality checks
-│   └── app/              # Streamlit UI and Plotly chart builders
+│   ├── insights/         # role detection and rule-based insight generators
+│   ├── report/           # Jinja2 HTML report
+│   ├── app/              # Streamlit UI
+│   ├── charts.py         # Plotly figures shared by the app and the report
+│   ├── pipeline.py       # load -> profile -> insights in one call
+│   └── cli.py            # `insights-forge` command
 ├── tests/
 ├── scripts/              # utilities (e.g. sample data generator)
 └── data/sample/          # small synthetic datasets (real data is git-ignored)
