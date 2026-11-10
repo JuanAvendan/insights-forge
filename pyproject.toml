@@ -1,6 +1,6 @@
 [project]
 name = "insights-forge"
-version = "0.5.0"
+version = "0.6.0"
 description = "Connect any data source (Excel, CSV, SQL, NoSQL, cloud) and get automatic data-quality reports, profiling and insights."
 readme = "README.md"
 license = "MIT"
@@ -44,6 +44,9 @@ postgres = [
 mysql = [
     "pymysql>=1.1",
 ]
+mongo = [
+    "pymongo>=4.10",
+]
 
 [dependency-groups]
 dev = [
@@ -51,6 +54,7 @@ dev = [
     "openpyxl>=3.1",
     "pre-commit>=4.3",
     "psycopg[binary]>=3.2",
+    "pymongo>=4.10",
     "pymysql>=1.1",
     "pytest>=8.4",
     "pytest-cov>=7.0",

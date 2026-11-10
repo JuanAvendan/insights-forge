@@ -17,7 +17,7 @@
 
 ---
 
-> 🚧 **Work in progress.** Files and SQL databases → profiling → data quality → insights → HTML report works end to end. NoSQL and cloud sources are next. See the [roadmap](#roadmap).
+> 🚧 **Work in progress.** Files, SQL and MongoDB databases, URLs, Google Sheets and cloud storage → profiling → data quality → insights → HTML report works end to end. See the [roadmap](#roadmap).
 
 ## Why
 
@@ -30,6 +30,7 @@ collection or cloud storage, and it tells you what's in there and what's wrong w
 - **Many sources, one engine.** Every source is loaded into an in-memory [DuckDB](https://duckdb.org/) table, so the analysis code is written once and works everywhere.
 - **Smart file loading.** CSV/TSV with automatic delimiter, header and type detection, plus Excel (any sheet), Parquet and JSON.
 - **SQL databases.** PostgreSQL, MySQL and SQLite: a table, a view or your own `SELECT`. Strictly read-only (see [Databases](#databases)).
+- **NoSQL & cloud.** MongoDB collections (nested documents flattened), https URLs, Google Sheets links, and S3 / GCS / Azure object storage, with SSRF protection for downloads.
 - **Column profiling.** Type-aware statistics computed in SQL inside DuckDB: quartiles, mean, standard deviation, zeros, negatives, text lengths, date ranges and top values.
 - **Data-quality checks.** Each finding gets a severity and the number of affected rows:
 
@@ -130,6 +131,37 @@ Passwords are masked (`***`) everywhere they could be shown, the CLI reads the U
 after 10 seconds, and reads are capped at 1,000,000 rows by default. Best practice: use
 a database user that can only `SELECT`, like the `analyst` user in `compose.yaml`.
 
+### MongoDB
+
+```bash
+export INSIGHTS_FORGE_DB_URL="mongodb://analyst:analyst@localhost:57017/shop"
+uv run insights-forge tables
+uv run insights-forge summary --collection sales --filter '{"channel": "Online"}'
+```
+
+Nested documents are flattened into columns (`customer.email`, `product.name`), and `_id`
+is left out so duplicate documents stay visible. Only `find()` is used, and filters that
+run JavaScript on the server (`$where`, `$function`) are rejected.
+
+### Remote files: https, Google Sheets, S3 / GCS / Azure
+
+```bash
+uv run insights-forge summary https://raw.githubusercontent.com/JuanAvendan/insights-forge/main/data/sample/sales.csv
+uv run insights-forge report "https://docs.google.com/spreadsheets/d/<id>/edit#gid=0"
+uv run insights-forge summary s3://my-bucket/exports/sales.parquet
+```
+
+- **Google Sheets**: paste the sharing link of a sheet shared as "anyone with the link".
+- **Cloud storage** is read by Polars; credentials come from the usual environment
+  variables (`AWS_ACCESS_KEY_ID`, `AWS_ENDPOINT_URL`, `GOOGLE_APPLICATION_CREDENTIALS`,
+  `AZURE_STORAGE_ACCOUNT_NAME`...). The local S3 gateway in `compose.yaml` serves
+  `s3://shop/sales.csv` (see the comment at the top of the file for its settings).
+- **SSRF protection**: the app never fetches URLs that resolve to private, loopback or
+  link-local addresses (such as the cloud metadata endpoint `169.254.169.254`), re-checks
+  every redirect, and caps downloads at 200 MB and 30 seconds.
+
+In the app, choose **URL** in the sidebar, or MongoDB in the **Database** form.
+
 ### As a library
 
 ```python
@@ -164,7 +196,7 @@ Or the whole pipeline in one call: `insights_forge.pipeline.analyze_file(path)`.
 - [x] **v0.4: Comparisons & real-world robustness.** Compare tab, scatter explorer, coverage charts; panel data, integer years and sparse measures handled correctly
 - [ ] **Live demo** on Streamlit Community Cloud
 - [x] **v0.5: SQL sources.** PostgreSQL, MySQL, SQLite; read-only by design; Docker Compose test databases
-- [ ] **v0.6: NoSQL & cloud.** MongoDB, S3 / GCS, Google Sheets
+- [x] **v0.6: NoSQL & cloud.** MongoDB, https URLs, Google Sheets, S3 / GCS / Azure; SSRF protection
 - [ ] **v0.7: AI insights.** Optional LLM-generated summaries of the profile
 
 ## Tech stack
@@ -172,7 +204,7 @@ Or the whole pipeline in one call: `insights_forge.pipeline.analyze_file(path)`.
 | Area | Tools |
 |---|---|
 | Data engine | DuckDB, Polars, PyArrow, fastexcel |
-| Databases | SQLAlchemy 2, psycopg 3, PyMySQL, Docker Compose |
+| Databases & cloud | SQLAlchemy 2, psycopg 3, PyMySQL, PyMongo, Polars object_store, Docker Compose |
 | App, charts & report | Streamlit, Plotly, Jinja2 |
 | Tooling | uv, Ruff, mypy (strict), pytest + coverage, pre-commit |
 | CI | GitHub Actions (Linux + Windows, Python 3.12 / 3.13) |
@@ -189,6 +221,8 @@ uv run ruff check . && uv run mypy
 docker compose up -d --wait
 export INSIGHTS_FORGE_TEST_POSTGRES_URL="postgresql+psycopg://analyst:analyst@localhost:55432/shop"
 export INSIGHTS_FORGE_TEST_MYSQL_URL="mysql+pymysql://analyst:analyst@localhost:53306/shop"
+export INSIGHTS_FORGE_TEST_MONGO_URL="mongodb://analyst:analyst@localhost:57017/shop"
+# for S3 also set INSIGHTS_FORGE_TEST_S3_URL=s3://shop/sales.csv and the AWS_* values in compose.yaml
 uv run pytest -m integration
 ```
 
@@ -208,7 +242,7 @@ insights-forge/
 ├── tests/
 ├── scripts/              # utilities (e.g. sample data generator)
 ├── docker/               # seed scripts for the test databases
-├── compose.yaml          # PostgreSQL + MySQL for development and CI
+├── compose.yaml          # PostgreSQL, MySQL, MongoDB and S3 for development and CI
 └── data/sample/          # small synthetic datasets (real data is git-ignored)
 ```
 

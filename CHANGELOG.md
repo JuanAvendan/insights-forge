@@ -4,6 +4,32 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the
 project uses [Semantic Versioning](https://semver.org/).
 
+## [0.6.0] - 2026-11-10
+
+### Added
+- **MongoDB**: `MongoConnector` reads a collection with an optional JSON filter.
+  Nested documents are flattened (`customer.email`), arrays become JSON text, missing
+  fields become nulls, and `_id` is left out by default so duplicate documents stay
+  detectable. Only `find()` is used and filters with server-side JavaScript
+  (`$where`, `$function`, `$accumulator`) are rejected. Optional extra:
+  `insights-forge[mongo]`.
+- **Remote files**: `URLConnector` reads https URLs (any supported format, Excel
+  included), Google Sheets sharing links (converted to their CSV export) and cloud
+  object storage (`s3://`, `gs://`, `az://`) through Polars, with credentials from the
+  standard environment variables or `storage_options`.
+- **SSRF protection** for downloads: hosts resolving to private, loopback, link-local
+  or reserved addresses (e.g. the cloud metadata endpoint 169.254.169.254) are refused,
+  every redirect is re-checked, and downloads are limited in size (200 MB) and time.
+  Always on in the app; the CLI allows private hosts since it runs on your machine.
+- Mislabelled downloads are detected by their magic bytes (`.xlsx`, Parquet).
+- CLI: URLs as the source, `--collection`/`--filter` for MongoDB, `tables` lists
+  MongoDB collections.
+- App: **URL** source (with optional S3-compatible credentials) and MongoDB in the
+  database form.
+- `compose.yaml`: MongoDB 8 with nested sample documents and a read-only `analyst`
+  user, and an S3-compatible gateway (VersityGW) serving `data/sample` read-only as the
+  `shop` bucket. The CI integration job now covers PostgreSQL, MySQL, MongoDB and S3.
+
 ## [0.5.0] - 2026-11-10
 
 ### Added
@@ -108,6 +134,7 @@ and a UN-style country-year panel of homicide statistics (2000-2024).
 - Connector architecture and `FileConnector` (CSV/TSV, Excel, Parquet, JSON).
 - Minimal Streamlit app and a synthetic sample dataset.
 
+[0.6.0]: https://github.com/JuanAvendan/insights-forge/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/JuanAvendan/insights-forge/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/JuanAvendan/insights-forge/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/JuanAvendan/insights-forge/compare/v0.2.0...v0.3.0

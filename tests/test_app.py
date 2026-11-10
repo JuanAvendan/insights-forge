@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import pytest
@@ -129,3 +130,53 @@ def test_database_form_validates_port(monkeypatch: pytest.MonkeyPatch) -> None:
     at.sidebar.text_input[1].input("abc")  # Port
     _connect(at)
     assert "Port must be a number" in at.sidebar.error[0].value
+
+
+# --------------------------------------------------------------------------- URLs & MongoDB
+
+
+def _url_app() -> AppTest:
+    at = AppTest.from_file(str(APP), default_timeout=60).run()
+    at.sidebar.segmented_control(key="source_kind").set_value("URL").run()
+    return at
+
+
+def test_url_source_refuses_internal_addresses() -> None:
+    at = _url_app()
+    at.sidebar.text_input(key="remote_url").input("http://169.254.169.254/latest/x.csv").run()
+    assert "internal address" in at.error[0].value
+
+
+def test_url_source_rejects_local_paths() -> None:
+    at = _url_app()
+    at.sidebar.text_input(key="remote_url").input("C:/data/sales.csv").run()
+    assert "Enter an https://" in at.sidebar.error[0].value
+
+
+def test_url_source_loads_a_download(monkeypatch: pytest.MonkeyPatch) -> None:
+    sample = Path(__file__).resolve().parents[1] / "data" / "sample" / "sales.csv"
+
+    def fake_download(url: str, directory: Path, **kwargs: object) -> Path:
+        assert kwargs["allow_private"] is False  # the app always keeps SSRF protection on
+        target = directory / "sales.csv"
+        target.write_bytes(sample.read_bytes())
+        return target
+
+    monkeypatch.setattr("insights_forge.connectors.remote.download", fake_download)
+    at = _url_app()
+    at.sidebar.text_input(key="remote_url").input("https://example.org/app-test/sales.csv").run()
+    assert not at.exception
+    assert at.subheader[0].value == "sales.csv"
+
+
+@pytest.mark.integration
+def test_mongodb_source(monkeypatch: pytest.MonkeyPatch) -> None:
+    url = os.environ.get("INSIGHTS_FORGE_TEST_MONGO_URL")
+    if not url:
+        pytest.skip("INSIGHTS_FORGE_TEST_MONGO_URL not set")
+    at = _connect(_database_app(monkeypatch, url))
+    assert not at.exception
+    assert at.sidebar.selectbox(key="mongo_collection").options == ["sales"]
+    assert at.subheader[0].value.startswith("sales (mongodb://analyst:***@")
+    at.sidebar.text_area(key="mongo_filter").input('{"region": "East"}').run()
+    assert {m.label: m.value for m in at.metric}["Rows"] == "312"

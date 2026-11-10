@@ -123,3 +123,63 @@ def test_usage_errors(
         main(args)
     assert exc.value.code == 2
     assert message in capsys.readouterr().err
+
+
+# --------------------------------------------------------------------------- remote & MongoDB
+
+
+def test_summary_of_a_url(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    def fake_download(url: str, directory: Path, **kwargs: object) -> Path:
+        assert kwargs["allow_private"] is True  # the CLI runs on the user's own machine
+        target = directory / "sales.csv"
+        target.write_bytes(SAMPLE.read_bytes())
+        return target
+
+    monkeypatch.setattr("insights_forge.connectors.remote.download", fake_download)
+    assert main(["summary", "https://example.com/data/sales.csv"]) == 0
+    assert capsys.readouterr().out.startswith("sales.csv: 1,012 rows")
+
+
+def test_report_of_a_url_default_name(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    def fake_download(url: str, directory: Path, **kwargs: object) -> Path:
+        target = directory / "x.csv"
+        target.write_bytes(SAMPLE.read_bytes())
+        return target
+
+    monkeypatch.setattr("insights_forge.connectors.remote.download", fake_download)
+    monkeypatch.chdir(tmp_path)
+    assert main(["report", "https://example.com/exports/sales%202025.csv"]) == 0
+    assert (tmp_path / "sales 2025.report.html").exists()
+
+
+def test_tables_of_mongodb(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr("insights_forge.cli.list_collections", lambda url: ["orders", "users"])
+    monkeypatch.setenv("INSIGHTS_FORGE_DB_URL", "mongodb://db:27017/shop")
+    assert main(["tables"]) == 0
+    assert capsys.readouterr().out.split() == ["orders", "users"]
+
+
+@pytest.mark.parametrize(
+    ("args", "message"),
+    [
+        (["summary", "--db", "mongodb://db/shop", "--table", "t"], "use --collection"),
+        (["summary", "--db", "mongodb://db/shop"], "give --collection"),
+        (["summary", "--db", "sqlite:///a.db", "--collection", "c"], "are for MongoDB"),
+        (["summary", "https://x.org/a.csv", "--filter", "{}"], "not to files"),
+    ],
+)
+def test_mongo_usage_errors(
+    args: list[str],
+    message: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    monkeypatch.delenv("INSIGHTS_FORGE_DB_URL", raising=False)
+    with pytest.raises(SystemExit) as exc:
+        main(args)
+    assert exc.value.code == 2
+    assert message in capsys.readouterr().err

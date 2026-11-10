@@ -8,6 +8,11 @@ insights-forge tables --db postgresql+psycopg://analyst:analyst@localhost:55432/
 insights-forge summary --db ... --table sales
 insights-forge report  --db ... --query "SELECT * FROM sales WHERE region = 'East'"
 insights-forge summary shop.db --table sales       # SQLite file
+insights-forge summary --db mongodb://analyst:analyst@localhost:57017/shop --collection sales
+
+# remote files: https, Google Sheets links, s3:// gs:// az:// (credentials from AWS_* etc.)
+insights-forge summary https://example.com/data/sales.csv
+insights-forge report "https://docs.google.com/spreadsheets/d/<id>/edit#gid=0"
 """
 
 from __future__ import annotations
@@ -28,7 +33,11 @@ from insights_forge.connectors import (
     Connector,
     ConnectorError,
     FileConnector,
+    MongoConnector,
     SQLConnector,
+    URLConnector,
+    is_remote,
+    list_collections,
     list_tables,
 )
 from insights_forge.connectors.sql import DEFAULT_ROW_LIMIT
@@ -45,15 +54,15 @@ class UsageError(Exception):
 def _add_location_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "path",
-        type=Path,
         nargs="?",
-        help="data file: CSV, Excel, Parquet, JSON or a SQLite database (.db/.sqlite)",
+        help="data file (CSV, Excel, Parquet, JSON, SQLite .db) or URL (https://, a Google "
+        "Sheets link, s3://, gs://, az://)",
     )
     parser.add_argument(
         "--db",
         metavar="URL",
-        help=f"database URL (SQLAlchemy format). Prefer the {DB_URL_ENV} environment "
-        "variable so the password stays out of your shell history",
+        help=f"database URL: SQLAlchemy format or mongodb://. Prefer the {DB_URL_ENV} "
+        "environment variable so the password stays out of your shell history",
     )
     parser.add_argument("--schema", help="database schema (PostgreSQL), default: current")
 
@@ -62,6 +71,8 @@ def _add_source_args(parser: argparse.ArgumentParser) -> None:
     _add_location_args(parser)
     parser.add_argument("--table", help="database table or view to analyze")
     parser.add_argument("--query", help="read-only SELECT query to analyze (databases)")
+    parser.add_argument("--collection", help="MongoDB collection to analyze")
+    parser.add_argument("--filter", help='MongoDB filter as JSON, e.g. \'{"region": "East"}\'')
     parser.add_argument(
         "--limit",
         type=int,
@@ -100,14 +111,17 @@ def build_parser() -> argparse.ArgumentParser:
         help="embed plotly.js so the report works without internet (+4.5 MB)",
     )
 
-    tables = sub.add_parser("tables", help="list the tables and views of a database")
+    tables = sub.add_parser(
+        "tables", help="list the tables and views (or MongoDB collections) of a database"
+    )
     _add_location_args(tables)
     return parser
 
 
 def _database_url(args: argparse.Namespace) -> str | None:
     """URL from a SQLite path, --db or the environment, in that order."""
-    path: Path | None = args.path
+    location: str | None = args.path
+    path = Path(location) if location is not None and not is_remote(location) else None
     if path is not None and path.suffix.lower() in SQLITE_EXTENSIONS:
         if args.db:
             msg = "give either a file or --db, not both"
@@ -116,7 +130,7 @@ def _database_url(args: argparse.Namespace) -> str | None:
             msg = f"SQLite file not found: {path}"
             raise UsageError(msg)
         return f"sqlite:///{path.as_posix()}"
-    if path is not None:
+    if location is not None:
         if args.db:
             msg = "give either a file or --db, not both"
             raise UsageError(msg)
@@ -140,15 +154,36 @@ def _has_password(url: str) -> bool:
         return False
 
 
+def _is_mongo(url: str) -> bool:
+    return url.startswith(("mongodb://", "mongodb+srv://"))
+
+
 def build_connector(args: argparse.Namespace) -> tuple[Connector, str]:
     """The connector for the chosen source and a short name for titles and files."""
     url = _database_url(args)
     if url is None:
-        if args.table or args.query:
-            msg = "--table/--query apply to databases, not to data files"
+        if args.table or args.query or args.collection or args.filter:
+            msg = "--table/--query/--collection/--filter apply to databases, not to files"
             raise UsageError(msg)
-        path: Path = args.path
+        location: str = args.path
+        if is_remote(location):
+            # The CLI runs on the user's own machine, so intranet/localhost URLs are fine.
+            remote = URLConnector(location, sheet=args.sheet, allow_private=True)
+            return remote, remote.name
+        path = Path(location)
         return FileConnector(path, sheet=args.sheet), path.name
+    if _is_mongo(url):
+        if args.table or args.query:
+            msg = "for MongoDB use --collection (and optionally --filter), not --table/--query"
+            raise UsageError(msg)
+        if not args.collection:
+            msg = "for MongoDB, give --collection"
+            raise UsageError(msg)
+        mongo = MongoConnector(url, args.collection, filter=args.filter, limit=args.limit)
+        return mongo, args.collection
+    if args.collection or args.filter:
+        msg = "--collection/--filter are for MongoDB; use --table or --query for SQL"
+        raise UsageError(msg)
     if bool(args.table) == bool(args.query):
         msg = "for a database, give exactly one of --table or --query"
         raise UsageError(msg)
@@ -177,10 +212,12 @@ def print_summary(analysis: Analysis, out: TextIO) -> None:
 
 
 def _default_output(args: argparse.Namespace, name: str) -> Path:
-    if args.path is not None and args.path.suffix.lower() not in SQLITE_EXTENSIONS:
-        result: Path = args.path.with_suffix(".report.html")
-        return result
-    return Path(f"{name}.report.html")
+    location: str | None = args.path
+    if location is not None and not is_remote(location):
+        path = Path(location)
+        if path.suffix.lower() not in SQLITE_EXTENSIONS:
+            return path.with_suffix(".report.html")
+    return Path(f"{Path(name).stem or 'report'}.report.html")
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -195,7 +232,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             if url is None:
                 msg = "`tables` needs a database: a SQLite file or --db URL"
                 raise UsageError(msg)
-            for name in list_tables(url, schema=args.schema):
+            names = list_collections(url) if _is_mongo(url) else list_tables(url, args.schema)
+            for name in names:
                 print(name)
             return 0
 

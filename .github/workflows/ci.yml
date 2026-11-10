@@ -44,11 +44,18 @@ jobs:
       - run: uv run pytest
 
   integration:
-    name: Integration (PostgreSQL + MySQL)
+    name: Integration (PostgreSQL, MySQL, MongoDB, S3)
     runs-on: ubuntu-latest
     env:
       INSIGHTS_FORGE_TEST_POSTGRES_URL: postgresql+psycopg://analyst:analyst@localhost:55432/shop
       INSIGHTS_FORGE_TEST_MYSQL_URL: mysql+pymysql://analyst:analyst@localhost:53306/shop
+      INSIGHTS_FORGE_TEST_MONGO_URL: mongodb://analyst:analyst@localhost:57017/shop
+      INSIGHTS_FORGE_TEST_S3_URL: s3://shop/sales.csv
+      AWS_ENDPOINT_URL: http://localhost:59000
+      AWS_ACCESS_KEY_ID: analyst
+      AWS_SECRET_ACCESS_KEY: analyst-secret
+      AWS_REGION: us-east-1
+      AWS_ALLOW_HTTP: "true"
     steps:
       - uses: actions/checkout@v7
       - name: Start test databases (same compose file as local development)

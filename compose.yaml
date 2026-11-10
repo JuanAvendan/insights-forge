@@ -4,10 +4,14 @@
 #
 #   PostgreSQL  postgresql+psycopg://analyst:analyst@localhost:55432/shop
 #   MySQL       mysql+pymysql://analyst:analyst@localhost:53306/shop
+#   MongoDB     mongodb://analyst:analyst@localhost:57017/shop
+#   S3          s3://shop/sales.csv  with  AWS_ENDPOINT_URL=http://localhost:59000
+#               AWS_ACCESS_KEY_ID=analyst  AWS_SECRET_ACCESS_KEY=analyst-secret
+#               AWS_REGION=us-east-1  AWS_ALLOW_HTTP=true
 #
-# `analyst` can only SELECT (least privilege). These credentials are for local
-# development only. Non-default host ports avoid clashing with databases you
-# may already run on 5432/3306.
+# `analyst` can only read (least privilege). These credentials are for local
+# development only. Non-default host ports avoid clashing with services you
+# may already run on the standard ports.
 name: insights-forge
 
 services:
@@ -46,3 +50,30 @@ services:
       interval: 2s
       timeout: 5s
       retries: 60
+
+  mongo:
+    image: mongo:8.0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: forge
+      MONGO_INITDB_ROOT_PASSWORD: forge
+      MONGO_INITDB_DATABASE: shop
+    ports:
+      - "57017:27017"
+    volumes:
+      - ./docker/mongo:/docker-entrypoint-initdb.d:ro
+      - ./data/sample:/seed:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "-u", "forge", "-p", "forge", "--eval", "db.adminCommand('ping').ok"]
+      interval: 2s
+      timeout: 5s
+      retries: 60
+
+  s3:
+    # S3-compatible gateway serving a directory as a bucket: ./data/sample is the
+    # `shop` bucket. Mounted read-only, so the storage cannot be modified at all.
+    image: versity/versitygw:v1.11.0
+    command: ["--access", "analyst", "--secret", "analyst-secret", "posix", "--nometa", "/data"]
+    ports:
+      - "59000:7070"
+    volumes:
+      - ./data/sample:/data/shop:ro

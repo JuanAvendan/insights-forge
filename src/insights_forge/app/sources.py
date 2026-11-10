@@ -1,4 +1,5 @@
-"""Sidebar data-source pickers: files (incl. SQLite), the sample, and database servers.
+"""Sidebar data-source pickers: files (incl. SQLite), the sample, databases (SQL and
+MongoDB) and remote URLs (https, Google Sheets, S3/GCS/Azure).
 
 Each picker returns a *loader* (a zero-argument function producing the
 :class:`Analysis`) plus a cache key that identifies the source, or ``None`` when
@@ -12,6 +13,7 @@ import os
 import tempfile
 from collections.abc import Callable
 from pathlib import Path
+from urllib.parse import quote_plus
 
 import streamlit as st
 from sqlalchemy.engine import URL
@@ -20,16 +22,25 @@ from insights_forge.connectors import (
     SQLITE_EXTENSIONS,
     SUPPORTED_EXTENSIONS,
     ConnectorError,
+    MongoConnector,
     SQLConnector,
+    URLConnector,
+    is_remote,
+    list_collections,
     list_tables,
     safe_url,
 )
+from insights_forge.connectors.mongo import safe_uri
 from insights_forge.connectors.sql import DEFAULT_ROW_LIMIT
 from insights_forge.pipeline import Analysis, analyze, analyze_file
 
 SAMPLE_FILE = Path(__file__).resolve().parents[3] / "data" / "sample" / "sales.csv"
 DB_URL_ENV = "INSIGHTS_FORGE_DB_URL"
-DB_ENGINES = {"PostgreSQL": ("postgresql+psycopg", 5432), "MySQL": ("mysql+pymysql", 3306)}
+DB_ENGINES = {
+    "PostgreSQL": ("postgresql+psycopg", 5432),
+    "MySQL": ("mysql+pymysql", 3306),
+    "MongoDB": ("mongodb", 27017),
+}
 UPLOAD_TYPES = [*SUPPORTED_EXTENSIONS, *(ext.lstrip(".") for ext in SQLITE_EXTENSIONS)]
 
 Source = tuple[Callable[[], Analysis], str]
@@ -70,6 +81,20 @@ def analyze_sqlite_upload(name: str, data: bytes, table: str) -> Analysis:
 @st.cache_data(show_spinner="Querying the database...", max_entries=5, ttl=600)
 def analyze_database(url: str, table: str | None, query: str | None, limit: int) -> Analysis:
     connector = SQLConnector(url, table=table, query=query, limit=limit)
+    return analyze(connector, connector.name)
+
+
+@st.cache_data(show_spinner="Reading the collection...", max_entries=5, ttl=600)
+def analyze_mongo(url: str, collection: str, filter_json: str, limit: int) -> Analysis:
+    connector = MongoConnector(url, collection, filter=filter_json, limit=limit)
+    return analyze(connector, connector.name)
+
+
+@st.cache_data(show_spinner="Downloading and analyzing...", max_entries=5, ttl=600)
+def analyze_url(url: str, storage_options: dict[str, str] | None) -> Analysis:
+    # allow_private stays False: the app may be deployed publicly, and a user-supplied
+    # URL must never reach internal services (SSRF).
+    connector = URLConnector(url, storage_options=storage_options)
     return analyze(connector, connector.name)
 
 
@@ -137,21 +162,27 @@ def _connect_form() -> None:
         if not port.strip().isdigit() and port.strip():
             st.error("Port must be a number.")
             return
-        url = URL.create(
-            driver,
-            username=user or None,
-            password=password or None,
-            host=host or None,
-            port=int(port) if port.strip() else default_port,
-            database=database or None,
-        ).render_as_string(hide_password=False)
+        port_number = int(port) if port.strip() else default_port
+        if driver == "mongodb":
+            auth = f"{quote_plus(user)}:{quote_plus(password)}@" if user else ""
+            url = f"mongodb://{auth}{host or 'localhost'}:{port_number}/{database}"
+        else:
+            url = URL.create(
+                driver,
+                username=user or None,
+                password=password or None,
+                host=host or None,
+                port=port_number,
+                database=database or None,
+            ).render_as_string(hide_password=False)
+    is_mongo = url.startswith(("mongodb://", "mongodb+srv://"))
     try:
-        tables = list_tables(url)
+        tables = list_collections(url) if is_mongo else list_tables(url)
     except ConnectorError as exc:
         st.session_state.pop("db", None)
         st.error(f"Could not connect: {exc}")
         return
-    st.session_state.db = {"url": url, "tables": tables}
+    st.session_state.db = {"url": url, "tables": tables, "mongo": is_mongo}
 
 
 def database_source() -> Source | None:
@@ -159,17 +190,20 @@ def database_source() -> Source | None:
     db = st.session_state.get("db")
     if not db:
         st.caption(
-            "Try it locally: `docker compose up -d --wait` starts PostgreSQL (port 55432) and "
-            "MySQL (port 53306) with the sample data. Database `shop`, user and password "
-            "`analyst`."
+            "Try it locally: `docker compose up -d --wait` starts PostgreSQL (port 55432), "
+            "MySQL (53306) and MongoDB (57017) with the sample data. Database `shop`, user "
+            "and password `analyst`."
         )
         return None
 
     url: str = db["url"]
-    st.caption(f"Connected to `{safe_url(url)}` · read-only")
+    shown = safe_uri(url) if db.get("mongo") else safe_url(url)
+    st.caption(f"Connected to `{shown}` · read-only")
     if st.button("Disconnect"):
         st.session_state.pop("db", None)
         st.rerun()
+    if db.get("mongo"):
+        return _mongo_picker(url, db["tables"])
     mode = st.radio("Read", ["Table", "Query"], horizontal=True, key="db_mode")
     table: str | None = None
     query: str | None = None
@@ -187,7 +221,12 @@ def database_source() -> Source | None:
         ).strip()
         if not query:
             return None
-    limit = int(
+    limit = _row_limit()
+    return (lambda: analyze_database(url, table, query, limit)), _digest(url, table, query, limit)
+
+
+def _row_limit() -> int:
+    return int(
         st.number_input(
             "Row limit",
             min_value=1_000,
@@ -197,12 +236,74 @@ def database_source() -> Source | None:
             help="Protects memory on very large tables.",
         )
     )
-    return (lambda: analyze_database(url, table, query, limit)), _digest(url, table, query, limit)
+
+
+def _mongo_picker(url: str, collections: list[str]) -> Source | None:
+    if not collections:
+        st.warning("No collections are visible to this user.")
+        return None
+    collection = st.selectbox("Collection", collections, key="mongo_collection")
+    filter_json = st.text_area(
+        "Filter (JSON, optional)",
+        key="mongo_filter",
+        placeholder='{"region": "East", "total": {"$gt": 100}}',
+        help="A MongoDB query filter. Operators that run JavaScript ($where, $function) are "
+        "not allowed. Press Ctrl+Enter to apply.",
+    ).strip()
+    limit = _row_limit()
+    load = lambda: analyze_mongo(url, collection, filter_json, limit)  # noqa: E731
+    return load, _digest(url, collection, filter_json, limit)
+
+
+def url_source() -> Source | None:
+    url = st.text_input(
+        "File URL",
+        key="remote_url",
+        placeholder="https://example.com/data.csv",
+        help="An https link to a CSV/Excel/Parquet/JSON file, a Google Sheets link shared as "
+        "'anyone with the link', or s3://, gs://, az:// paths. For safety, addresses on "
+        "private networks are refused.",
+    ).strip()
+    with st.expander("Cloud credentials (S3-compatible)"):
+        st.caption(
+            "Optional. By default the server's AWS_*, GOOGLE_APPLICATION_CREDENTIALS or "
+            "AZURE_* environment variables are used."
+        )
+        endpoint = st.text_input("Endpoint URL", key="s3_endpoint", placeholder="https://...")
+        key_id = st.text_input("Access key ID", key="s3_key")
+        secret = st.text_input("Secret access key", key="s3_secret", type="password")
+        region = st.text_input("Region", key="s3_region", placeholder="us-east-1")
+    if not url:
+        st.caption(
+            "Try: `https://raw.githubusercontent.com/JuanAvendan/insights-forge/main/"
+            "data/sample/sales.csv`"
+        )
+        return None
+    if not is_remote(url):
+        st.error("Enter an https://, s3://, gs:// or az:// URL.")
+        return None
+    options = {
+        name: value
+        for name, value in {
+            "aws_endpoint_url": endpoint,
+            "aws_access_key_id": key_id,
+            "aws_secret_access_key": secret,
+            "aws_region": region,
+        }.items()
+        if value
+    } or None
+    if options and endpoint.startswith("http://"):
+        options["aws_allow_http"] = "true"
+    return (lambda: analyze_url(url, options)), _digest(url, sorted((options or {}).items()))
 
 
 def render_sidebar() -> Source | None:
     st.header("Data source")
-    kind = st.segmented_control("Source", ["File", "Database"], default="File", key="source_kind")
+    kind = st.segmented_control(
+        "Source", ["File", "Database", "URL"], default="File", key="source_kind"
+    )
     if kind == "Database":
         return database_source()
+    if kind == "URL":
+        return url_source()
     return file_source()

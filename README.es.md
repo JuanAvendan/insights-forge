@@ -17,7 +17,7 @@
 
 ---
 
-> 🚧 **En desarrollo.** El flujo completo funciona: archivos y bases de datos SQL → perfilado → calidad de datos → insights → reporte HTML. Las fuentes NoSQL y en la nube son lo siguiente. Mira la [hoja de ruta](#hoja-de-ruta).
+> 🚧 **En desarrollo.** El flujo completo funciona: archivos, bases de datos SQL y MongoDB, URLs, Google Sheets y almacenamiento en la nube → perfilado → calidad de datos → insights → reporte HTML. Mira la [hoja de ruta](#hoja-de-ruta).
 
 ## Por qué
 
@@ -30,6 +30,7 @@ una colección NoSQL o un almacenamiento en la nube, y te dice qué hay y qué e
 - **Muchas fuentes, un solo motor.** Cada fuente se carga en una tabla de [DuckDB](https://duckdb.org/) en memoria, así el código de análisis se escribe una vez y funciona con todas.
 - **Carga inteligente de archivos.** CSV/TSV con detección automática de delimitador, encabezado y tipos, además de Excel (cualquier hoja), Parquet y JSON.
 - **Bases de datos SQL.** PostgreSQL, MySQL y SQLite: una tabla, una vista o tu propio `SELECT`. Estrictamente de solo lectura (ver [Bases de datos](#bases-de-datos)).
+- **NoSQL y nube.** Colecciones de MongoDB (documentos anidados aplanados), URLs https, enlaces de Google Sheets y almacenamiento S3 / GCS / Azure, con protección contra SSRF en las descargas.
 - **Perfilado de columnas.** Estadísticas según el tipo de dato, calculadas con SQL dentro de DuckDB: cuartiles, media, desviación estándar, ceros, negativos, longitudes de texto, rangos de fechas y valores más frecuentes.
 - **Chequeos de calidad de datos.** Cada hallazgo indica su severidad y cuántas filas afecta:
 
@@ -131,6 +132,38 @@ conexiones expiran a los 10 segundos y las lecturas se limitan a 1.000.000 de fi
 defecto. Buena práctica: usa un usuario que solo pueda hacer `SELECT`, como el usuario
 `analyst` de `compose.yaml`.
 
+### MongoDB
+
+```bash
+export INSIGHTS_FORGE_DB_URL="mongodb://analyst:analyst@localhost:57017/shop"
+uv run insights-forge tables
+uv run insights-forge summary --collection sales --filter '{"channel": "Online"}'
+```
+
+Los documentos anidados se aplanan en columnas (`customer.email`, `product.name`), y `_id`
+se deja fuera para que los documentos duplicados sigan siendo visibles. Solo se usa
+`find()`, y se rechazan los filtros que ejecutan JavaScript en el servidor (`$where`,
+`$function`).
+
+### Archivos remotos: https, Google Sheets, S3 / GCS / Azure
+
+```bash
+uv run insights-forge summary https://raw.githubusercontent.com/JuanAvendan/insights-forge/main/data/sample/sales.csv
+uv run insights-forge report "https://docs.google.com/spreadsheets/d/<id>/edit#gid=0"
+uv run insights-forge summary s3://mi-bucket/exports/ventas.parquet
+```
+
+- **Google Sheets**: pega el enlace de una hoja compartida como "cualquier persona con el enlace".
+- **Almacenamiento en la nube**: lo lee Polars; las credenciales salen de las variables de
+  entorno habituales (`AWS_ACCESS_KEY_ID`, `AWS_ENDPOINT_URL`, `GOOGLE_APPLICATION_CREDENTIALS`,
+  `AZURE_STORAGE_ACCOUNT_NAME`...). El gateway S3 local de `compose.yaml` sirve
+  `s3://shop/sales.csv` (su configuración está en el comentario al inicio del archivo).
+- **Protección contra SSRF**: la app nunca descarga URLs que resuelvan a direcciones
+  privadas, de loopback o link-local (como el endpoint de metadatos de la nube
+  `169.254.169.254`), revisa cada redirección y limita las descargas a 200 MB y 30 segundos.
+
+En la app, elige **URL** en la barra lateral, o MongoDB en el formulario de **Database**.
+
 ### Como librería
 
 ```python
@@ -165,7 +198,7 @@ O todo el flujo en una sola llamada: `insights_forge.pipeline.analyze_file(ruta)
 - [x] **v0.4: Comparaciones y robustez con datos reales.** Pestaña Compare, explorador de dispersión, gráficos de cobertura; datos de panel, años enteros y medidas incompletas bien manejados
 - [ ] **Demo en vivo** en Streamlit Community Cloud
 - [x] **v0.5: Fuentes SQL.** PostgreSQL, MySQL, SQLite; solo lectura por diseño; bases de prueba con Docker Compose
-- [ ] **v0.6: NoSQL y nube.** MongoDB, S3 / GCS, Google Sheets
+- [x] **v0.6: NoSQL y nube.** MongoDB, URLs https, Google Sheets, S3 / GCS / Azure; protección contra SSRF
 - [ ] **v0.7: Insights con IA.** Resúmenes opcionales del perfil generados por un LLM
 
 ## Stack tecnológico
@@ -173,7 +206,7 @@ O todo el flujo en una sola llamada: `insights_forge.pipeline.analyze_file(ruta)
 | Área | Herramientas |
 |---|---|
 | Motor de datos | DuckDB, Polars, PyArrow, fastexcel |
-| Bases de datos | SQLAlchemy 2, psycopg 3, PyMySQL, Docker Compose |
+| Bases de datos y nube | SQLAlchemy 2, psycopg 3, PyMySQL, PyMongo, Polars object_store, Docker Compose |
 | App, gráficos y reporte | Streamlit, Plotly, Jinja2 |
 | Herramientas | uv, Ruff, mypy (estricto), pytest + coverage, pre-commit |
 | CI | GitHub Actions (Linux + Windows, Python 3.12 / 3.13) |
@@ -190,6 +223,8 @@ uv run ruff check . && uv run mypy
 docker compose up -d --wait
 export INSIGHTS_FORGE_TEST_POSTGRES_URL="postgresql+psycopg://analyst:analyst@localhost:55432/shop"
 export INSIGHTS_FORGE_TEST_MYSQL_URL="mysql+pymysql://analyst:analyst@localhost:53306/shop"
+export INSIGHTS_FORGE_TEST_MONGO_URL="mongodb://analyst:analyst@localhost:57017/shop"
+# para S3 define también INSIGHTS_FORGE_TEST_S3_URL=s3://shop/sales.csv y los valores AWS_* de compose.yaml
 uv run pytest -m integration
 ```
 
@@ -209,7 +244,7 @@ insights-forge/
 ├── tests/
 ├── scripts/              # utilidades (p. ej. generador de datos de ejemplo)
 ├── docker/               # scripts de carga de las bases de prueba
-├── compose.yaml          # PostgreSQL + MySQL para desarrollo y CI
+├── compose.yaml          # PostgreSQL, MySQL, MongoDB y S3 para desarrollo y CI
 └── data/sample/          # datasets sintéticos pequeños (los datos reales se ignoran en git)
 ```
 
