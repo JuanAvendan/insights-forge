@@ -14,11 +14,6 @@ ROWS = [(1, "Bogotá", 10.5), (2, "Medellín", None), (3, "Cali", 7.25)]
 HEADER = ("id", "city", "amount")
 
 
-@pytest.fixture
-def con() -> duckdb.DuckDBPyConnection:
-    return duckdb.connect()
-
-
 def _write_csv(path: Path, sep: str = ",") -> Path:
     lines = [sep.join(HEADER)]
     lines += [sep.join("" if v is None else str(v) for v in row) for row in ROWS]

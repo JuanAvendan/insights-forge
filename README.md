@@ -17,7 +17,7 @@
 
 ---
 
-> 🚧 **Work in progress.** File loading (CSV, Excel, Parquet, JSON) is ready; automatic profiling and insights are next. See the [roadmap](#roadmap).
+> 🚧 **Work in progress.** File loading, column profiling and data-quality checks are ready. Plain-language insights and the HTML report are next. See the [roadmap](#roadmap).
 
 ## Why
 
@@ -29,9 +29,22 @@ collection or cloud storage, and it tells you what's in there and what's wrong w
 
 - **Many sources, one engine.** Every source is loaded into an in-memory [DuckDB](https://duckdb.org/) table, so the analysis code is written once and works everywhere.
 - **Smart file loading.** CSV/TSV with automatic delimiter, header and type detection, plus Excel (any sheet), Parquet and JSON.
-- **Data-quality report** *(next)*. Missing values, duplicates, outliers, invalid values and type issues.
-- **Automatic insights** *(next)*. Distributions, correlations, trends over time and plain-language findings.
-- **Interactive web app.** Built with Streamlit and Plotly.
+- **Column profiling.** Type-aware statistics computed in SQL inside DuckDB: quartiles, mean, standard deviation, zeros, negatives, text lengths, date ranges and top values.
+- **Data-quality checks.** Each finding gets a severity and the number of affected rows:
+
+  | Check | Example finding |
+  |---|---|
+  | Duplicate rows | *12 duplicate rows (1.2% of the data)* |
+  | Duplicate identifiers | *`order_id` looks like an identifier but 12 values are repeated* |
+  | Missing values / empty columns | *50 missing values (4.9%)* |
+  | Suspicious negatives | *3 negative values in an otherwise positive column* |
+  | Extreme outliers (Tukey IQR fences) | *11 extreme values outside [-11, 17]* |
+  | Constant columns | *every value is identical* |
+  | Text hygiene | blank strings, untrimmed spaces, numbers or dates stored as text |
+
+- **Correlations.** Pearson matrix across numeric columns, with the notable relationships listed.
+- **Interactive web app.** Streamlit + Plotly: overview, filterable issue list, per-column explorer (with an outlier-hiding zoom) and a correlation heatmap. Chart colors come from a colorblind-safe palette with separate light and dark steps.
+- **Automatic insights** *(next)*. Trends over time and plain-language findings.
 
 ## Architecture
 
@@ -76,16 +89,21 @@ from pathlib import Path
 import duckdb
 from insights_forge.connectors import FileConnector
 
+from insights_forge.profiling import profile_table
+
 con = duckdb.connect()
-sales = FileConnector(Path("data/sample/sales.csv")).load(con, table_name="sales")
-print(sales.shape)
-print(con.sql("SELECT region, SUM(total) FROM sales GROUP BY ALL").fetchall())
+FileConnector(Path("data/sample/sales.csv")).load(con, table_name="sales")
+
+profile = profile_table(con, "sales")
+print(f"{profile.rows:,} rows, {profile.completeness_pct:.1f}% complete")
+for issue in profile.issues:
+    print(f"[{issue.severity}] {issue.column or 'table'}: {issue.message}")
 ```
 
 ## Roadmap
 
 - [x] **v0.1: Foundations.** Project setup, CI, connector architecture, file connector, basic UI
-- [ ] **v0.2: Profiling.** Column statistics, data-quality checks, distributions and correlations
+- [x] **v0.2: Profiling.** Column statistics, data-quality checks, distributions and correlations
 - [ ] **v0.3: Insights.** Rule-based findings in plain language, time-series trends, HTML report export, live demo
 - [ ] **v0.4: SQL sources.** PostgreSQL, MySQL, SQLite (Docker Compose for local test databases)
 - [ ] **v0.5: NoSQL & cloud.** MongoDB, S3 / GCS, Google Sheets
@@ -115,7 +133,8 @@ uv run ruff check . && uv run mypy
 insights-forge/
 ├── src/insights_forge/
 │   ├── connectors/       # one module per source type
-│   └── app/              # Streamlit UI
+│   ├── profiling/        # statistics (SQL in DuckDB) and data-quality checks
+│   └── app/              # Streamlit UI and Plotly chart builders
 ├── tests/
 ├── scripts/              # utilities (e.g. sample data generator)
 └── data/sample/          # small synthetic datasets (real data is git-ignored)

@@ -17,7 +17,7 @@
 
 ---
 
-> 🚧 **En desarrollo.** La carga de archivos (CSV, Excel, Parquet, JSON) está lista; el perfilado automático y los insights son lo siguiente. Mira la [hoja de ruta](#hoja-de-ruta).
+> 🚧 **En desarrollo.** La carga de archivos, el perfilado de columnas y los chequeos de calidad de datos están listos. Los insights en lenguaje natural y el reporte HTML son lo siguiente. Mira la [hoja de ruta](#hoja-de-ruta).
 
 ## Por qué
 
@@ -29,9 +29,22 @@ una colección NoSQL o un almacenamiento en la nube, y te dice qué hay y qué e
 
 - **Muchas fuentes, un solo motor.** Cada fuente se carga en una tabla de [DuckDB](https://duckdb.org/) en memoria, así el código de análisis se escribe una vez y funciona con todas.
 - **Carga inteligente de archivos.** CSV/TSV con detección automática de delimitador, encabezado y tipos, además de Excel (cualquier hoja), Parquet y JSON.
-- **Reporte de calidad de datos** *(próximamente)*. Valores faltantes, duplicados, outliers, valores inválidos y problemas de tipos.
-- **Insights automáticos** *(próximamente)*. Distribuciones, correlaciones, tendencias en el tiempo y hallazgos en lenguaje natural.
-- **App web interactiva.** Hecha con Streamlit y Plotly.
+- **Perfilado de columnas.** Estadísticas según el tipo de dato, calculadas con SQL dentro de DuckDB: cuartiles, media, desviación estándar, ceros, negativos, longitudes de texto, rangos de fechas y valores más frecuentes.
+- **Chequeos de calidad de datos.** Cada hallazgo indica su severidad y cuántas filas afecta:
+
+  | Chequeo | Ejemplo de hallazgo |
+  |---|---|
+  | Filas duplicadas | *12 filas duplicadas (1,2% de los datos)* |
+  | Identificadores duplicados | *`order_id` parece un identificador, pero 12 valores se repiten* |
+  | Valores faltantes / columnas vacías | *50 valores faltantes (4,9%)* |
+  | Negativos sospechosos | *3 valores negativos en una columna que por lo demás es positiva* |
+  | Outliers extremos (cercas IQR de Tukey) | *11 valores extremos fuera de [-11, 17]* |
+  | Columnas constantes | *todos los valores son idénticos* |
+  | Higiene de texto | textos vacíos, espacios sin recortar, números o fechas guardados como texto |
+
+- **Correlaciones.** Matriz de Pearson entre columnas numéricas, con la lista de relaciones relevantes.
+- **App web interactiva.** Streamlit + Plotly: resumen, lista de problemas filtrable, explorador por columna (con zoom que oculta outliers) y mapa de calor de correlaciones. Los colores de los gráficos vienen de una paleta apta para daltonismo, con tonos propios para modo claro y oscuro.
+- **Insights automáticos** *(próximamente)*. Tendencias en el tiempo y hallazgos en lenguaje natural.
 
 ## Arquitectura
 
@@ -76,16 +89,21 @@ from pathlib import Path
 import duckdb
 from insights_forge.connectors import FileConnector
 
+from insights_forge.profiling import profile_table
+
 con = duckdb.connect()
-ventas = FileConnector(Path("data/sample/sales.csv")).load(con, table_name="sales")
-print(ventas.shape)
-print(con.sql("SELECT region, SUM(total) FROM sales GROUP BY ALL").fetchall())
+FileConnector(Path("data/sample/sales.csv")).load(con, table_name="sales")
+
+perfil = profile_table(con, "sales")
+print(f"{perfil.rows:,} filas, {perfil.completeness_pct:.1f}% completo")
+for issue in perfil.issues:
+    print(f"[{issue.severity}] {issue.column or 'tabla'}: {issue.message}")
 ```
 
 ## Hoja de ruta
 
 - [x] **v0.1: Fundamentos.** Configuración del proyecto, CI, arquitectura de conectores, conector de archivos, UI básica
-- [ ] **v0.2: Perfilado.** Estadísticas por columna, chequeos de calidad, distribuciones y correlaciones
+- [x] **v0.2: Perfilado.** Estadísticas por columna, chequeos de calidad, distribuciones y correlaciones
 - [ ] **v0.3: Insights.** Hallazgos por reglas en lenguaje natural, tendencias temporales, exportar reporte HTML, demo en vivo
 - [ ] **v0.4: Fuentes SQL.** PostgreSQL, MySQL, SQLite (Docker Compose para bases de prueba locales)
 - [ ] **v0.5: NoSQL y nube.** MongoDB, S3 / GCS, Google Sheets
@@ -115,7 +133,8 @@ uv run ruff check . && uv run mypy
 insights-forge/
 ├── src/insights_forge/
 │   ├── connectors/       # un módulo por tipo de fuente
-│   └── app/              # interfaz Streamlit
+│   ├── profiling/        # estadísticas (SQL en DuckDB) y chequeos de calidad
+│   └── app/              # interfaz Streamlit y gráficos Plotly
 ├── tests/
 ├── scripts/              # utilidades (p. ej. generador de datos de ejemplo)
 └── data/sample/          # datasets sintéticos pequeños (los datos reales se ignoran en git)

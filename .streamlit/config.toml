@@ -1,0 +1,7 @@
+[browser]
+gatherUsageStats = false
+
+[theme]
+# Accent color from the project's CVD-validated chart palette (blue, slot 1).
+# Streamlit's default red reads as "error" on progress bars and selections.
+primaryColor = "#2a78d6"

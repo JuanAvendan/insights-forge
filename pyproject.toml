@@ -1,6 +1,6 @@
 [project]
 name = "insights-forge"
-version = "0.1.0"
+version = "0.2.0"
 description = "Connect any data source (Excel, CSV, SQL, NoSQL, cloud) and get automatic data-quality reports, profiling and insights."
 readme = "README.md"
 license = "MIT"
@@ -69,7 +69,10 @@ select = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101"]  # assert is fine in tests
+"tests/**" = ["S101", "S608"]  # assert and hand-written SQL are fine in tests
+# Identifiers cannot be bound as SQL parameters: every table/column name goes
+# through quote_ident() and every value through `?` placeholders.
+"src/insights_forge/profiling/profiler.py" = ["S608"]
 
 # ---------------------------------------------------------------- mypy
 [tool.mypy]
@@ -78,7 +81,7 @@ strict = true
 files = ["src", "tests", "scripts"]
 
 [[tool.mypy.overrides]]
-module = ["openpyxl.*", "fastexcel.*"]
+module = ["openpyxl.*", "fastexcel.*", "plotly.*"]
 ignore_missing_imports = true
 
 # ---------------------------------------------------------------- pytest
@@ -94,4 +97,4 @@ addopts = [
 
 [tool.coverage.run]
 branch = true
-omit = ["src/insights_forge/app/*"]
+omit = ["src/insights_forge/app/streamlit_app.py"]  # exercised by AppTest smoke tests
