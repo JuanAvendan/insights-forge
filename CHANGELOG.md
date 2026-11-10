@@ -4,7 +4,7 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the
 project uses [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.4.0] - 2026-11-10
 
 Improvements found by running the tool on real datasets: 26k movies (1896-2027)
 and a UN-style country-year panel of homicide statistics (2000-2024).
@@ -88,6 +88,7 @@ and a UN-style country-year panel of homicide statistics (2000-2024).
 - Connector architecture and `FileConnector` (CSV/TSV, Excel, Parquet, JSON).
 - Minimal Streamlit app and a synthetic sample dataset.
 
+[0.4.0]: https://github.com/JuanAvendan/insights-forge/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/JuanAvendan/insights-forge/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/JuanAvendan/insights-forge/compare/163596d...v0.2.0
 [0.1.0]: https://github.com/JuanAvendan/insights-forge/commit/163596d

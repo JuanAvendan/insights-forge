@@ -128,10 +128,11 @@ O todo el flujo en una sola llamada: `insights_forge.pipeline.analyze_file(ruta)
 - [x] **v0.1: Fundamentos.** Configuración del proyecto, CI, arquitectura de conectores, conector de archivos, UI básica
 - [x] **v0.2: Perfilado.** Estadísticas por columna, chequeos de calidad, distribuciones y correlaciones
 - [x] **v0.3: Insights.** Hallazgos por reglas en lenguaje natural, tendencias temporales, reporte HTML exportable, CLI
+- [x] **v0.4: Comparaciones y robustez con datos reales.** Pestaña Compare, explorador de dispersión, gráficos de cobertura; datos de panel, años enteros y medidas incompletas bien manejados
 - [ ] **Demo en vivo** en Streamlit Community Cloud
-- [ ] **v0.4: Fuentes SQL.** PostgreSQL, MySQL, SQLite (Docker Compose para bases de prueba locales)
-- [ ] **v0.5: NoSQL y nube.** MongoDB, S3 / GCS, Google Sheets
-- [ ] **v0.6: Insights con IA.** Resúmenes opcionales del perfil generados por un LLM
+- [ ] **v0.5: Fuentes SQL.** PostgreSQL, MySQL, SQLite (Docker Compose para bases de prueba locales)
+- [ ] **v0.6: NoSQL y nube.** MongoDB, S3 / GCS, Google Sheets
+- [ ] **v0.7: Insights con IA.** Resúmenes opcionales del perfil generados por un LLM
 
 ## Stack tecnológico
 

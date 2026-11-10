@@ -128,10 +128,11 @@ Or the whole pipeline in one call: `insights_forge.pipeline.analyze_file(path)`.
 - [x] **v0.1: Foundations.** Project setup, CI, connector architecture, file connector, basic UI
 - [x] **v0.2: Profiling.** Column statistics, data-quality checks, distributions and correlations
 - [x] **v0.3: Insights.** Rule-based findings in plain language, time-series trends, HTML report export, CLI
+- [x] **v0.4: Comparisons & real-world robustness.** Compare tab, scatter explorer, coverage charts; panel data, integer years and sparse measures handled correctly
 - [ ] **Live demo** on Streamlit Community Cloud
-- [ ] **v0.4: SQL sources.** PostgreSQL, MySQL, SQLite (Docker Compose for local test databases)
-- [ ] **v0.5: NoSQL & cloud.** MongoDB, S3 / GCS, Google Sheets
-- [ ] **v0.6: AI insights.** Optional LLM-generated summaries of the profile
+- [ ] **v0.5: SQL sources.** PostgreSQL, MySQL, SQLite (Docker Compose for local test databases)
+- [ ] **v0.6: NoSQL & cloud.** MongoDB, S3 / GCS, Google Sheets
+- [ ] **v0.7: AI insights.** Optional LLM-generated summaries of the profile
 
 ## Tech stack
 
