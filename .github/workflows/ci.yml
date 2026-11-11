@@ -45,7 +45,9 @@ jobs:
 
   integration:
     name: Integration (PostgreSQL, MySQL, MongoDB, S3)
-    runs-on: ubuntu-latest
+    # MongoDB 8 refuses to start on Linux kernel 6.19+ (SERVER-121912), which ships with
+    # the Ubuntu 26 `ubuntu-latest` image; 24.04 keeps a compatible kernel.
+    runs-on: ubuntu-24.04
     env:
       INSIGHTS_FORGE_TEST_POSTGRES_URL: postgresql+psycopg://analyst:analyst@localhost:55432/shop
       INSIGHTS_FORGE_TEST_MYSQL_URL: mysql+pymysql://analyst:analyst@localhost:53306/shop

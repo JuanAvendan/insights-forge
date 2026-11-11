@@ -52,6 +52,8 @@ services:
       retries: 60
 
   mongo:
+    # MongoDB 8 does not start on hosts with Linux kernel 6.19+ (SERVER-121912).
+    # Docker Desktop and Ubuntu 24.04 kernels are fine.
     image: mongo:8.0
     environment:
       MONGO_INITDB_ROOT_USERNAME: forge
