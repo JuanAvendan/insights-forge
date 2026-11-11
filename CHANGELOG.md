@@ -26,8 +26,10 @@ project uses [Semantic Versioning](https://semver.org/).
   MongoDB collections.
 - App: **URL** source (with optional S3-compatible credentials) and MongoDB in the
   database form.
-- `compose.yaml`: MongoDB 8 with nested sample documents and a read-only `analyst`
-  user, and an S3-compatible gateway (VersityGW) serving `data/sample` read-only as the
+- `compose.yaml`: MongoDB 7.0 with nested sample documents and a read-only `analyst`
+  user (MongoDB 8.x does not start on Linux kernel 6.19+, SERVER-121912, which GitHub
+  runners now use; the connector works with any version),
+  and an S3-compatible gateway (VersityGW) serving `data/sample` read-only as the
   `shop` bucket. The CI integration job now covers PostgreSQL, MySQL, MongoDB and S3.
 
 ## [0.5.0] - 2026-11-10
